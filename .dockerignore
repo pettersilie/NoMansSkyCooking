@@ -1,0 +1,7 @@
+target
+.git
+.gitlab
+.idea
+.vscode
+data
+*.log

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NMS Recipe Graph</title>
+    <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<main class="layout">
+    <section class="panel">
+        <div class="panel-head">
+            <div class="inline-control language-control">
+                <label id="languageLabel" for="languageSelect">Language</label>
+                <select id="languageSelect">
+                    <option value="en" selected>English</option>
+                    <option value="de">Deutsch</option>
+                </select>
+            </div>
+            <div class="panel-brand">
+                <div class="eyebrow">No Man's Sky</div>
+                <h1 id="appTitle">Recipe Graph</h1>
+            </div>
+        </div>
+        <p id="introText" class="intro">
+            This view lays products out from top to bottom. Sub-products are resolved recursively,
+            and ingredients are grouped per recipe under Ingredient 1, Ingredient 2 and Ingredient 3.
+            Product cards can be loaded again as the root.
+        </p>
+        <p id="navigationHint" class="hint">
+            In the graph area, hold the right mouse button to pan horizontally and vertically.
+        </p>
+
+        <div class="controls">
+            <label id="productFilterLabel" for="productFilter">Filter products</label>
+            <input id="productFilter" type="text" autocomplete="off" placeholder="Enter a product name">
+            <div class="product-list-tools">
+                <div class="inline-control">
+                    <label id="productSortLabel" for="productSort">Sort by</label>
+                    <select id="productSort">
+                        <option value="category">Category</option>
+                        <option value="name">Name</option>
+                        <option value="price">Price</option>
+                    </select>
+                </div>
+                <div class="inline-control">
+                    <label id="productCategoryFilterLabel" for="productCategoryFilter">Category</label>
+                    <select id="productCategoryFilter">
+                        <option value="">All categories</option>
+                    </select>
+                </div>
+            </div>
+            <div id="productList" class="product-list" aria-label="Product list"></div>
+        </div>
+
+        <div class="controls">
+            <label id="ingredientFilterLabel" for="ingredientFilter">Search by ingredient</label>
+            <input id="ingredientFilter" type="text" autocomplete="off" placeholder="Enter an ingredient">
+            <div id="ingredientResults" class="search-results" aria-live="polite"></div>
+        </div>
+
+        <div class="legend">
+            <div><span class="legend-swatch product"></span> <span id="legendProductLabel">Craftable product</span></div>
+            <div><span class="legend-swatch variant"></span> <span id="legendVariantLabel">Recipe variant</span></div>
+            <div><span class="legend-swatch slot"></span> <span id="legendSlotLabel">Ingredient column</span></div>
+            <div><span class="legend-swatch raw"></span> <span id="legendRawLabel">Base ingredient</span></div>
+            <div><span class="legend-swatch cycle"></span> <span id="legendCycleLabel">Cycle</span></div>
+        </div>
+
+        <p id="status" class="status">Loading product list...</p>
+    </section>
+
+    <section class="canvas">
+        <div id="treeRoot" class="tree-root"></div>
+    </section>
+</main>
+
+<script src="/app.js"></script>
+</body>
+</html>

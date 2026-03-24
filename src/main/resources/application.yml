@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: nms-recipes
+
+server:
+  port: 9999
+
+recipes:
+  source-path: ./data/recipes.json
+  price-path: ./data/product-prices.json
