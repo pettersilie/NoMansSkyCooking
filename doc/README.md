@@ -1,36 +1,44 @@
-# NMS Recipe Graph Documentation
+# Documentation
 
 This directory contains the project documentation for the NMS Recipe Graph application.
 
-## Documents
+## Reading Order
+
+If you are new to the project, this order works well:
+
+1. [Architecture](./architecture.md)
+2. [Data Format](./data-format.md)
+3. [API](./api.md)
+4. [User Guide](./user-guide.md)
+5. [Operations](./operations.md)
+
+## Document Overview
 
 - [Architecture](./architecture.md)
-  Explains the application structure, the main backend services, and the frontend responsibilities.
+  Describes the application structure, runtime flow, and main backend and frontend components.
 
 - [Data Format](./data-format.md)
-  Describes the `recipes.json` dataset and the separate product price storage.
+  Explains the structure and semantics of `data/recipes.json` and the separate price file.
 
 - [API](./api.md)
-  Documents the HTTP endpoints used by the frontend.
+  Documents the REST endpoints used by the frontend and external tools.
 
 - [User Guide](./user-guide.md)
-  Describes the visible UI features and user workflows.
+  Covers the visible UI, including browsing, searching, price editing, category creation, and recipe creation.
 
 - [Operations](./operations.md)
-  Covers local development, packaging, Docker, distribution, and dataset migration.
+  Covers local development, packaging, Docker, runtime files, and operational recommendations.
 
 ## Scope
 
 The application is a Spring Boot web app that:
 
-- loads recipe definitions from `recipes.json`
-- stores product prices in a separate JSON file
-- exposes a small REST API
+- reads and writes recipes through `data/recipes.json`
+- keeps prices in `data/product-prices.json`
+- exposes a REST API under `/api`
 - renders an interactive dependency graph in the browser
-- supports German and English in the UI
+- supports German and English UI modes
 
 ## Source Of Truth
 
-For runtime behavior, the active data source is `recipes.json`.
-
-
+`data/recipes.json` is the single source of truth for categories, term translations, and recipes.

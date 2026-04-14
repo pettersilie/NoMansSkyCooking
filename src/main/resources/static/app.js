@@ -1,4 +1,6 @@
 const languageSelect = document.getElementById("languageSelect");
+const addRecipeButton = document.getElementById("addRecipeButton");
+const addCategoryButton = document.getElementById("addCategoryButton");
 const productFilterLabel = document.getElementById("productFilterLabel");
 const productFilterInput = document.getElementById("productFilter");
 const productSortLabel = document.getElementById("productSortLabel");
@@ -16,6 +18,8 @@ const canvasElement = document.querySelector(".canvas");
 const NO_CATEGORY_FILTER_VALUE = "__NO_CATEGORY__";
 const DEFAULT_LANGUAGE = "en";
 const SUPPORTED_LANGUAGES = new Set(["de", "en"]);
+const ICON_MANIFEST_URL = "/icons/manifest.json?v=20260414a";
+const DEFAULT_ICON_PATH = "/icons/fallback.svg";
 
 const UI_TEXT = {
     de: {
@@ -24,6 +28,8 @@ const UI_TEXT = {
         intro: "Diese Ansicht zeigt Produkte von oben nach unten. Unterprodukte werden rekursiv weiter aufgeloest, und Zutaten werden pro Rezept unter den Spalten Zutat 1, Zutat 2 und Zutat 3 gruppiert. Produktkarten lassen sich direkt erneut als Wurzel laden.",
         navigationHint: "Im Grafikbereich kann mit gedrueckter rechter Maustaste horizontal und vertikal navigiert werden.",
         languageLabel: "Sprache",
+        addRecipeButton: "Rezept hinzufügen",
+        addCategoryButton: "Kategorie hinzufügen",
         productFilterLabel: "Produktliste filtern",
         productFilterPlaceholder: "Produktname eingeben",
         productSortLabel: "Sortierung",
@@ -76,6 +82,8 @@ const UI_TEXT = {
         intro: "This view lays products out from top to bottom. Sub-products are resolved recursively, and ingredients are grouped per recipe under Ingredient 1, Ingredient 2 and Ingredient 3. Product cards can be loaded again as the root.",
         navigationHint: "In the graph area, hold the right mouse button to pan horizontally and vertically.",
         languageLabel: "Language",
+        addRecipeButton: "Add recipe",
+        addCategoryButton: "Add category",
         productFilterLabel: "Filter products",
         productFilterPlaceholder: "Enter a product name",
         productSortLabel: "Sort by",
@@ -128,8 +136,13 @@ let connectorFrame = null;
 let ingredientSearchHandle = null;
 let ingredientSearchToken = 0;
 let allProducts = [];
+let allCategories = [];
 let selectedProductKey = "";
 let currentLanguage = resolveInitialLanguage();
+let iconManifest = {
+    defaultIcon: DEFAULT_ICON_PATH,
+    icons: {}
+};
 const canvasPanState = {
     active: false,
     moved: false,
@@ -181,6 +194,58 @@ function buildApiUrl(path, params = {}) {
     return query ? `${path}?${query}` : path;
 }
 
+async function loadIconManifest() {
+    try {
+        const response = await fetch(ICON_MANIFEST_URL, { cache: "no-store" });
+        if (!response.ok) {
+            return;
+        }
+
+        const payload = await response.json();
+        iconManifest = {
+            defaultIcon: typeof payload.defaultIcon === "string" && payload.defaultIcon ? payload.defaultIcon : DEFAULT_ICON_PATH,
+            icons: payload && typeof payload.icons === "object" && payload.icons ? payload.icons : {}
+        };
+    } catch (error) {
+        iconManifest = {
+            defaultIcon: DEFAULT_ICON_PATH,
+            icons: {}
+        };
+    }
+}
+
+function normalizeLookupKey(value) {
+    return String(value ?? "")
+        .replace(/\u00A0/g, " ")
+        .trim()
+        .replace(/\s+/g, " ")
+        .toLowerCase();
+}
+
+function resolveIconPath(value) {
+    const lookupKey = normalizeLookupKey(value);
+    return iconManifest.icons[lookupKey] || iconManifest.defaultIcon;
+}
+
+function createTermIcon(value, className) {
+    const image = document.createElement("img");
+    image.className = className;
+    image.src = resolveIconPath(value);
+    image.alt = "";
+    image.loading = "lazy";
+    image.decoding = "async";
+    image.setAttribute("aria-hidden", "true");
+    image.addEventListener("error", () => {
+        if (image.dataset.fallbackApplied === "true") {
+            return;
+        }
+
+        image.dataset.fallbackApplied = "true";
+        image.src = iconManifest.defaultIcon || DEFAULT_ICON_PATH;
+    });
+    return image;
+}
+
 function applyLanguage(language) {
     currentLanguage = normalizeLanguage(language) ?? DEFAULT_LANGUAGE;
     languageSelect.value = currentLanguage;
@@ -205,21 +270,43 @@ function applyLanguage(language) {
     document.getElementById("legendCycleLabel").textContent = t("legendCycle");
     productList.setAttribute("aria-label", t("productListAria"));
     ingredientResults.setAttribute("aria-label", t("ingredientResultsAria"));
+    refreshPrimaryActions();
 
     productSortSelect.options[0].text = t("sortCategory");
     productSortSelect.options[1].text = t("sortName");
     productSortSelect.options[2].text = t("sortPrice");
 }
 
+function refreshPrimaryActions() {
+    if (addRecipeButton) {
+        addRecipeButton.textContent = t("addRecipeButton");
+        addRecipeButton.setAttribute("aria-label", t("addRecipeButton"));
+        addRecipeButton.title = t("addRecipeButton");
+    }
+
+    if (addCategoryButton) {
+        addCategoryButton.textContent = t("addCategoryButton");
+        addCategoryButton.setAttribute("aria-label", t("addCategoryButton"));
+        addCategoryButton.title = t("addCategoryButton");
+    }
+}
+
 async function loadProducts(preferredProductKey = null) {
     setStatus(t("statusLoadingProducts"));
 
-    const response = await fetch(buildApiUrl("/api/products"));
-    if (!response.ok) {
+    const [productsResponse, categoriesResponse] = await Promise.all([
+        fetch(buildApiUrl("/api/products")),
+        fetch(buildApiUrl("/api/categories"))
+    ]);
+
+    if (!productsResponse.ok) {
         throw new Error(t("productListLoadError"));
     }
 
-    allProducts = await response.json();
+    allProducts = await productsResponse.json();
+    allCategories = categoriesResponse.ok
+        ? await categoriesResponse.json()
+        : fallbackCategoriesFromProducts(allProducts);
     renderProductCategoryOptions();
     renderProductList();
 
@@ -306,6 +393,14 @@ function renderProductCategoryOptions() {
     const categories = new Map();
     let hasEmptyCategory = false;
 
+    allCategories.forEach((category) => {
+        if (!category?.key) {
+            return;
+        }
+
+        categories.set(category.key, category.name || category.key);
+    });
+
     allProducts.forEach((product) => {
         if (product.categoryKey) {
             categories.set(product.categoryKey, product.category);
@@ -330,6 +425,17 @@ function renderProductCategoryOptions() {
 
     const validValues = Array.from(productCategoryFilter.options).map((option) => option.value);
     productCategoryFilter.value = validValues.includes(previousValue) ? previousValue : "";
+}
+
+function fallbackCategoriesFromProducts(products = allProducts) {
+    const categories = new Map();
+    products.forEach((product) => {
+        if (product.categoryKey) {
+            categories.set(product.categoryKey, product.category);
+        }
+    });
+
+    return Array.from(categories.entries()).map(([key, name]) => ({ key, name }));
 }
 
 function getVisibleProducts() {
@@ -443,15 +549,7 @@ function createProductListItem(product) {
         await loadGraph(product.key);
     });
 
-    const title = document.createElement("span");
-    title.className = "list-button-title";
-    title.textContent = product.name;
-    button.appendChild(title);
-
-    const meta = document.createElement("span");
-    meta.className = "list-button-meta";
-    meta.textContent = buildProductMeta(product);
-    button.appendChild(meta);
+    button.appendChild(createListIdentity(product.name, buildProductMeta(product), product.key));
     entry.appendChild(button);
 
     const priceRow = document.createElement("div");
@@ -510,15 +608,7 @@ function renderIngredientResults(results) {
             await loadGraph(result.key);
         });
 
-        const title = document.createElement("span");
-        title.className = "list-button-title";
-        title.textContent = result.name;
-        button.appendChild(title);
-
-        const meta = document.createElement("span");
-        meta.className = "list-button-meta";
-        meta.textContent = buildIngredientResultMeta(result);
-        button.appendChild(meta);
+        button.appendChild(createListIdentity(result.name, buildIngredientResultMeta(result), result.key));
 
         if (Array.isArray(result.matches) && result.matches.length > 0) {
             const matches = document.createElement("div");
@@ -554,6 +644,29 @@ function createInfoBlock(message) {
     return element;
 }
 
+function createListIdentity(titleText, metaText, iconKey) {
+    const wrapper = document.createElement("span");
+    wrapper.className = "list-entry-main";
+
+    wrapper.appendChild(createTermIcon(iconKey, "term-icon list-term-icon"));
+
+    const copy = document.createElement("span");
+    copy.className = "list-copy";
+
+    const title = document.createElement("span");
+    title.className = "list-button-title";
+    title.textContent = titleText;
+    copy.appendChild(title);
+
+    const meta = document.createElement("span");
+    meta.className = "list-button-meta";
+    meta.textContent = metaText;
+    copy.appendChild(meta);
+
+    wrapper.appendChild(copy);
+    return wrapper;
+}
+
 async function loadGraph(productKey) {
     if (!productKey) {
         return;
@@ -584,6 +697,20 @@ function replaceUrlState(productKey) {
     searchParams.set("product", productKey);
     searchParams.set("lang", currentLanguage);
     window.history.replaceState({}, "", `/?${searchParams.toString()}`);
+}
+
+function buildAddCategoryUrl() {
+    const searchParams = new URLSearchParams();
+    searchParams.set("lang", currentLanguage);
+    searchParams.set("return", `${window.location.pathname}${window.location.search}`);
+    return `/add-category.html?${searchParams.toString()}`;
+}
+
+function buildAddRecipeUrl() {
+    const searchParams = new URLSearchParams();
+    searchParams.set("lang", currentLanguage);
+    searchParams.set("return", `${window.location.pathname}${window.location.search}`);
+    return `/add-recipe.html?${searchParams.toString()}`;
 }
 
 function renderIngredientSelection() {
@@ -732,17 +859,30 @@ function createCard(node, isRoot) {
     const element = document.createElement("article");
     element.className = `node-card ${node.type}${isRoot ? " root-card" : ""}`;
 
+    const header = document.createElement("div");
+    header.className = "node-heading";
+
+    if (shouldRenderNodeIcon(node)) {
+        header.appendChild(createTermIcon(node.key || node.label, "term-icon node-term-icon"));
+    }
+
+    const copy = document.createElement("div");
+    copy.className = "node-copy";
+
     const label = document.createElement("div");
     label.className = "node-label";
     label.textContent = node.label;
-    element.appendChild(label);
+    copy.appendChild(label);
 
     if (node.detail) {
         const detail = document.createElement("div");
         detail.className = "node-detail";
         detail.textContent = node.detail;
-        element.appendChild(detail);
+        copy.appendChild(detail);
     }
+
+    header.appendChild(copy);
+    element.appendChild(header);
 
     if (node.type === "product" && !isRoot && node.key) {
         element.title = t("loadAsRoot");
@@ -752,6 +892,10 @@ function createCard(node, isRoot) {
     }
 
     return element;
+}
+
+function shouldRenderNodeIcon(node) {
+    return ["product", "raw", "cycle"].includes(node.type) && Boolean(node.key || node.label);
 }
 
 function setStatus(message) {
@@ -1183,6 +1327,18 @@ languageSelect.addEventListener("change", async () => {
     }
 });
 
+if (addCategoryButton) {
+    addCategoryButton.addEventListener("click", () => {
+        window.location.href = buildAddCategoryUrl();
+    });
+}
+
+if (addRecipeButton) {
+    addRecipeButton.addEventListener("click", () => {
+        window.location.href = buildAddRecipeUrl();
+    });
+}
+
 if (canvasElement) {
     canvasElement.addEventListener("mousedown", startCanvasPan);
     canvasElement.addEventListener("contextmenu", handleCanvasContextMenu);
@@ -1192,8 +1348,10 @@ if (canvasElement) {
 }
 
 applyLanguage(currentLanguage);
-loadProducts().catch((error) => {
-    setStatus(error.message || t("productListLoadError"));
+loadIconManifest().finally(() => {
+    loadProducts().catch((error) => {
+        setStatus(error.message || t("productListLoadError"));
+    });
 });
 
 window.addEventListener("resize", queueConnectorRender);

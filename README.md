@@ -1,53 +1,84 @@
 # NMS Recipe Graph
 
-Lightweight Spring Boot prototype for reading a JSON recipe dataset for No Man's Sky cooking recipes and visualizing the dependencies as an interactive production tree.
+NMS Recipe Graph is a Spring Boot web application for browsing, editing, and extending No Man's Sky cooking recipes.
 
-The UI supports both German and English. Product, ingredient, and recipe names are translated to the official English No Man's Sky terminology through an internal mapping based on the public wiki and recipe references.
+It provides:
+
+- a bilingual German/English UI
+- a graph view for recipe dependencies
+- product filtering, sorting, category filtering, and recursive ingredient search
+- price editing in a separate JSON file
+- authoring workflows for new categories and new recipes
+
+The main dataset lives in [`data/recipes.json`](./data/recipes.json). Product prices are stored separately in `data/product-prices.json`.
 
 Full project documentation is available in [`doc/`](./doc/README.md).
 
-## Development
+## Quick Start
+
+Run the application locally:
 
 ```bash
 mvn spring-boot:run
 ```
 
-The application is then available at `http://localhost:9999`.
+The default URL is `http://localhost:9999`.
 
 ## Configuration
 
-By default, the application loads `./data/recipes.json`. If that path does not exist, development mode falls back to `./recipes.json`.
+The default runtime paths are:
 
-You can override the paths through Spring configuration:
+- `./data/recipes.json`
+- `./data/product-prices.json`
+
+You can override them through Spring configuration:
 
 ```yaml
 recipes:
-  source-path: C:/path/to/recipes.json
-  price-path: C:/path/to/product-prices.json
-```
+  source-path: C:/path/to/data/recipes.json
+  price-path: C:/path/to/data/product-prices.json
 
-Product prices are stored separately from the recipe dataset in `./data/product-prices.json`. If the file does not exist yet, it is created automatically on the first save.
-
-The default HTTP port is `9999`:
-
-```yaml
 server:
   port: 9999
 ```
 
+Notes:
+
+- `data/recipes.json` is the single source of truth for categories, term translations, and recipes.
+- `data/product-prices.json` remains a separate file and is not merged into the recipe dataset.
+- if the price file does not exist yet, it is created automatically on first save
+
+## Core Workflows
+
+On the main page you can:
+
+- browse the full product catalog
+- filter by name and category
+- sort by category, name, or price
+- search by ingredient across recursive dependency chains
+- open the graph for any craftable product
+- edit stored prices
+
+You can also create data directly from the UI:
+
+- `Add category` opens a page that stores a new category with German and English names
+- `Add recipe` opens a recipe builder that supports multiple variants, up to three ingredients per variant, existing ingredients, new raw ingredients, and nested sub-recipes
+
 ## Build And Distribution
+
+Create the runnable JAR and distribution package:
 
 ```bash
 mvn clean package
 ```
 
-This creates:
+The build creates:
 
 - `target/nms-recipes.jar`
 - `target/nms-recipes-dist.zip`
-- `target/nms-recipes-dist/nms-recipes-dist/`
+- `target/nms-recipes-dist/`
 
-The distribution contains:
+The packaged distribution contains:
 
 - `nms-recipes.jar`
 - `data/recipes.json`
@@ -56,49 +87,47 @@ The distribution contains:
 - `start.sh`
 - `README.txt`
 
-The ZIP distribution is the recommended handover format. After unpacking, use the included start scripts.
-
-Start on Linux/macOS:
+Start the packaged distribution on Linux or macOS:
 
 ```bash
 cd <unpacked-folder>/nms-recipes-dist
 ./start.sh
 ```
 
-Start on Windows:
+Start it on Windows:
 
 ```bat
 cd <unpacked-folder>\nms-recipes-dist
 start.cmd
 ```
 
-The start scripts pass the data paths explicitly, so the JAR, recipe dataset, and price storage stay together as a self-contained package.
-
 ## Docker
 
-The application can also be built as a self-contained container image. The image includes:
-
-- the runnable application JAR
-- the JSON recipe dataset
-- the `product-prices.json` file
-
-Build:
+Build the image:
 
 ```bash
 docker build -t nms-recipes .
 ```
 
-Run:
+Run the container:
 
 ```bash
 docker run --rm -p 9999:9999 nms-recipes
 ```
 
-The application is then available at `http://localhost:9999`.
+The container image includes:
 
-## Model
+- the application JAR
+- `data/recipes.json`
+- `data/product-prices.json`
 
-- Product nodes represent craftable components.
-- Recipe variants represent alternative production paths.
-- Ingredient slots represent AND relationships.
-- Multiple values inside one slot represent OR relationships.
+If you want recipe or price changes made through the UI to survive container recreation, mount `/app/data` from the host.
+
+## Data Model
+
+The graph model uses these rules:
+
+- product nodes represent craftable products
+- variant nodes represent alternative recipes
+- ingredient slots represent AND relationships
+- multiple values inside one slot represent OR relationships

@@ -15,7 +15,7 @@
             <destName>nms-recipes.jar</destName>
         </file>
         <file>
-            <source>${project.basedir}/recipes.json</source>
+            <source>${project.basedir}/data/recipes.json</source>
             <outputDirectory>/data</outputDirectory>
             <destName>recipes.json</destName>
         </file>

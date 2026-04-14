@@ -46,7 +46,7 @@ public class RecipeGraphService {
         if (definition == null) {
             return new TreeNode(nextId(sequence, "raw"),
                     canonicalName,
-                    localizationService.localizeTerm(canonicalName, language),
+                    localizeTerm(canonicalName, language),
                     "raw",
                     localizationService.priceDetail(priceService.findDisplayPrice(canonicalName).orElse(null), language),
                     List.of());
@@ -56,7 +56,7 @@ public class RecipeGraphService {
         if (stack.contains(key)) {
             return new TreeNode(nextId(sequence, "cycle"),
                     definition.name(),
-                    localizationService.localizeTerm(definition.name(), language),
+                    localizeTerm(definition.name(), language),
                     "cycle",
                     localizationService.priceDetail(priceService.findDisplayPrice(definition.name()).orElse(null), language),
                     List.of());
@@ -81,7 +81,7 @@ public class RecipeGraphService {
 
             return new TreeNode(nextId(sequence, "product"),
                     canonicalName,
-                    localizationService.localizeTerm(definition.name(), language),
+                    localizeTerm(definition.name(), language),
                     "product",
                     localizationService.priceDetail(priceService.findDisplayPrice(definition.name()).orElse(null), language),
                     children);
@@ -126,6 +126,13 @@ public class RecipeGraphService {
 
     private String nextId(AtomicLong sequence, String prefix) {
         return prefix + "-" + sequence.incrementAndGet();
+    }
+
+    private String localizeTerm(String term, String language) {
+        return localizationService.localizeTerm(
+                term,
+                language,
+                catalogService.findEnglishTermName(term).orElse(null));
     }
 
 }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kategorie hinzufügen</title>
+    <link rel="stylesheet" href="/app.css?v=20260414a">
+</head>
+<body>
+<main class="form-page">
+    <section class="form-card">
+        <div class="eyebrow">No Man's Sky</div>
+        <h1 id="pageTitle">Kategorie hinzufügen</h1>
+        <p id="pageIntro" class="intro">
+            Lege hier eine neue Kategorie an. Sie wird direkt in der Rezeptdatei gespeichert und steht danach in der Anwendung zur Verfügung.
+        </p>
+
+        <form id="categoryForm" class="category-form">
+            <label id="categoryNameDeLabel" for="categoryNameDe">Kategoriename Deutsch</label>
+            <input id="categoryNameDe" class="category-name-input" type="text" autocomplete="off" placeholder="Neue Kategorie auf Deutsch eingeben">
+            <label id="categoryNameEnLabel" for="categoryNameEn">Kategoriename Englisch</label>
+            <input id="categoryNameEn" class="category-name-input" type="text" autocomplete="off" placeholder="Neue Kategorie auf Englisch eingeben">
+            <div class="form-actions category-form-actions">
+                <button id="saveCategoryButton" type="submit">Speichern</button>
+                <a id="backLink" class="secondary-link" href="/">Zurück</a>
+            </div>
+        </form>
+
+        <p id="categoryStatus" class="status" aria-live="polite"></p>
+    </section>
+</main>
+
+<script src="/add-category.js?v=20260413d"></script>
+</body>
+</html>

@@ -27,9 +27,15 @@ recipes:
   price-path: ./data/product-prices.json
 ```
 
+Operational expectations:
+
+- `recipes.source-path` should point to the single recipe dataset
+- `recipes.price-path` should point to the separate price storage file
+- there is no longer a project-root fallback recipe file
+
 ## Build
 
-Build the JAR and distribution:
+Build the application and distribution package:
 
 ```bash
 mvn clean package
@@ -43,7 +49,7 @@ Typical outputs:
 
 ## Distribution Layout
 
-The distribution contains:
+The packaged distribution contains:
 
 - `nms-recipes.jar`
 - `data/recipes.json`
@@ -66,39 +72,52 @@ Linux or macOS:
 ./start.sh
 ```
 
-The start scripts explicitly pass the dataset path and the price storage path.
+The scripts pass both data paths explicitly so the application always starts against the packaged dataset and price file.
 
 ## Docker
 
-Build:
+Build the image:
 
 ```bash
 docker build -t nms-recipes .
 ```
 
-Run:
+Run the container:
 
 ```bash
 docker run --rm -p 9999:9999 nms-recipes
 ```
 
-The container is self-contained and includes:
+The image contains:
 
-- application JAR
-- `recipes.json`
-- `product-prices.json`
+- the application JAR
+- `data/recipes.json`
+- `data/product-prices.json`
+
+Important note:
+
+- both UI recipe authoring and UI price editing write to files inside `/app/data`
+- mount `/app/data` from the host if you need persistence across container recreation
+
+Example:
+
+```bash
+docker run --rm -p 9999:9999 -v "$(pwd)/data:/app/data" nms-recipes
+```
 
 ## Runtime Files
 
-Runtime state consists of:
+Runtime state consists of two JSON files:
 
-- immutable recipe dataset
-- mutable price file
+- `data/recipes.json`
+- `data/product-prices.json`
 
 Recommended handling:
 
-- treat `recipes.json` as versioned application data
-- treat `product-prices.json` as environment-specific state
+- treat `data/recipes.json` as the authoritative recipe dataset
+- version-control it if recipe authoring is part of your workflow
+- back it up before bulk edits or imports
+- keep `data/product-prices.json` separate for price management
 
 ## Validation And Tests
 
@@ -115,7 +134,8 @@ Recommended checks after changes:
 
 ## Operational Notes
 
-- product keys are canonical names from the dataset
+- product keys are canonical German names from the dataset
 - display names are localized at runtime
-- price formatting currently uses German number formatting on the backend
-- the graph is rebuilt server-side per selected root product
+- the backend formats display prices with German-style decimal formatting
+- the graph is rebuilt server-side for each selected root product
+- adding categories or recipes from the UI immediately mutates `data/recipes.json`

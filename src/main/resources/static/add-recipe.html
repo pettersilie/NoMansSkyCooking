@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezept hinzufügen</title>
+    <link rel="stylesheet" href="/app.css?v=20260414a">
+</head>
+<body>
+<main class="form-page">
+    <section class="form-card builder-card">
+        <div class="eyebrow">No Man's Sky</div>
+        <h1 id="pageTitle">Rezept hinzufügen</h1>
+        <p id="pageIntro" class="intro">
+            Lege hier ein neues Rezept mit deutschem und englischem Namen an. Pro Variante sind maximal drei Zutaten moeglich, und Zutaten koennen bestehend, neu oder selbst wieder Teilrezepte sein.
+        </p>
+
+        <p id="builderStatus" class="status" aria-live="polite"></p>
+
+        <form id="recipeForm" class="recipe-builder-form">
+            <div id="recipeBuilderRoot" class="recipe-builder-root"></div>
+            <div class="form-actions builder-actions">
+                <button id="saveRecipeButton" type="submit">Speichern</button>
+                <a id="backLink" class="secondary-link" href="/">Zurück</a>
+            </div>
+        </form>
+    </section>
+</main>
+
+<script src="/add-recipe.js?v=20260413d"></script>
+</body>
+</html>

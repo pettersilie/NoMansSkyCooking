@@ -35,6 +35,15 @@ class RecipeControllerIntegrationTest {
 
     @Test
     void exposesProductsAndGraph() {
+        ResponseEntity<JsonNode> categoriesResponse = restTemplate.getForEntity("/api/categories", JsonNode.class);
+
+        assertThat(categoriesResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(categoriesResponse.getBody()).isNotNull();
+        assertThat(categoriesResponse.getBody().isArray()).isTrue();
+        assertThat(categoriesResponse.getBody()).isNotEmpty();
+        assertThat(categoriesResponse.getBody().get(0).has("key")).isTrue();
+        assertThat(categoriesResponse.getBody().get(0).has("name")).isTrue();
+
         ResponseEntity<JsonNode> productsResponse = restTemplate.getForEntity("/api/products", JsonNode.class);
 
         assertThat(productsResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -72,6 +81,18 @@ class RecipeControllerIntegrationTest {
         assertThat(ingredientSearchResponse.getBody().toString()).contains(productName);
         assertThat(ingredientSearchResponse.getBody().toString()).contains(ingredientName);
         assertThat(ingredientSearchResponse.getBody().get(0).has("price")).isTrue();
+
+        ResponseEntity<JsonNode> ingredientCatalogResponse =
+                restTemplate.getForEntity("/api/ingredients/catalog?lang=en", JsonNode.class);
+
+        assertThat(ingredientCatalogResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(ingredientCatalogResponse.getBody()).isNotNull();
+        assertThat(ingredientCatalogResponse.getBody().isArray()).isTrue();
+        assertThat(ingredientCatalogResponse.getBody()).isNotEmpty();
+        assertThat(ingredientCatalogResponse.getBody().get(0).has("craftable")).isTrue();
+        JsonNode creamIngredient = findProductByKey(ingredientCatalogResponse.getBody(), "Sahne");
+        assertThat(creamIngredient).isNotNull();
+        assertThat(creamIngredient.get("name").asText()).isEqualTo("Cream");
 
         ResponseEntity<JsonNode> englishProductsResponse = restTemplate.getForEntity("/api/products?lang=en", JsonNode.class);
         assertThat(englishProductsResponse.getStatusCode()).isEqualTo(HttpStatus.OK);

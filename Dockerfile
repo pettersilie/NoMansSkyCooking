@@ -4,7 +4,7 @@ WORKDIR /build
 
 COPY pom.xml ./
 COPY src ./src
-COPY recipes.json ./
+COPY data/recipes.json ./data/recipes.json
 
 RUN mvn -q -DskipTests clean package
 
@@ -15,7 +15,7 @@ WORKDIR /app
 RUN mkdir -p /app/data
 
 COPY --from=build /build/target/nms-recipes.jar /app/nms-recipes.jar
-COPY --from=build /build/recipes.json /app/data/recipes.json
+COPY --from=build /build/data/recipes.json /app/data/recipes.json
 COPY --from=build /build/src/dist/product-prices.json /app/data/product-prices.json
 
 EXPOSE 9999

@@ -2,19 +2,23 @@
 
 ## Purpose
 
-The application helps you inspect how a No Man's Sky food product is built from ingredients and intermediate products.
+NMS Recipe Graph helps you inspect how a No Man's Sky food item is built from ingredients, intermediate products, and alternative recipe paths.
 
-## Sidebar
+## Main Page
 
-The left panel contains the main controls:
+The left panel contains the primary controls:
 
 - language selector
+- `Add recipe` button
+- `Add category` button
 - product filter
 - product sort mode
 - category filter
-- product list
+- product list with price inputs
 - ingredient search
 - legend
+
+The right side contains the graph canvas.
 
 ## Language Selection
 
@@ -28,94 +32,143 @@ Changing the language updates:
 - UI labels
 - product names
 - category names
-- graph slot labels
+- ingredient labels
+- graph node labels
 - search result labels
+- the labels on the add-category and add-recipe pages
 
 ## Product List
 
-The product list shows:
+Each product row shows:
 
-- product name
-- number of variants
+- localized product name
+- variant count
 - minimum and maximum ingredient slot count
-- optional price
+- optional stored price
 
-Each product entry also contains a small price input field.
+Selecting a product loads it as the root of the graph.
 
-## Sorting
+## Sorting And Filtering
 
-The product list can be sorted by:
+The main list supports:
 
-- category
-- name
-- price
+- filtering by product name
+- filtering by category
+- sorting by category, name, or price
 
-## Category Filter
-
-The category filter lets you restrict the visible product list to one category only.
-
-## Product Search
-
-Use the product filter field to narrow the sidebar list by product name.
-
-Pressing Enter loads the first visible match.
+Pressing Enter in the product filter loads the first visible result.
 
 ## Ingredient Search
 
-Use the ingredient search field to find all products whose recursive ingredient set contains the entered text.
+The ingredient search checks the recursive ingredient closure of each product, not just direct ingredients.
 
-The search works across full dependency chains, not only direct ingredients.
+Search results display:
 
-Each result can be clicked to load the full recipe graph.
+- product name
+- category
+- variant count
+- matching ingredient labels
+- optional price
+
+Selecting a result loads that product as the graph root.
 
 ## Graph View
 
 The graph is rendered top-down.
 
+Node types:
+
+- product
+- variant
+- ingredient slot
+- raw ingredient
+- cycle marker
+
 Rules:
 
-- product cards represent craftable products
-- variant nodes represent alternative recipes
-- ingredient columns represent ingredient slots
-- multiple options within one slot are shown as OR alternatives
+- products can expand into direct ingredient slots or variant nodes
+- variants represent alternative recipes
+- slots represent ingredient positions
+- multiple entries inside one slot represent OR alternatives
 
-## Expand And Collapse
+## Expanding, Collapsing, And Navigation
 
-Products with sub-recipes can be expanded and collapsed.
+Graph behavior:
 
-Behavior:
-
-- the root product opens automatically
+- the selected root product opens automatically
 - nested craftable products start collapsed
-- toggling a product recalculates the connector layout
+- clicking the toggle expands or collapses a product branch
+- clicking a non-root product card reloads it as the new root product
 
-## Navigation
+Navigation behavior:
 
-In the graph area:
+- use normal scrolling for standard page navigation
+- hold the right mouse button in the graph canvas to pan horizontally and vertically
 
-- use normal scrolling for standard navigation
-- hold the right mouse button to pan horizontally and vertically
+## Editing Prices
 
-## Prices
+To save a price:
 
-To store a price:
-
-1. enter a value into the product row
+1. enter a value in the product row
 2. press Enter
 
 To remove a price:
 
-1. clear the value
+1. clear the input
 2. press Enter
 
-The saved price is then visible:
+Saved prices appear in:
 
-- in the product list
-- in ingredient search results
-- inside the graph node detail
+- the product list
+- ingredient search results
+- graph node detail text
 
-## Clicking Product Nodes
+## Adding A Category
 
-Non-root product nodes inside the graph can be clicked.
+Use the `Add category` button on the main page to open the category form.
 
-This loads the clicked product as the new root and rebuilds the graph around it.
+The page requires:
+
+- a German category name
+- an English category name
+
+When you save:
+
+- the new category is written to `data/recipes.json`
+- it becomes available in the category list immediately
+- it can be used by newly created recipes even if no recipe currently belongs to it
+
+## Adding A Recipe
+
+Use the `Add recipe` button on the main page to open the recipe builder.
+
+The root recipe requires:
+
+- a German recipe name
+- an English recipe name
+- an existing category
+
+Recipe builder capabilities:
+
+- multiple recipe variants
+- up to three ingredient positions per variant
+- empty ingredient slots
+- existing ingredients or craftable products
+- brand-new raw ingredients with German and English names
+- nested sub-recipes with their own German and English names
+
+When you save:
+
+- the root recipe is written to `data/recipes.json`
+- nested sub-recipes are also written as regular recipe entries
+- new raw ingredient translations are added to the dataset
+- the return link points back to the main page and can preload the saved recipe as the selected product
+
+## Data Persistence
+
+Authoring actions use two separate files:
+
+- recipes, categories, and term translations are stored in `data/recipes.json`
+- prices are stored in `data/product-prices.json`
+
+This separation allows price maintenance without mixing price data into the recipe dataset.

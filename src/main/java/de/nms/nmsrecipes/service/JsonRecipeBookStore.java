@@ -1,6 +1,7 @@
 package de.nms.nmsrecipes.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.nms.nmsrecipes.model.IngredientSlot;
 import de.nms.nmsrecipes.model.NameNormalizer;
@@ -36,15 +37,41 @@ public class JsonRecipeBookStore {
         }
 
         try {
-            List<JsonRecipeDefinition> payload = objectMapper.readValue(jsonFile.toFile(), RECIPE_LIST_TYPE);
+            JsonRecipePayload payload = readPayload(jsonFile);
             Map<String, RecipeDefinition> definitions = new LinkedHashMap<>();
 
-            for (JsonRecipeDefinition rawDefinition : payload) {
+            for (JsonRecipeDefinition rawDefinition : payload.recipes()) {
                 RecipeDefinition definition = toDefinition(rawDefinition);
                 definitions.put(NameNormalizer.key(definition.name()), definition);
             }
 
-            return new RecipeBook(definitions);
+            Map<String, String> englishCategoryNames = new LinkedHashMap<>();
+            List<String> categoryNames = new ArrayList<>();
+            for (JsonCategoryDefinition category : payload.categories()) {
+                String categoryName = NameNormalizer.display(category.name());
+                if (categoryName.isBlank()) {
+                    continue;
+                }
+
+                categoryNames.add(categoryName);
+                String englishName = NameNormalizer.display(category.englishName());
+                if (!englishName.isBlank()) {
+                    englishCategoryNames.put(categoryName, englishName);
+                }
+            }
+
+            Map<String, String> englishTermNames = new LinkedHashMap<>();
+            for (JsonTermDefinition term : payload.terms()) {
+                String termName = NameNormalizer.display(term.name());
+                String englishName = NameNormalizer.display(term.englishName());
+                if (termName.isBlank() || englishName.isBlank()) {
+                    continue;
+                }
+
+                englishTermNames.put(termName, englishName);
+            }
+
+            return new RecipeBook(definitions, categoryNames, englishCategoryNames, englishTermNames);
         } catch (IOException exception) {
             throw new IllegalStateException("Recipe file could not be read: " + jsonFile.toAbsolutePath(), exception);
         }
@@ -57,14 +84,94 @@ public class JsonRecipeBookStore {
                 Files.createDirectories(parent);
             }
 
-            List<JsonRecipeDefinition> payload = recipeBook.definitions().stream()
-                    .map(this::toJsonDefinition)
-                    .toList();
+            JsonRecipePayload payload = new JsonRecipePayload(
+                    recipeBook.categories().stream()
+                            .map(category -> new JsonCategoryDefinition(
+                                    category,
+                                    recipeBook.englishCategoryName(category).orElse(null)))
+                            .toList(),
+                    recipeBook.allKnownTerms().stream()
+                            .filter(term -> recipeBook.englishTermName(term).isPresent())
+                            .map(term -> new JsonTermDefinition(
+                                    term,
+                                    recipeBook.englishTermName(term).orElse(null)))
+                            .toList(),
+                    recipeBook.definitions().stream()
+                            .map(this::toJsonDefinition)
+                            .toList());
 
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile.toFile(), payload);
         } catch (IOException exception) {
             throw new IllegalStateException("Recipe file could not be written: " + jsonFile.toAbsolutePath(), exception);
         }
+    }
+
+    private JsonRecipePayload readPayload(Path jsonFile) throws IOException {
+        JsonNode root = objectMapper.readTree(jsonFile.toFile());
+        if (root == null || root.isNull()) {
+            return new JsonRecipePayload(List.of(), List.of(), List.of());
+        }
+
+        if (root.isArray()) {
+            return new JsonRecipePayload(
+                    List.of(),
+                    List.of(),
+                    objectMapper.convertValue(root, RECIPE_LIST_TYPE));
+        }
+
+        if (root.isObject()) {
+            JsonNode categoriesNode = root.get("categories");
+            List<JsonCategoryDefinition> categories = new ArrayList<>();
+            if (categoriesNode != null && categoriesNode.isArray()) {
+                for (JsonNode categoryNode : categoriesNode) {
+                    if (categoryNode == null || categoryNode.isNull()) {
+                        continue;
+                    }
+
+                    if (categoryNode.isTextual()) {
+                        categories.add(new JsonCategoryDefinition(categoryNode.asText(), null));
+                        continue;
+                    }
+
+                    if (categoryNode.isObject()) {
+                        categories.add(new JsonCategoryDefinition(
+                                categoryNode.path("name").asText(""),
+                                categoryNode.path("englishName").asText("")));
+                    }
+                }
+            }
+
+            JsonNode termsNode = root.get("terms");
+            List<JsonTermDefinition> terms = new ArrayList<>();
+            if (termsNode != null && termsNode.isArray()) {
+                for (JsonNode termNode : termsNode) {
+                    if (termNode == null || termNode.isNull()) {
+                        continue;
+                    }
+
+                    if (termNode.isTextual()) {
+                        terms.add(new JsonTermDefinition(termNode.asText(), null));
+                        continue;
+                    }
+
+                    if (termNode.isObject()) {
+                        terms.add(new JsonTermDefinition(
+                                termNode.path("name").asText(""),
+                                termNode.path("englishName").asText("")));
+                    }
+                }
+            }
+
+            List<JsonRecipeDefinition> recipes = objectMapper.convertValue(
+                    root.path("recipes"),
+                    RECIPE_LIST_TYPE);
+            return new JsonRecipePayload(
+                    categories,
+                    terms,
+                    recipes == null ? List.of() : recipes);
+        }
+
+        throw new IllegalStateException("Unsupported recipe JSON structure: " + jsonFile.toAbsolutePath());
     }
 
     private RecipeDefinition toDefinition(JsonRecipeDefinition rawDefinition) {
@@ -131,6 +238,17 @@ public class JsonRecipeBookStore {
         }
 
         return slots;
+    }
+
+    private record JsonRecipePayload(List<JsonCategoryDefinition> categories,
+                                     List<JsonTermDefinition> terms,
+                                     List<JsonRecipeDefinition> recipes) {
+    }
+
+    private record JsonCategoryDefinition(String name, String englishName) {
+    }
+
+    private record JsonTermDefinition(String name, String englishName) {
     }
 
     private record JsonRecipeDefinition(String name, String category, List<List<List<String>>> variants) {

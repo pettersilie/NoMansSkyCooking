@@ -2,25 +2,29 @@
 
 ## Overview
 
-The frontend communicates with the backend through a small REST API under `/api`.
+The frontend communicates with the backend through a REST API rooted at `/api`.
 
-All endpoints are language-aware through the optional `lang` query parameter.
+Most endpoints accept the optional `lang` query parameter.
 
 Supported values:
 
 - `en`
 - `de`
 
-If `lang` is omitted, the backend falls back to German internally, while the frontend defaults to English and usually sends `lang=en`.
+Language behavior:
+
+- `lang=en` returns English display labels where available
+- any other value, or an omitted value, is normalized to German on the backend
+- canonical keys remain German even in English UI mode
 
 ## GET /api/products
 
-Returns the product list used by the sidebar.
+Returns the product list shown in the main sidebar.
 
 ### Query Parameters
 
 - `lang`
-  Optional UI language.
+  Optional display language.
 
 ### Response
 
@@ -42,19 +46,19 @@ Returns the product list used by the sidebar.
 ### Field Meaning
 
 - `key`
-  Canonical product identifier.
+  Canonical product key used by the backend.
 
 - `name`
   Localized display name.
 
 - `categoryKey`
-  Canonical category identifier.
+  Canonical category key.
 
 - `category`
-  Localized category label.
+  Localized category name.
 
 - `variantCount`
-  Number of recipe variants.
+  Number of available recipe variants.
 
 - `minIngredientCount`
   Minimum number of filled ingredient slots across all variants.
@@ -65,9 +69,66 @@ Returns the product list used by the sidebar.
 - `price`
   Formatted display price or `null`.
 
+## GET /api/categories
+
+Returns all known categories, including categories that do not yet have any recipe assigned.
+
+### Query Parameters
+
+- `lang`
+  Optional display language.
+
+### Response
+
+```json
+[
+  {
+    "key": "Erweiterte Kuchen",
+    "name": "Advanced Cakes"
+  }
+]
+```
+
+## GET /api/ingredients/catalog
+
+Returns the catalog used by the recipe builder for existing ingredients and existing craftable products.
+
+### Query Parameters
+
+- `lang`
+  Optional display language.
+
+### Response
+
+```json
+[
+  {
+    "key": "Sahne",
+    "name": "Cream",
+    "craftable": true
+  },
+  {
+    "key": "Frostkristall",
+    "name": "Frost Crystal",
+    "craftable": false
+  }
+]
+```
+
+### Field Meaning
+
+- `key`
+  Canonical ingredient or product key.
+
+- `name`
+  Localized display name.
+
+- `craftable`
+  `true` if the item is a recipe in the dataset, otherwise `false`.
+
 ## GET /api/graph
 
-Returns the dependency graph for one selected product.
+Returns the dependency graph for a selected product.
 
 ### Query Parameters
 
@@ -75,7 +136,7 @@ Returns the dependency graph for one selected product.
   Required canonical product key.
 
 - `lang`
-  Optional UI language.
+  Optional display language.
 
 ### Response
 
@@ -98,7 +159,7 @@ Returns the dependency graph for one selected product.
 - `raw`
 - `cycle`
 
-### Node Rules
+### Graph Rules
 
 - `product` nodes may contain `variant` or `slot` children
 - `variant` nodes contain `slot` children
@@ -108,7 +169,7 @@ Returns the dependency graph for one selected product.
 
 ## GET /api/ingredients/search
 
-Searches for products whose full ingredient closure contains the requested ingredient text.
+Searches for products whose recursive ingredient set contains the given text.
 
 ### Query Parameters
 
@@ -116,7 +177,7 @@ Searches for products whose full ingredient closure contains the requested ingre
   Required search string.
 
 - `lang`
-  Optional UI language.
+  Optional display language.
 
 ### Response
 
@@ -136,12 +197,12 @@ Searches for products whose full ingredient closure contains the requested ingre
 
 ## PUT /api/prices
 
-Creates, updates, or removes a product price.
+Creates, updates, or removes a product price in `data/product-prices.json`.
 
 ### Query Parameters
 
 - `lang`
-  Optional UI language for error messages.
+  Optional language for localized validation errors.
 
 ### Request Body
 
@@ -154,9 +215,9 @@ Creates, updates, or removes a product price.
 
 ### Behavior
 
-- if `price` contains a valid number, the value is stored
+- if `price` contains a valid number, the price is stored
 - if `price` is blank, the existing price is removed
-- the product key must refer to a known product definition
+- the `key` must identify a known product
 
 ### Response
 
@@ -167,14 +228,133 @@ Creates, updates, or removes a product price.
 }
 ```
 
+## POST /api/categories
+
+Creates a new category and persists it to `data/recipes.json`.
+
+### Query Parameters
+
+- `lang`
+  Optional language for localized responses and validation errors.
+
+### Request Body
+
+```json
+{
+  "germanName": "Neue Kategorie",
+  "englishName": "New Category"
+}
+```
+
+### Response
+
+```json
+{
+  "key": "Neue Kategorie",
+  "name": "New Category"
+}
+```
+
+Notes:
+
+- the response `name` is localized according to `lang`
+- categories are stored even if no recipe uses them yet
+
+## POST /api/recipes
+
+Creates a new recipe and persists it to `data/recipes.json`.
+
+The request supports:
+
+- German and English names for the root recipe
+- an existing category
+- multiple variants
+- at most three ingredients per variant
+- existing ingredients
+- new raw ingredients
+- nested sub-recipes
+
+### Query Parameters
+
+- `lang`
+  Optional language for localized responses and validation errors.
+
+### Request Body
+
+```json
+{
+  "germanName": "Testrezept",
+  "englishName": "Test Recipe",
+  "categoryKey": "Suppen",
+  "variants": [
+    {
+      "ingredients": [
+        {
+          "position": 1,
+          "type": "existing",
+          "existingKey": "Sahne"
+        },
+        {
+          "position": 2,
+          "type": "new_raw",
+          "germanName": "Neue Zutat",
+          "englishName": "New Ingredient"
+        },
+        {
+          "position": 3,
+          "type": "new_recipe",
+          "recipe": {
+            "germanName": "Teilrezept",
+            "englishName": "Sub Recipe",
+            "categoryKey": "Suppen",
+            "variants": [
+              {
+                "ingredients": [
+                  {
+                    "position": 1,
+                    "type": "existing",
+                    "existingKey": "Frostkristall"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Response
+
+```json
+{
+  "key": "Testrezept",
+  "name": "Test Recipe",
+  "createdRecipeCount": 2
+}
+```
+
+### Field Meaning
+
+- `key`
+  Canonical key of the saved root recipe.
+
+- `name`
+  Localized display name of the saved root recipe.
+
+- `createdRecipeCount`
+  Number of new recipe definitions written to the dataset, including nested sub-recipes.
+
 ## Error Handling
 
-Typical errors:
+Typical status codes:
+
+- `400 Bad Request`
+  Returned for invalid price updates, invalid category creation, and invalid recipe drafts.
 
 - `404 Not Found`
   Returned by `/api/graph` when the product key is unknown.
 
-- `400 Bad Request`
-  Returned by `/api/prices` when the price is invalid.
-
-The backend localizes selected error messages through `LocalizationService`.
+Localized validation messages are provided through `LocalizationService`.

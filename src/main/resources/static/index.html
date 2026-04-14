@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NMS Recipe Graph</title>
-    <link rel="stylesheet" href="/app.css">
+    <link rel="stylesheet" href="/app.css?v=20260414a">
 </head>
 <body>
 <main class="layout">
     <section class="panel">
         <div class="panel-head">
+            <div class="panel-actions">
+                <button id="addRecipeButton" class="panel-action-button" type="button">Add recipe</button>
+                <button id="addCategoryButton" class="panel-action-button" type="button">Add category</button>
+            </div>
             <div class="inline-control language-control">
                 <label id="languageLabel" for="languageSelect">Language</label>
                 <select id="languageSelect">
@@ -75,6 +79,6 @@
     </section>
 </main>
 
-<script src="/app.js"></script>
+<script src="/app.js?v=20260414a"></script>
 </body>
 </html>

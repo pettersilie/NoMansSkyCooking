@@ -32,12 +32,22 @@ class JsonRecipeBookStoreTest {
                                 new IngredientSlot(3, List.of("Basis C1", "Basis C2"))
                         ))));
 
-        RecipeBook sourceBook = new RecipeBook(Map.of("testprodukt", definition));
+        RecipeBook sourceBook = new RecipeBook(
+                Map.of("testprodukt", definition),
+                List.of("Freie Kategorie"),
+                Map.of("Freie Kategorie", "Free Category"),
+                Map.of(
+                        "Testprodukt", "Test Product",
+                        "Basis A", "Base A"));
         Path tempFile = Files.createTempFile("recipes-", ".json");
 
         store.save(tempFile, sourceBook);
         RecipeBook loadedBook = store.load(tempFile);
 
+        assertThat(loadedBook.categories()).containsExactly("Freie Kategorie", "Tests");
+        assertThat(loadedBook.englishCategoryName("Freie Kategorie")).contains("Free Category");
+        assertThat(loadedBook.englishTermName("Testprodukt")).contains("Test Product");
+        assertThat(loadedBook.englishTermName("Basis A")).contains("Base A");
         RecipeDefinition loadedDefinition = loadedBook.findDefinition("Testprodukt").orElseThrow();
         assertThat(loadedDefinition.category()).isEqualTo("Tests");
         assertThat(loadedDefinition.variants()).hasSize(1);
@@ -46,5 +56,56 @@ class JsonRecipeBookStoreTest {
         assertThat(loadedDefinition.variants().getFirst().slots().get(0).options()).containsExactly("Basis A");
         assertThat(loadedDefinition.variants().getFirst().slots().get(1).position()).isEqualTo(3);
         assertThat(loadedDefinition.variants().getFirst().slots().get(1).options()).containsExactly("Basis C1", "Basis C2");
+    }
+
+    @Test
+    void loadsLegacyRecipeArraysAndInfersCategories() throws Exception {
+        Path tempFile = Files.createTempFile("recipes-legacy-", ".json");
+        Files.writeString(tempFile, """
+                [
+                  {
+                    "name": "Testprodukt",
+                    "category": "Tests",
+                    "variants": [
+                      [
+                        ["Basis A"]
+                      ]
+                    ]
+                  }
+                ]
+                """);
+
+        RecipeBook loadedBook = store.load(tempFile);
+
+        assertThat(loadedBook.categories()).containsExactly("Tests");
+        assertThat(loadedBook.findDefinition("Testprodukt")).isPresent();
+    }
+
+    @Test
+    void loadsObjectCategoriesWithEnglishNames() throws Exception {
+        Path tempFile = Files.createTempFile("recipes-categories-", ".json");
+        Files.writeString(tempFile, """
+                {
+                  "categories": [
+                    {
+                      "name": "Freie Kategorie",
+                      "englishName": "Free Category"
+                    }
+                  ],
+                  "terms": [
+                    {
+                      "name": "Neue Zutat",
+                      "englishName": "New Ingredient"
+                    }
+                  ],
+                  "recipes": []
+                }
+                """);
+
+        RecipeBook loadedBook = store.load(tempFile);
+
+        assertThat(loadedBook.categories()).containsExactly("Freie Kategorie");
+        assertThat(loadedBook.englishCategoryName("Freie Kategorie")).contains("Free Category");
+        assertThat(loadedBook.englishTermName("Neue Zutat")).contains("New Ingredient");
     }
 }
