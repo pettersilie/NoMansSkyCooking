@@ -4,8 +4,9 @@ const categoryNameEnInput = document.getElementById("categoryNameEn");
 const saveCategoryButton = document.getElementById("saveCategoryButton");
 const backLink = document.getElementById("backLink");
 const categoryStatus = document.getElementById("categoryStatus");
+const languageSelect = document.getElementById("languageSelect");
 
-const DEFAULT_LANGUAGE = "de";
+const DEFAULT_LANGUAGE = "en";
 const SUPPORTED_LANGUAGES = new Set(["de", "en"]);
 
 const UI_TEXT = {
@@ -51,8 +52,7 @@ function resolveInitialLanguage() {
         return urlLanguage;
     }
 
-    const storedLanguage = normalizeLanguage(window.localStorage.getItem("nms-recipes-language"));
-    return storedLanguage ?? DEFAULT_LANGUAGE;
+    return DEFAULT_LANGUAGE;
 }
 
 function normalizeLanguage(language) {
@@ -82,9 +82,17 @@ function buildApiUrl(path, params = {}) {
     return query ? `${path}?${query}` : path;
 }
 
+function replaceLanguageInUrl(language) {
+    const url = new URL(window.location.href);
+    url.searchParams.set("lang", language);
+    window.history.replaceState({}, "", `${url.pathname}?${url.searchParams.toString()}`);
+}
+
 function applyLanguage(language) {
     currentLanguage = normalizeLanguage(language) ?? DEFAULT_LANGUAGE;
-    window.localStorage.setItem("nms-recipes-language", currentLanguage);
+    if (languageSelect) {
+        languageSelect.value = currentLanguage;
+    }
     document.documentElement.lang = currentLanguage;
     document.title = t("documentTitle");
     document.getElementById("pageTitle").textContent = t("pageTitle");
@@ -96,6 +104,8 @@ function applyLanguage(language) {
     saveCategoryButton.textContent = t("saveButton");
     backLink.textContent = t("backButton");
     backLink.href = buildReturnUrl();
+    window.NmsMainMenu?.update(currentLanguage);
+    replaceLanguageInUrl(currentLanguage);
 }
 
 function buildReturnUrl() {
@@ -180,6 +190,12 @@ async function saveCategory(event) {
 }
 
 categoryForm.addEventListener("submit", saveCategory);
+
+if (languageSelect) {
+    languageSelect.addEventListener("change", () => {
+        applyLanguage(languageSelect.value);
+    });
+}
 
 applyLanguage(currentLanguage);
 categoryNameDeInput.focus();

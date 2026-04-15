@@ -159,8 +159,7 @@ function resolveInitialLanguage() {
         return urlLanguage;
     }
 
-    const storedLanguage = normalizeLanguage(window.localStorage.getItem("nms-recipes-language"));
-    return storedLanguage ?? DEFAULT_LANGUAGE;
+    return DEFAULT_LANGUAGE;
 }
 
 function normalizeLanguage(language) {
@@ -192,6 +191,12 @@ function buildApiUrl(path, params = {}) {
 
     const query = searchParams.toString();
     return query ? `${path}?${query}` : path;
+}
+
+function replaceLanguageInUrl(language) {
+    const url = new URL(window.location.href);
+    url.searchParams.set("lang", language);
+    window.history.replaceState({}, "", `${url.pathname}?${url.searchParams.toString()}`);
 }
 
 async function loadIconManifest() {
@@ -249,7 +254,6 @@ function createTermIcon(value, className) {
 function applyLanguage(language) {
     currentLanguage = normalizeLanguage(language) ?? DEFAULT_LANGUAGE;
     languageSelect.value = currentLanguage;
-    window.localStorage.setItem("nms-recipes-language", currentLanguage);
 
     document.documentElement.lang = currentLanguage;
     document.title = t("documentTitle");
@@ -271,6 +275,7 @@ function applyLanguage(language) {
     productList.setAttribute("aria-label", t("productListAria"));
     ingredientResults.setAttribute("aria-label", t("ingredientResultsAria"));
     refreshPrimaryActions();
+    replaceLanguageInUrl(currentLanguage);
 
     productSortSelect.options[0].text = t("sortCategory");
     productSortSelect.options[1].text = t("sortName");
@@ -278,6 +283,10 @@ function applyLanguage(language) {
 }
 
 function refreshPrimaryActions() {
+    if (window.NmsMainMenu?.update) {
+        window.NmsMainMenu.update(currentLanguage);
+    }
+
     if (addRecipeButton) {
         addRecipeButton.textContent = t("addRecipeButton");
         addRecipeButton.setAttribute("aria-label", t("addRecipeButton"));

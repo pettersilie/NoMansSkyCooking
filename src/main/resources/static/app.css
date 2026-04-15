@@ -36,7 +36,7 @@ body {
     display: grid;
     grid-template-columns: minmax(18rem, 24rem) 1fr;
     gap: 1.5rem;
-    padding: 1.5rem;
+    padding: 5.75rem 1.5rem 1.5rem;
 }
 
 .panel,
@@ -330,6 +330,92 @@ button:hover {
     transform: translateY(-1px);
 }
 
+.main-menu {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 40;
+    width: min(17rem, calc(100vw - 2rem));
+}
+
+.main-menu > summary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.85rem;
+    min-height: 3rem;
+    padding: 0.8rem 1rem;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #4b6948, #274852);
+    color: #fdfcf8;
+    cursor: pointer;
+    font-weight: 700;
+    list-style: none;
+    box-shadow: 0 12px 22px rgba(39, 72, 82, 0.22);
+}
+
+.main-menu > summary::-webkit-details-marker {
+    display: none;
+}
+
+.main-menu > summary::after {
+    content: "+";
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.main-menu[open] > summary::after {
+    content: "-";
+}
+
+.main-menu-panel {
+    display: grid;
+    gap: 0.65rem;
+    margin-top: 0.7rem;
+    padding: 0.95rem;
+    border: 1px solid rgba(80, 111, 75, 0.16);
+    border-radius: 20px;
+    background: var(--panel);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+}
+
+.main-menu-language {
+    width: 100%;
+    max-width: none;
+}
+
+.main-menu-language select {
+    width: 100%;
+}
+
+.main-menu-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    border-radius: 14px;
+    border: 1px solid rgba(80, 111, 75, 0.2);
+    padding: 0.8rem 0.95rem;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 700;
+    transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+    box-shadow: 0 10px 18px rgba(23, 34, 28, 0.08);
+}
+
+.main-menu-link:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.98);
+}
+
+.main-menu-link.is-active {
+    background: linear-gradient(135deg, #4b6948, #274852);
+    color: #fdfcf8;
+    box-shadow: 0 12px 22px rgba(39, 72, 82, 0.18);
+}
+
 .panel-action-button,
 .secondary-link {
     display: inline-flex;
@@ -609,7 +695,7 @@ button:hover {
     display: grid;
     place-items: start center;
     min-height: 100vh;
-    padding: 1.5rem;
+    padding: 5.75rem 1.5rem 1.5rem;
 }
 
 .form-card {
@@ -782,6 +868,11 @@ button:hover {
         grid-template-columns: 1fr;
     }
 
+    .layout,
+    .form-page {
+        padding-top: 5.25rem;
+    }
+
     .panel {
         position: static;
     }
@@ -810,6 +901,14 @@ button:hover {
 
     .form-card {
         padding: 1.4rem;
+    }
+
+    .main-menu {
+        width: calc(100vw - 2rem);
+    }
+
+    .main-menu > summary {
+        width: 100%;
     }
 
     .recipe-field-grid,

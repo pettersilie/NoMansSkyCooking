@@ -3,8 +3,9 @@ const recipeBuilderRoot = document.getElementById("recipeBuilderRoot");
 const saveRecipeButton = document.getElementById("saveRecipeButton");
 const backLink = document.getElementById("backLink");
 const builderStatus = document.getElementById("builderStatus");
+const languageSelect = document.getElementById("languageSelect");
 
-const DEFAULT_LANGUAGE = "de";
+const DEFAULT_LANGUAGE = "en";
 const SUPPORTED_LANGUAGES = new Set(["de", "en"]);
 
 const UI_TEXT = {
@@ -114,8 +115,7 @@ function resolveInitialLanguage() {
         return urlLanguage;
     }
 
-    const storedLanguage = normalizeLanguage(window.localStorage.getItem("nms-recipes-language"));
-    return storedLanguage ?? DEFAULT_LANGUAGE;
+    return DEFAULT_LANGUAGE;
 }
 
 function normalizeLanguage(language) {
@@ -145,6 +145,12 @@ function buildApiUrl(path, params = {}) {
     return query ? `${path}?${query}` : path;
 }
 
+function replaceLanguageInUrl(language) {
+    const url = new URL(window.location.href);
+    url.searchParams.set("lang", language);
+    window.history.replaceState({}, "", `${url.pathname}?${url.searchParams.toString()}`);
+}
+
 function buildReturnUrl(savedProductKey = "") {
     const rawReturn = new URLSearchParams(window.location.search).get("return");
     const fallbackUrl = new URL("/", window.location.origin);
@@ -168,7 +174,9 @@ function buildReturnUrl(savedProductKey = "") {
 
 function applyLanguage(language) {
     currentLanguage = normalizeLanguage(language) ?? DEFAULT_LANGUAGE;
-    window.localStorage.setItem("nms-recipes-language", currentLanguage);
+    if (languageSelect) {
+        languageSelect.value = currentLanguage;
+    }
     document.documentElement.lang = currentLanguage;
     document.title = t("documentTitle");
     document.getElementById("pageTitle").textContent = t("pageTitle");
@@ -176,6 +184,8 @@ function applyLanguage(language) {
     saveRecipeButton.textContent = t("saveButton");
     backLink.textContent = t("backButton");
     backLink.href = buildReturnUrl();
+    window.NmsMainMenu?.update(currentLanguage);
+    replaceLanguageInUrl(currentLanguage);
 }
 
 function createRecipeState() {
@@ -689,5 +699,19 @@ async function initialize() {
 }
 
 recipeForm.addEventListener("submit", saveRecipe);
+
+if (languageSelect) {
+    languageSelect.addEventListener("change", async () => {
+        applyLanguage(languageSelect.value);
+        setStatus(t("loadingReferences"));
+        try {
+            await loadReferenceData();
+            renderBuilder();
+            setStatus("");
+        } catch (error) {
+            setStatus(error.message || t("loadError"), "error");
+        }
+    });
+}
 
 initialize();

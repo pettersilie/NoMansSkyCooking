@@ -1,18 +1,33 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rezept hinzufügen</title>
-    <link rel="stylesheet" href="/app.css?v=20260415a">
+    <title>Add Recipe</title>
+    <link rel="stylesheet" href="/app.css?v=20260415c">
 </head>
 <body>
+<details id="mainMenu" class="main-menu">
+    <summary id="mainMenuToggle">Main menu</summary>
+    <nav id="mainMenuPanel" class="main-menu-panel" aria-label="Main menu">
+        <div class="inline-control language-control main-menu-language">
+            <label id="languageLabel" for="languageSelect">Language</label>
+            <select id="languageSelect">
+                <option value="en" selected>English</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+        <a id="menuHomeLink" class="main-menu-link" href="/?lang=en">Home</a>
+        <a id="menuAddCategoryLink" class="main-menu-link" href="/add-category.html?lang=en">Add category</a>
+        <a id="menuAddRecipeLink" class="main-menu-link" href="/add-recipe.html?lang=en">Add recipe</a>
+    </nav>
+</details>
 <main class="form-page">
     <section class="form-card builder-card">
         <div class="eyebrow">No Man's Sky</div>
-        <h1 id="pageTitle">Rezept hinzufügen</h1>
+        <h1 id="pageTitle">Add Recipe</h1>
         <p id="pageIntro" class="intro">
-            Lege hier ein neues Rezept mit deutschem und englischem Namen an. Pro Variante sind maximal drei Zutaten moeglich, und Zutaten koennen bestehend, neu oder selbst wieder Teilrezepte sein.
+            Create a new recipe with German and English names here. Each variant can contain at most three ingredients, and ingredients can be existing items, new raw ingredients, or nested sub-recipes.
         </p>
 
         <p id="builderStatus" class="status" aria-live="polite"></p>
@@ -20,13 +35,14 @@
         <form id="recipeForm" class="recipe-builder-form">
             <div id="recipeBuilderRoot" class="recipe-builder-root"></div>
             <div class="form-actions builder-actions">
-                <button id="saveRecipeButton" type="submit">Speichern</button>
-                <a id="backLink" class="secondary-link" href="/">Zurück</a>
+                <button id="saveRecipeButton" type="submit">Save</button>
+                <a id="backLink" class="secondary-link" href="/">Back</a>
             </div>
         </form>
     </section>
 </main>
 
-<script src="/add-recipe.js?v=20260415a"></script>
+<script src="/main-menu.js?v=20260415c"></script>
+<script src="/add-recipe.js?v=20260415c"></script>
 </body>
 </html>

@@ -1,28 +1,43 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kategorie hinzufügen</title>
-    <link rel="stylesheet" href="/app.css?v=20260414a">
+    <title>Add Category</title>
+    <link rel="stylesheet" href="/app.css?v=20260415c">
 </head>
 <body>
+<details id="mainMenu" class="main-menu">
+    <summary id="mainMenuToggle">Main menu</summary>
+    <nav id="mainMenuPanel" class="main-menu-panel" aria-label="Main menu">
+        <div class="inline-control language-control main-menu-language">
+            <label id="languageLabel" for="languageSelect">Language</label>
+            <select id="languageSelect">
+                <option value="en" selected>English</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+        <a id="menuHomeLink" class="main-menu-link" href="/?lang=en">Home</a>
+        <a id="menuAddCategoryLink" class="main-menu-link" href="/add-category.html?lang=en">Add category</a>
+        <a id="menuAddRecipeLink" class="main-menu-link" href="/add-recipe.html?lang=en">Add recipe</a>
+    </nav>
+</details>
 <main class="form-page">
     <section class="form-card">
         <div class="eyebrow">No Man's Sky</div>
-        <h1 id="pageTitle">Kategorie hinzufügen</h1>
+        <h1 id="pageTitle">Add Category</h1>
         <p id="pageIntro" class="intro">
-            Lege hier eine neue Kategorie an. Sie wird direkt in der Rezeptdatei gespeichert und steht danach in der Anwendung zur Verfügung.
+            Create a new category here. It is stored directly in the recipe file and then becomes available in the application.
         </p>
 
         <form id="categoryForm" class="category-form">
-            <label id="categoryNameDeLabel" for="categoryNameDe">Kategoriename Deutsch</label>
-            <input id="categoryNameDe" class="category-name-input" type="text" autocomplete="off" placeholder="Neue Kategorie auf Deutsch eingeben">
-            <label id="categoryNameEnLabel" for="categoryNameEn">Kategoriename Englisch</label>
-            <input id="categoryNameEn" class="category-name-input" type="text" autocomplete="off" placeholder="Neue Kategorie auf Englisch eingeben">
+            <label id="categoryNameDeLabel" for="categoryNameDe">Category name German</label>
+            <input id="categoryNameDe" class="category-name-input" type="text" autocomplete="off" placeholder="Enter the German category name">
+            <label id="categoryNameEnLabel" for="categoryNameEn">Category name English</label>
+            <input id="categoryNameEn" class="category-name-input" type="text" autocomplete="off" placeholder="Enter the English category name">
             <div class="form-actions category-form-actions">
-                <button id="saveCategoryButton" type="submit">Speichern</button>
-                <a id="backLink" class="secondary-link" href="/">Zurück</a>
+                <button id="saveCategoryButton" type="submit">Save</button>
+                <a id="backLink" class="secondary-link" href="/">Back</a>
             </div>
         </form>
 
@@ -30,6 +45,7 @@
     </section>
 </main>
 
-<script src="/add-category.js?v=20260413d"></script>
+<script src="/main-menu.js?v=20260415c"></script>
+<script src="/add-category.js?v=20260415c"></script>
 </body>
 </html>

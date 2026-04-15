@@ -4,23 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NMS Recipe Graph</title>
-    <link rel="stylesheet" href="/app.css?v=20260414a">
+    <link rel="stylesheet" href="/app.css?v=20260415c">
 </head>
 <body>
+<details id="mainMenu" class="main-menu">
+    <summary id="mainMenuToggle">Main menu</summary>
+    <nav id="mainMenuPanel" class="main-menu-panel" aria-label="Main menu">
+        <div class="inline-control language-control main-menu-language">
+            <label id="languageLabel" for="languageSelect">Language</label>
+            <select id="languageSelect">
+                <option value="en" selected>English</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+        <a id="menuHomeLink" class="main-menu-link" href="/?lang=en">Home</a>
+        <a id="menuAddCategoryLink" class="main-menu-link" href="/add-category.html?lang=en">Add category</a>
+        <a id="menuAddRecipeLink" class="main-menu-link" href="/add-recipe.html?lang=en">Add recipe</a>
+    </nav>
+</details>
 <main class="layout">
     <section class="panel">
         <div class="panel-head">
-            <div class="panel-actions">
-                <button id="addRecipeButton" class="panel-action-button" type="button">Add recipe</button>
-                <button id="addCategoryButton" class="panel-action-button" type="button">Add category</button>
-            </div>
-            <div class="inline-control language-control">
-                <label id="languageLabel" for="languageSelect">Language</label>
-                <select id="languageSelect">
-                    <option value="en" selected>English</option>
-                    <option value="de">Deutsch</option>
-                </select>
-            </div>
             <div class="panel-brand">
                 <div class="eyebrow">No Man's Sky</div>
                 <h1 id="appTitle">Recipe Graph</h1>
@@ -79,6 +83,7 @@
     </section>
 </main>
 
-<script src="/app.js?v=20260414a"></script>
+<script src="/main-menu.js?v=20260415c"></script>
+<script src="/app.js?v=20260415c"></script>
 </body>
 </html>
