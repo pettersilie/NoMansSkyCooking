@@ -373,6 +373,8 @@ button:hover {
     gap: 0.65rem;
     margin-top: 0.7rem;
     padding: 0.95rem;
+    max-height: calc(100vh - 6rem);
+    overflow: auto;
     border: 1px solid rgba(80, 111, 75, 0.16);
     border-radius: 20px;
     background: var(--panel);
@@ -848,6 +850,90 @@ button:hover {
     width: min(100%, 30rem);
 }
 
+.overview-card {
+    width: min(100%, 88rem);
+}
+
+.overview-toolbar {
+    display: grid;
+    gap: 1rem;
+    margin: 1.2rem 0 0.8rem;
+}
+
+.overview-filter-control {
+    width: min(100%, 26rem);
+    max-width: 100%;
+}
+
+.overview-filter-control input {
+    width: 100%;
+}
+
+.overview-table-wrapper {
+    overflow: auto;
+    border: 1px solid rgba(80, 111, 75, 0.18);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 12px 24px rgba(23, 34, 28, 0.08);
+}
+
+.overview-table {
+    width: 100%;
+    min-width: 52rem;
+    border-collapse: collapse;
+}
+
+.overview-table th,
+.overview-table td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid rgba(80, 111, 75, 0.12);
+    text-align: left;
+    vertical-align: top;
+}
+
+.overview-table thead th {
+    position: sticky;
+    top: 0;
+    background: rgba(240, 244, 238, 0.96);
+    color: var(--ink);
+    z-index: 1;
+}
+
+.overview-table tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.72);
+}
+
+.overview-table tbody tr:hover {
+    background: rgba(240, 247, 242, 0.92);
+}
+
+.overview-table td.is-price {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.overview-empty {
+    color: var(--muted);
+}
+
+.table-sort-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    color: inherit;
+    font: inherit;
+    font-weight: 700;
+}
+
+.table-sort-button:hover {
+    transform: none;
+    text-decoration: underline;
+}
+
 .root-node {
     width: max-content;
     min-width: max-content;
@@ -914,5 +1000,9 @@ button:hover {
     .recipe-field-grid,
     .slot-list {
         grid-template-columns: 1fr;
+    }
+
+    .overview-table {
+        min-width: 42rem;
     }
 }

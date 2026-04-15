@@ -1,7 +1,10 @@
 package de.nms.nmsrecipes.web;
 
 import de.nms.nmsrecipes.model.RecipeDraft;
+import de.nms.nmsrecipes.model.RecipeDefinition;
+import de.nms.nmsrecipes.model.RecipeVariant;
 import de.nms.nmsrecipes.model.TreeNode;
+import de.nms.nmsrecipes.model.IngredientSlot;
 import de.nms.nmsrecipes.service.LocalizationService;
 import de.nms.nmsrecipes.service.ProductPriceService;
 import de.nms.nmsrecipes.service.RecipeCatalogService;
@@ -21,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -82,6 +86,19 @@ public class RecipeController {
                 .map(category -> new CategorySummary(
                         category,
                         localizeCategory(category, normalizedLanguage)))
+                .toList();
+    }
+
+    @GetMapping("/recipes/overview")
+    public List<RecipeOverviewRow> recipeOverview(@RequestParam(value = "lang", required = false) String language) {
+        String normalizedLanguage = localizationService.normalizeLanguage(language);
+        return catalogService.definitions().stream()
+                .sorted(Comparator.comparing(
+                        definition -> localizeTerm(definition.name(), normalizedLanguage),
+                        String.CASE_INSENSITIVE_ORDER))
+                .flatMap(definition -> definition.variants().stream()
+                        .sorted(Comparator.comparingInt(RecipeVariant::index))
+                        .map(variant -> toRecipeOverviewRow(definition, variant, normalizedLanguage)))
                 .toList();
     }
 
@@ -181,6 +198,38 @@ public class RecipeController {
                 catalogService.findEnglishTermName(term).orElse(null));
     }
 
+    private RecipeOverviewRow toRecipeOverviewRow(RecipeDefinition definition,
+                                                  RecipeVariant variant,
+                                                  String language) {
+        String[] topLevelIngredients = {"", "", ""};
+        variant.slots().stream()
+                .sorted(Comparator.comparingInt(IngredientSlot::position))
+                .forEach(slot -> {
+                    int index = slot.position() - 1;
+                    if (index >= 0 && index < topLevelIngredients.length) {
+                        topLevelIngredients[index] = localizeIngredientOptions(slot.options(), language);
+                    }
+                });
+
+        return new RecipeOverviewRow(
+                definition.name(),
+                localizeTerm(definition.name(), language),
+                variant.index(),
+                topLevelIngredients[0],
+                topLevelIngredients[1],
+                topLevelIngredients[2],
+                priceService.findDisplayPrice(definition.name()).orElse(null));
+    }
+
+    private String localizeIngredientOptions(List<String> options, String language) {
+        return options.stream()
+                .map(option -> localizeTerm(option, language))
+                .map(String::trim)
+                .filter(option -> !option.isBlank())
+                .distinct()
+                .collect(Collectors.joining(" / "));
+    }
+
     public record CategorySummary(String key, String name) {
     }
 
@@ -195,6 +244,15 @@ public class RecipeController {
                                  int minIngredientCount,
                                  int maxIngredientCount,
                                  String price) {
+    }
+
+    public record RecipeOverviewRow(String key,
+                                    String name,
+                                    int variantIndex,
+                                    String ingredient1,
+                                    String ingredient2,
+                                    String ingredient3,
+                                    String price) {
     }
 
     public record IngredientSearchResult(String key,

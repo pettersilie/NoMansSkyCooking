@@ -90,6 +90,49 @@ public class LocalizationService {
         return "Preis " + displayPrice;
     }
 
+    public String quantityDetail(int quantity, String language) {
+        if (quantity <= 0) {
+            return null;
+        }
+
+        if (isEnglish(language)) {
+            return "Quantity " + quantity;
+        }
+
+        return "Menge " + quantity;
+    }
+
+    public String refineryVariantDetail(String operation, int outputQuantity, String time, String language) {
+        String normalizedOperation = stripRefineryOperationPrefix(NameNormalizer.display(operation));
+        return normalizedOperation.isBlank() ? null : normalizedOperation;
+    }
+
+    private String stripRefineryOperationPrefix(String operation) {
+        if (operation == null || operation.isBlank()) {
+            return "";
+        }
+
+        String normalized = operation.trim();
+        for (String prefix : new String[]{"Gewünschter Vorgang:", "Requested Operation:"}) {
+            if (normalized.startsWith(prefix)) {
+                return normalized.substring(prefix.length()).trim();
+            }
+        }
+
+        return normalized;
+    }
+
+    public String expansionLimitedDetail(String detail, String language) {
+        String note = isEnglish(language)
+                ? "Open separately for more"
+                : "Separat oeffnen fuer mehr";
+        if (detail == null || detail.isBlank()) {
+            return note;
+        }
+
+        return detail + " · " + note;
+    }
+
     public String uncategorizedLabel(String language) {
         if (isEnglish(language)) {
             return "Uncategorized";

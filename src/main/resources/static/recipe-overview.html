@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooking Recipe Overview</title>
+    <link rel="stylesheet" href="/app.css?v=20260415e">
+</head>
+<body>
+<details id="mainMenu" class="main-menu">
+    <summary id="mainMenuToggle">Main menu</summary>
+    <nav id="mainMenuPanel" class="main-menu-panel" aria-label="Main menu">
+        <div class="inline-control language-control main-menu-language">
+            <label id="languageLabel" for="languageSelect">Language</label>
+            <select id="languageSelect">
+                <option value="en" selected>English</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+        <a id="menuHomeLink" class="main-menu-link" href="/?lang=en">Cooking Recipes</a>
+        <a id="menuRecipeOverviewLink" class="main-menu-link" href="/recipe-overview.html?lang=en">Cooking Recipe Overview</a>
+        <a id="menuRefineryLink" class="main-menu-link" href="/refinery.html?lang=en">Refinery</a>
+        <a id="menuRefineryOverviewLink" class="main-menu-link" href="/refinery-overview.html?lang=en">Refinery Overview</a>
+        <a id="menuAddCategoryLink" class="main-menu-link" href="/add-category.html?lang=en">Add cooking category</a>
+        <a id="menuAddRecipeLink" class="main-menu-link" href="/add-recipe.html?lang=en">Add cooking recipe</a>
+    </nav>
+</details>
+<main class="form-page">
+    <section class="form-card builder-card overview-card">
+        <div class="eyebrow">No Man's Sky</div>
+        <h1 id="pageTitle">Cooking Recipe Overview</h1>
+        <p id="pageIntro" class="intro">
+            This table lists every cooking recipe variant with its target ingredient, the three top-level ingredients and the stored price.
+        </p>
+        <p id="pageHint" class="hint">
+            Filter by any ingredient name, then sort directly by target ingredient or price.
+        </p>
+
+        <div class="overview-toolbar">
+            <div class="inline-control overview-filter-control">
+                <label id="ingredientFilterLabel" for="ingredientFilter">Filter by ingredient</label>
+                <input id="ingredientFilter" type="text" autocomplete="off" placeholder="Enter an ingredient name">
+            </div>
+        </div>
+
+        <p id="overviewStatus" class="status" aria-live="polite">Loading recipe overview...</p>
+
+        <div class="overview-table-wrapper">
+            <table class="overview-table">
+                <thead>
+                <tr>
+                    <th scope="col"><button id="sortByNameButton" class="table-sort-button" type="button">Target Ingredient</button></th>
+                    <th id="ingredient1Header" scope="col">Ingredient 1</th>
+                    <th id="ingredient2Header" scope="col">Ingredient 2</th>
+                    <th id="ingredient3Header" scope="col">Ingredient 3</th>
+                    <th scope="col"><button id="sortByPriceButton" class="table-sort-button" type="button">Price</button></th>
+                </tr>
+                </thead>
+                <tbody id="overviewTableBody"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<script src="/main-menu.js?v=20260415f"></script>
+<script src="/recipe-overview.js?v=20260415a"></script>
+</body>
+</html>

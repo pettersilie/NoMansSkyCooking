@@ -8,7 +8,10 @@ import subprocess
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DATA_FILE = REPO_ROOT / "data/recipes.json"
+DATA_FILES = [
+    REPO_ROOT / "data/recipes.json",
+    REPO_ROOT / "data/refinery-recipes.json",
+]
 ENGLISH_TERMS_FILE = REPO_ROOT / "src/main/java/de/nms/nmsrecipes/service/EnglishTerminology.java"
 ICON_DIR = REPO_ROOT / "src/main/resources/static/icons"
 MANIFEST_FILE = ICON_DIR / "manifest.json"
@@ -25,8 +28,20 @@ UPSTREAM_JSON_SOURCES = [
         "https://raw.githubusercontent.com/AssistantNMS/App/main/assets/json/de/Fishing.lang.json",
     ),
     (
+        "https://raw.githubusercontent.com/AssistantNMS/App/main/assets/json/en/RawMaterials.lang.json",
+        "https://raw.githubusercontent.com/AssistantNMS/App/main/assets/json/de/RawMaterials.lang.json",
+    ),
+    (
         "https://raw.githubusercontent.com/AssistantNMS/App/main/assets/json/en/Products.lang.json",
         "https://raw.githubusercontent.com/AssistantNMS/App/main/assets/json/de/Products.lang.json",
+    ),
+    (
+        "https://raw.githubusercontent.com/AssistantNMS/App/main/assets/json/en/Curiosity.lang.json",
+        "https://raw.githubusercontent.com/AssistantNMS/App/main/assets/json/de/Curiosity.lang.json",
+    ),
+    (
+        "https://raw.githubusercontent.com/AssistantNMS/App/main/assets/json/en/ConstructedTechnology.lang.json",
+        "https://raw.githubusercontent.com/AssistantNMS/App/main/assets/json/de/ConstructedTechnology.lang.json",
     ),
     (
         "https://raw.githubusercontent.com/AssistantNMS/App/main/assets/json/en/ProceduralProducts.lang.json",
@@ -68,8 +83,17 @@ def download_json(url: str) -> list[dict]:
 
 
 def load_local_data() -> tuple[list[dict], list[dict]]:
-    payload = json.loads(DATA_FILE.read_text(encoding="utf-8"))
-    return payload["terms"], payload["recipes"]
+    terms: list[dict] = []
+    recipes: list[dict] = []
+
+    for data_file in DATA_FILES:
+        if not data_file.exists():
+            continue
+        payload = json.loads(data_file.read_text(encoding="utf-8"))
+        terms.extend(payload.get("terms", []))
+        recipes.extend(payload.get("recipes", []))
+
+    return terms, recipes
 
 
 def load_english_term_map() -> dict[str, str]:

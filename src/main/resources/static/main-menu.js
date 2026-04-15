@@ -5,16 +5,22 @@
         de: {
             mainMenu: "Hauptmenü",
             languageLabel: "Sprache",
-            home: "Startseite",
-            addCategory: "Kategorie hinzufügen",
-            addRecipe: "Rezept hinzufügen"
+            home: "Kochrezepte",
+            recipeOverview: "Kochrezept Übersicht",
+            refinery: "Raffinerie",
+            refineryOverview: "Raffinerie Übersicht",
+            addCategory: "Koch-Kategorie hinzufügen",
+            addRecipe: "Kochrezept hinzufügen"
         },
         en: {
             mainMenu: "Main menu",
             languageLabel: "Language",
-            home: "Home",
-            addCategory: "Add category",
-            addRecipe: "Add recipe"
+            home: "Cooking Recipes",
+            recipeOverview: "Cooking Recipe Overview",
+            refinery: "Refinery",
+            refineryOverview: "Refinery Overview",
+            addCategory: "Add cooking category",
+            addRecipe: "Add cooking recipe"
         }
     };
 
@@ -24,6 +30,9 @@
     const languageLabel = document.getElementById("languageLabel");
     const languageSelect = document.getElementById("languageSelect");
     const homeLink = document.getElementById("menuHomeLink");
+    const recipeOverviewLink = document.getElementById("menuRecipeOverviewLink");
+    const refineryLink = document.getElementById("menuRefineryLink");
+    const refineryOverviewLink = document.getElementById("menuRefineryOverviewLink");
     const addCategoryLink = document.getElementById("menuAddCategoryLink");
     const addRecipeLink = document.getElementById("menuAddRecipeLink");
 
@@ -137,6 +146,24 @@
         }
 
         updateLink(homeLink, text.home, buildHomeUrl(resolvedLanguage), isHomePath(window.location.pathname));
+        updateLink(
+            recipeOverviewLink,
+            text.recipeOverview,
+            buildSubpageUrl("/recipe-overview.html", resolvedLanguage),
+            window.location.pathname === "/recipe-overview.html"
+        );
+        updateLink(
+            refineryLink,
+            text.refinery,
+            buildSubpageUrl("/refinery.html", resolvedLanguage),
+            window.location.pathname === "/refinery.html"
+        );
+        updateLink(
+            refineryOverviewLink,
+            text.refineryOverview,
+            buildSubpageUrl("/refinery-overview.html", resolvedLanguage),
+            window.location.pathname === "/refinery-overview.html"
+        );
         updateLink(
             addCategoryLink,
             text.addCategory,

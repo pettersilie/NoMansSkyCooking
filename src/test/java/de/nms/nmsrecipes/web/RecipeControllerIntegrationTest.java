@@ -103,6 +103,33 @@ class RecipeControllerIntegrationTest {
     }
 
     @Test
+    void exposesRecipeOverviewRows() {
+        ResponseEntity<JsonNode> overviewResponse = restTemplate.getForEntity("/api/recipes/overview", JsonNode.class);
+
+        assertThat(overviewResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(overviewResponse.getBody()).isNotNull();
+        assertThat(overviewResponse.getBody().isArray()).isTrue();
+        assertThat(overviewResponse.getBody()).isNotEmpty();
+        assertThat(overviewResponse.getBody().get(0).has("key")).isTrue();
+        assertThat(overviewResponse.getBody().get(0).has("name")).isTrue();
+        assertThat(overviewResponse.getBody().get(0).has("variantIndex")).isTrue();
+        assertThat(overviewResponse.getBody().get(0).has("ingredient1")).isTrue();
+        assertThat(overviewResponse.getBody().get(0).has("ingredient2")).isTrue();
+        assertThat(overviewResponse.getBody().get(0).has("ingredient3")).isTrue();
+        assertThat(overviewResponse.getBody().get(0).has("price")).isTrue();
+
+        ResponseEntity<JsonNode> englishOverviewResponse =
+                restTemplate.getForEntity("/api/recipes/overview?lang=en", JsonNode.class);
+
+        assertThat(englishOverviewResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(englishOverviewResponse.getBody()).isNotNull();
+        JsonNode creamRow = findOverviewRowByKey(englishOverviewResponse.getBody(), "Sahne");
+        assertThat(creamRow).isNotNull();
+        assertThat(creamRow.get("name").asText()).isEqualTo("Cream");
+        assertThat(creamRow.get("ingredient1").asText()).isNotBlank();
+    }
+
+    @Test
     void savesAndReturnsProductPrices() {
         ResponseEntity<JsonNode> productsResponse = restTemplate.getForEntity("/api/products", JsonNode.class);
         String productKey = productsResponse.getBody().get(0).get("key").asText();
@@ -133,6 +160,11 @@ class RecipeControllerIntegrationTest {
         assertThat(graphResponse.getBody()).isNotNull();
         assertThat(graphResponse.getBody().get("detail").asText()).isEqualTo("Preis 12,50");
         assertThat(graphResponse.getBody().get("label").asText()).isEqualTo(productName);
+
+        ResponseEntity<JsonNode> overviewResponse = restTemplate.getForEntity("/api/recipes/overview", JsonNode.class);
+        JsonNode overviewRow = findOverviewRowByKey(overviewResponse.getBody(), productKey);
+        assertThat(overviewRow).isNotNull();
+        assertThat(overviewRow.get("price").asText()).isEqualTo("12,50");
     }
 
     private JsonNode findProductByKey(JsonNode products, String productKey) {
@@ -147,6 +179,15 @@ class RecipeControllerIntegrationTest {
     private String firstIngredientLabel(JsonNode rootNode) {
         JsonNode match = findIngredientNode(rootNode, true);
         return match == null ? "" : match.get("label").asText();
+    }
+
+    private JsonNode findOverviewRowByKey(JsonNode rows, String productKey) {
+        for (JsonNode row : rows) {
+            if (productKey.equals(row.get("key").asText())) {
+                return row;
+            }
+        }
+        return null;
     }
 
     private JsonNode findIngredientNode(JsonNode node, boolean skipCurrent) {

@@ -18,7 +18,7 @@ const canvasElement = document.querySelector(".canvas");
 const NO_CATEGORY_FILTER_VALUE = "__NO_CATEGORY__";
 const DEFAULT_LANGUAGE = "en";
 const SUPPORTED_LANGUAGES = new Set(["de", "en"]);
-const ICON_MANIFEST_URL = "/icons/manifest.json?v=20260414a";
+const ICON_MANIFEST_URL = "/icons/manifest.json?v=20260415e";
 const DEFAULT_ICON_PATH = "/icons/fallback.svg";
 
 const UI_TEXT = {
@@ -221,10 +221,12 @@ async function loadIconManifest() {
 
 function normalizeLookupKey(value) {
     return String(value ?? "")
+        .normalize("NFKC")
         .replace(/\u00A0/g, " ")
         .trim()
         .replace(/\s+/g, " ")
-        .toLowerCase();
+        .toLocaleLowerCase("de-DE")
+        .replace(/ß/g, "ss");
 }
 
 function resolveIconPath(value) {
