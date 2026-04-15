@@ -42,7 +42,10 @@ const UI_TEXT = {
         ingredientModeNewRaw: "Neue Zutat",
         ingredientModeNewRecipe: "Neues Teilrezept",
         existingIngredientLabel: "Vorhandene Zutat",
+        existingIngredientSearchLabel: "Suche",
+        existingIngredientSearchPlaceholder: "Vorhandene Zutat filtern",
         existingIngredientPlaceholder: "Zutat auswählen",
+        existingIngredientNoMatches: "Keine passenden Zutaten gefunden",
         newIngredientGermanLabel: "Neue Zutat Deutsch",
         newIngredientGermanPlaceholder: "Name der neuen Zutat auf Deutsch",
         newIngredientEnglishLabel: "Neue Zutat Englisch",
@@ -85,7 +88,10 @@ const UI_TEXT = {
         ingredientModeNewRaw: "New ingredient",
         ingredientModeNewRecipe: "New sub-recipe",
         existingIngredientLabel: "Existing ingredient",
+        existingIngredientSearchLabel: "Search",
+        existingIngredientSearchPlaceholder: "Filter existing ingredients",
         existingIngredientPlaceholder: "Select an ingredient",
+        existingIngredientNoMatches: "No matching ingredients found",
         newIngredientGermanLabel: "New ingredient German",
         newIngredientGermanPlaceholder: "German name of the new ingredient",
         newIngredientEnglishLabel: "New ingredient English",
@@ -462,6 +468,19 @@ function createExistingIngredientField(slot) {
     const wrapper = document.createElement("div");
     wrapper.className = "slot-fields";
 
+    const searchLabel = document.createElement("label");
+    searchLabel.htmlFor = `${slot.id}-existing-search`;
+    searchLabel.textContent = t("existingIngredientSearchLabel");
+    wrapper.appendChild(searchLabel);
+
+    const searchInput = document.createElement("input");
+    searchInput.id = `${slot.id}-existing-search`;
+    searchInput.type = "text";
+    searchInput.autocomplete = "off";
+    searchInput.placeholder = t("existingIngredientSearchPlaceholder");
+    searchInput.value = findIngredientByKey(slot.existingKey)?.name || "";
+    wrapper.appendChild(searchInput);
+
     const label = document.createElement("label");
     label.htmlFor = `${slot.id}-existing`;
     label.textContent = t("existingIngredientLabel");
@@ -469,18 +488,76 @@ function createExistingIngredientField(slot) {
 
     const select = document.createElement("select");
     select.id = `${slot.id}-existing`;
-    select.appendChild(new Option(t("existingIngredientPlaceholder"), ""));
-    ingredientCatalog.forEach((ingredient) => {
-        const suffix = ingredient.craftable ? t("existingCatalogRecipe") : t("existingCatalogIngredient");
-        select.appendChild(new Option(`${ingredient.name} (${suffix})`, ingredient.key));
-    });
-    select.value = slot.existingKey || "";
+    populateExistingIngredientOptions(select, slot.existingKey, searchInput.value);
     select.addEventListener("change", () => {
         slot.existingKey = select.value;
+        const selectedIngredient = findIngredientByKey(slot.existingKey);
+        searchInput.value = selectedIngredient?.name || "";
+        populateExistingIngredientOptions(select, slot.existingKey, searchInput.value);
     });
     wrapper.appendChild(select);
 
+    searchInput.addEventListener("input", () => {
+        populateExistingIngredientOptions(select, slot.existingKey, searchInput.value);
+    });
+    searchInput.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowDown") {
+            event.preventDefault();
+            select.focus();
+        }
+    });
+
     return wrapper;
+}
+
+function populateExistingIngredientOptions(select, selectedKey, searchText) {
+    const selectedIngredient = findIngredientByKey(selectedKey);
+    const filteredIngredients = filterIngredientCatalog(searchText);
+    const visibleIngredients = [...filteredIngredients];
+
+    if (selectedIngredient && !visibleIngredients.some((ingredient) => ingredient.key === selectedKey)) {
+        visibleIngredients.unshift(selectedIngredient);
+    }
+
+    select.innerHTML = "";
+    select.appendChild(new Option(t("existingIngredientPlaceholder"), ""));
+
+    if (visibleIngredients.length === 0) {
+        const noMatchesOption = new Option(t("existingIngredientNoMatches"), "");
+        noMatchesOption.disabled = true;
+        select.appendChild(noMatchesOption);
+    } else {
+        visibleIngredients.forEach((ingredient) => {
+            select.appendChild(new Option(buildIngredientOptionLabel(ingredient), ingredient.key));
+        });
+    }
+
+    select.value = selectedKey || "";
+}
+
+function filterIngredientCatalog(searchText) {
+    const normalizedSearch = normalizeSearchText(searchText);
+    if (!normalizedSearch) {
+        return ingredientCatalog;
+    }
+
+    return ingredientCatalog.filter((ingredient) => {
+        const haystack = normalizeSearchText(`${ingredient.name} ${ingredient.key || ""}`);
+        return haystack.includes(normalizedSearch);
+    });
+}
+
+function findIngredientByKey(key) {
+    if (!key) {
+        return null;
+    }
+
+    return ingredientCatalog.find((ingredient) => ingredient.key === key) || null;
+}
+
+function buildIngredientOptionLabel(ingredient) {
+    const suffix = ingredient.craftable ? t("existingCatalogRecipe") : t("existingCatalogIngredient");
+    return `${ingredient.name} (${suffix})`;
 }
 
 function createNewIngredientFields(slot) {
@@ -509,6 +586,10 @@ function createNewIngredientFields(slot) {
 
 function normalizeName(value) {
     return (value || "").trim().replace(/\s+/g, " ");
+}
+
+function normalizeSearchText(value) {
+    return normalizeName(value).toLocaleLowerCase(currentLanguage);
 }
 
 function serializeRecipe(recipe) {
