@@ -20,6 +20,11 @@
             <destName>recipes.json</destName>
         </file>
         <file>
+            <source>${project.basedir}/data/refinery-recipes.json</source>
+            <outputDirectory>/data</outputDirectory>
+            <destName>refinery-recipes.json</destName>
+        </file>
+        <file>
             <source>${project.basedir}/src/dist/product-prices.json</source>
             <outputDirectory>/data</outputDirectory>
         </file>

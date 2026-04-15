@@ -15,16 +15,16 @@ If you are new to the project, this order works well:
 ## Document Overview
 
 - [Architecture](./architecture.md)
-  Describes the application structure, runtime flow, and main backend and frontend components.
+  Describes the application structure, runtime flow, and the main backend and frontend components for both cooking and refinery data.
 
 - [Data Format](./data-format.md)
-  Explains the structure and semantics of `data/recipes.json` and the separate price file.
+  Explains the structure and semantics of `data/recipes.json`, `data/refinery-recipes.json`, and the separate price file.
 
 - [API](./api.md)
-  Documents the REST endpoints used by the frontend and external tools.
+  Documents the REST endpoints used by the frontend and external tools, including `/api` for cooking and `/api/refinery` for refinery data.
 
 - [User Guide](./user-guide.md)
-  Covers the visible UI, including browsing, searching, price editing, category creation, and recipe creation.
+  Covers the visible UI, including menu navigation, graph pages, overview pages, price editing, category creation, and recipe creation.
 
 - [Operations](./operations.md)
   Covers local development, packaging, Docker, runtime files, and operational recommendations.
@@ -33,12 +33,14 @@ If you are new to the project, this order works well:
 
 The application is a Spring Boot web app that:
 
-- reads and writes recipes through `data/recipes.json`
-- keeps prices in `data/product-prices.json`
-- exposes a REST API under `/api`
-- renders an interactive dependency graph in the browser
-- supports German and English UI modes
+- reads and writes cooking recipes through `data/recipes.json`
+- reads refinery processes through `data/refinery-recipes.json`
+- keeps cooking prices in `data/product-prices.json`
+- exposes REST APIs under `/api` and `/api/refinery`
+- renders interactive dependency graphs and overview tables in the browser
+- supports English and German UI modes, with English as the default
 
 ## Source Of Truth
 
-`data/recipes.json` is the single source of truth for categories, term translations, and recipes.
+- `data/recipes.json` is the single source of truth for cooking categories, cooking recipes, and cooking term translations.
+- `data/refinery-recipes.json` is the single source of truth for refinery categories, refinery processes, and refinery term translations.

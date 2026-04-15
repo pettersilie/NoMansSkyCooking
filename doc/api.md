@@ -2,7 +2,10 @@
 
 ## Overview
 
-The frontend communicates with the backend through a REST API rooted at `/api`.
+The frontend communicates with the backend through two REST API roots:
+
+- `/api` for cooking data and authoring
+- `/api/refinery` for refinery browsing
 
 Most endpoints accept the optional `lang` query parameter.
 
@@ -17,16 +20,18 @@ Language behavior:
 - any other value, or an omitted value, is normalized to German on the backend
 - canonical keys remain German even in English UI mode
 
-## GET /api/products
+## Cooking API
 
-Returns the product list shown in the main sidebar.
+### GET /api/products
 
-### Query Parameters
+Returns the cooking product list shown on the `Cooking Recipes` page.
+
+#### Query Parameters
 
 - `lang`
   Optional display language.
 
-### Response
+#### Response
 
 ```json
 [
@@ -43,42 +48,16 @@ Returns the product list shown in the main sidebar.
 ]
 ```
 
-### Field Meaning
+### GET /api/categories
 
-- `key`
-  Canonical product key used by the backend.
+Returns all known cooking categories.
 
-- `name`
-  Localized display name.
-
-- `categoryKey`
-  Canonical category key.
-
-- `category`
-  Localized category name.
-
-- `variantCount`
-  Number of available recipe variants.
-
-- `minIngredientCount`
-  Minimum number of filled ingredient slots across all variants.
-
-- `maxIngredientCount`
-  Maximum number of filled ingredient slots across all variants.
-
-- `price`
-  Formatted display price or `null`.
-
-## GET /api/categories
-
-Returns all known categories, including categories that do not yet have any recipe assigned.
-
-### Query Parameters
+#### Query Parameters
 
 - `lang`
   Optional display language.
 
-### Response
+#### Response
 
 ```json
 [
@@ -89,16 +68,16 @@ Returns all known categories, including categories that do not yet have any reci
 ]
 ```
 
-## GET /api/ingredients/catalog
+### GET /api/ingredients/catalog
 
-Returns the catalog used by the recipe builder for existing ingredients and existing craftable products.
+Returns the cooking catalog used by the recipe builder for existing ingredients and existing craftable products.
 
-### Query Parameters
+#### Query Parameters
 
 - `lang`
   Optional display language.
 
-### Response
+#### Response
 
 ```json
 [
@@ -115,22 +94,11 @@ Returns the catalog used by the recipe builder for existing ingredients and exis
 ]
 ```
 
-### Field Meaning
+### GET /api/graph
 
-- `key`
-  Canonical ingredient or product key.
+Returns the cooking dependency graph for a selected product.
 
-- `name`
-  Localized display name.
-
-- `craftable`
-  `true` if the item is a recipe in the dataset, otherwise `false`.
-
-## GET /api/graph
-
-Returns the dependency graph for a selected product.
-
-### Query Parameters
+#### Query Parameters
 
 - `product`
   Required canonical product key.
@@ -138,7 +106,7 @@ Returns the dependency graph for a selected product.
 - `lang`
   Optional display language.
 
-### Response
+#### Response
 
 ```json
 {
@@ -151,7 +119,7 @@ Returns the dependency graph for a selected product.
 }
 ```
 
-### Node Types
+#### Node Types
 
 - `product`
 - `variant`
@@ -159,19 +127,11 @@ Returns the dependency graph for a selected product.
 - `raw`
 - `cycle`
 
-### Graph Rules
+### GET /api/ingredients/search
 
-- `product` nodes may contain `variant` or `slot` children
-- `variant` nodes contain `slot` children
-- `slot` nodes contain `product`, `raw`, or `cycle` children
-- `raw` nodes are terminal ingredients
-- `cycle` nodes stop recursive expansion when a loop is detected
+Searches for cooking products whose recursive ingredient set contains the given text.
 
-## GET /api/ingredients/search
-
-Searches for products whose recursive ingredient set contains the given text.
-
-### Query Parameters
+#### Query Parameters
 
 - `query`
   Required search string.
@@ -179,7 +139,7 @@ Searches for products whose recursive ingredient set contains the given text.
 - `lang`
   Optional display language.
 
-### Response
+#### Response
 
 ```json
 [
@@ -195,16 +155,47 @@ Searches for products whose recursive ingredient set contains the given text.
 ]
 ```
 
-## PUT /api/prices
+### GET /api/recipes/overview
 
-Creates, updates, or removes a product price in `data/product-prices.json`.
+Returns one row per cooking recipe variant for the `Cooking Recipe Overview` page.
 
-### Query Parameters
+#### Query Parameters
+
+- `lang`
+  Optional display language.
+
+#### Response
+
+```json
+[
+  {
+    "key": "Sahne",
+    "name": "Cream",
+    "variantIndex": 1,
+    "ingredient1": "Fresh Milk",
+    "ingredient2": "",
+    "ingredient3": "",
+    "price": "12,50"
+  }
+]
+```
+
+#### Notes
+
+- each row represents one cooking variant
+- `ingredient1` through `ingredient3` contain only the top-level slots of that variant
+- `price` is formatted for display and may be `null`
+
+### PUT /api/prices
+
+Creates, updates, or removes a cooking product price in `data/product-prices.json`.
+
+#### Query Parameters
 
 - `lang`
   Optional language for localized validation errors.
 
-### Request Body
+#### Request Body
 
 ```json
 {
@@ -213,13 +204,13 @@ Creates, updates, or removes a product price in `data/product-prices.json`.
 }
 ```
 
-### Behavior
+#### Behavior
 
 - if `price` contains a valid number, the price is stored
 - if `price` is blank, the existing price is removed
-- the `key` must identify a known product
+- the `key` must identify a known cooking product
 
-### Response
+#### Response
 
 ```json
 {
@@ -228,16 +219,16 @@ Creates, updates, or removes a product price in `data/product-prices.json`.
 }
 ```
 
-## POST /api/categories
+### POST /api/categories
 
-Creates a new category and persists it to `data/recipes.json`.
+Creates a new cooking category and persists it to `data/recipes.json`.
 
-### Query Parameters
+#### Query Parameters
 
 - `lang`
   Optional language for localized responses and validation errors.
 
-### Request Body
+#### Request Body
 
 ```json
 {
@@ -246,7 +237,7 @@ Creates a new category and persists it to `data/recipes.json`.
 }
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -255,14 +246,9 @@ Creates a new category and persists it to `data/recipes.json`.
 }
 ```
 
-Notes:
+### POST /api/recipes
 
-- the response `name` is localized according to `lang`
-- categories are stored even if no recipe uses them yet
-
-## POST /api/recipes
-
-Creates a new recipe and persists it to `data/recipes.json`.
+Creates a new cooking recipe and persists it to `data/recipes.json`.
 
 The request supports:
 
@@ -274,16 +260,16 @@ The request supports:
 - new raw ingredients
 - nested sub-recipes
 
-### Query Parameters
+#### Query Parameters
 
 - `lang`
   Optional language for localized responses and validation errors.
 
-### Request Body
+#### Request Body
 
 ```json
 {
-  "germanName": "Testrezept",
+  "germanName": "Test Recipe DE",
   "englishName": "Test Recipe",
   "categoryKey": "Suppen",
   "variants": [
@@ -326,35 +312,184 @@ The request supports:
 }
 ```
 
-### Response
+#### Response
 
 ```json
 {
-  "key": "Testrezept",
+  "key": "Test Recipe DE",
   "name": "Test Recipe",
   "createdRecipeCount": 2
 }
 ```
 
-### Field Meaning
+## Refinery API
 
-- `key`
-  Canonical key of the saved root recipe.
+### GET /api/refinery/products
 
-- `name`
-  Localized display name of the saved root recipe.
+Returns the refinery output list shown on the `Refinery` page.
 
-- `createdRecipeCount`
-  Number of new recipe definitions written to the dataset, including nested sub-recipes.
+#### Query Parameters
+
+- `lang`
+  Optional display language.
+
+#### Response
+
+```json
+[
+  {
+    "key": "Restsubstanz",
+    "name": "Residual Goop",
+    "categoryKey": "Schrott",
+    "category": "Junk",
+    "variantCount": 1,
+    "minIngredientCount": 1,
+    "maxIngredientCount": 1
+  }
+]
+```
+
+### GET /api/refinery/categories
+
+Returns all known refinery categories.
+
+#### Query Parameters
+
+- `lang`
+  Optional display language.
+
+#### Response
+
+```json
+[
+  {
+    "key": "Schrott",
+    "name": "Junk"
+  }
+]
+```
+
+### GET /api/refinery/ingredients/catalog
+
+Returns the refinery ingredient catalog used by the refinery UI.
+
+#### Query Parameters
+
+- `lang`
+  Optional display language.
+
+#### Response
+
+```json
+[
+  {
+    "key": "Restsubstanz",
+    "name": "Residual Goop",
+    "craftable": true
+  },
+  {
+    "key": "Verfluchter Staub",
+    "name": "Cursed Dust",
+    "craftable": false
+  }
+]
+```
+
+### GET /api/refinery/graph
+
+Returns the refinery dependency graph for a selected output.
+
+#### Query Parameters
+
+- `product`
+  Required canonical refinery output key.
+
+- `lang`
+  Optional display language.
+
+#### Response
+
+```json
+{
+  "id": "product-1",
+  "key": "Restsubstanz",
+  "label": "Residual Goop",
+  "type": "product",
+  "detail": null,
+  "children": []
+}
+```
+
+#### Notes
+
+- ingredient quantities may appear in node details
+- refinery operation labels are localized before the graph is returned
+
+### GET /api/refinery/ingredients/search
+
+Searches for refinery outputs whose recursive ingredient set contains the given text.
+
+#### Query Parameters
+
+- `query`
+  Required search string.
+
+- `lang`
+  Optional display language.
+
+#### Response
+
+```json
+[
+  {
+    "key": "Restsubstanz",
+    "name": "Residual Goop",
+    "categoryKey": "Schrott",
+    "category": "Junk",
+    "variantCount": 1,
+    "matches": ["Cursed Dust"]
+  }
+]
+```
+
+### GET /api/refinery/overview
+
+Returns one row per refinery variant for the `Refinery Overview` page.
+
+#### Query Parameters
+
+- `lang`
+  Optional display language.
+
+#### Response
+
+```json
+[
+  {
+    "key": "Restsubstanz",
+    "name": "Residual Goop",
+    "variantIndex": 1,
+    "ingredient1": "2 x Cursed Dust",
+    "ingredient2": "",
+    "ingredient3": ""
+  }
+]
+```
+
+#### Notes
+
+- each row represents one refinery variant
+- only top-level refinery inputs are returned
+- there is no price field in the refinery overview
 
 ## Error Handling
 
 Typical status codes:
 
 - `400 Bad Request`
-  Returned for invalid price updates, invalid category creation, and invalid recipe drafts.
+  Returned for invalid cooking price updates, invalid cooking category creation, and invalid cooking recipe drafts.
 
 - `404 Not Found`
-  Returned by `/api/graph` when the product key is unknown.
+  Returned by `/api/graph` and `/api/refinery/graph` when the selected product key is unknown.
 
 Localized validation messages are provided through `LocalizationService`.

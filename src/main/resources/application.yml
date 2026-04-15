@@ -7,4 +7,5 @@ server:
 
 recipes:
   source-path: ./data/recipes.json
+  refinery-path: ./data/refinery-recipes.json
   price-path: ./data/product-prices.json
