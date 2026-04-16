@@ -4,6 +4,7 @@ import de.nms.nmsrecipes.model.TreeNode;
 import de.nms.nmsrecipes.service.LocalizationService;
 import de.nms.nmsrecipes.service.RefineryCatalogService;
 import de.nms.nmsrecipes.service.RefineryGraphService;
+import de.nms.nmsrecipes.service.RecipeCatalogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +22,16 @@ public class RefineryController {
     private final RefineryCatalogService catalogService;
     private final RefineryGraphService graphService;
     private final LocalizationService localizationService;
+    private final RecipeCatalogService recipeCatalogService;
 
     public RefineryController(RefineryCatalogService catalogService,
                               RefineryGraphService graphService,
-                              LocalizationService localizationService) {
+                              LocalizationService localizationService,
+                              RecipeCatalogService recipeCatalogService) {
         this.catalogService = catalogService;
         this.graphService = graphService;
         this.localizationService = localizationService;
+        this.recipeCatalogService = recipeCatalogService;
     }
 
     @GetMapping("/products")
@@ -144,20 +148,65 @@ public class RefineryController {
 
         return new RefineryOverviewRow(
                 definition.name(),
-                localizeTerm(definition.name(), language),
+                localizeAnyTerm(definition.name(), language),
+                definition.category(),
+                localizeCategory(definition.category(), language),
                 variant.index(),
                 ingredients[0],
                 ingredients[1],
-                ingredients[2]);
+                ingredients[2],
+                new OverviewEntry(definition.name(), localizeAnyTerm(definition.name(), language), "refinery"),
+                overviewEntriesForPosition(variant, language, 1),
+                overviewEntriesForPosition(variant, language, 2),
+                overviewEntriesForPosition(variant, language, 3));
     }
 
     private String formatIngredient(String ingredientName, int quantity, String language) {
-        String localizedName = localizeTerm(ingredientName, language);
+        String localizedName = localizeAnyTerm(ingredientName, language);
         if (quantity <= 1) {
             return localizedName;
         }
 
         return quantity + " x " + localizedName;
+    }
+
+    private List<OverviewEntry> overviewEntriesForPosition(de.nms.nmsrecipes.model.RefineryVariant variant,
+                                                           String language,
+                                                           int position) {
+        return variant.ingredients().stream()
+                .filter(ingredient -> ingredient.position() == position)
+                .findFirst()
+                .map(ingredient -> List.of(toOverviewEntry(ingredient.name(), ingredient.quantity(), language)))
+                .orElse(List.of());
+    }
+
+    private OverviewEntry toOverviewEntry(String term, int quantity, String language) {
+        String destination = null;
+        String key = catalogService.canonicalNameOrSelf(term);
+        if (catalogService.findDefinition(key).isPresent()) {
+            destination = "refinery";
+        } else {
+            String cookingKey = recipeCatalogService.canonicalNameOrSelf(term);
+            if (recipeCatalogService.findDefinition(cookingKey).isPresent()) {
+                key = cookingKey;
+                destination = "cooking";
+            }
+        }
+
+        String localizedName = localizeAnyTerm(key, language);
+        if (quantity > 1) {
+            localizedName = quantity + " x " + localizedName;
+        }
+        return new OverviewEntry(key, localizedName, destination);
+    }
+
+    private String localizeAnyTerm(String term, String language) {
+        return localizationService.localizeTerm(
+                term,
+                language,
+                catalogService.findEnglishTermName(term)
+                        .or(() -> recipeCatalogService.findEnglishTermName(term))
+                        .orElse(null));
     }
 
     public record CategorySummary(String key, String name) {
@@ -177,10 +226,19 @@ public class RefineryController {
 
     public record RefineryOverviewRow(String key,
                                       String name,
+                                      String categoryKey,
+                                      String category,
                                       int variantIndex,
                                       String ingredient1,
                                       String ingredient2,
-                                      String ingredient3) {
+                                      String ingredient3,
+                                      OverviewEntry target,
+                                      List<OverviewEntry> ingredient1Entries,
+                                      List<OverviewEntry> ingredient2Entries,
+                                      List<OverviewEntry> ingredient3Entries) {
+    }
+
+    public record OverviewEntry(String key, String name, String destination) {
     }
 
     public record IngredientSearchResult(String key,

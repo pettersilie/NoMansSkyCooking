@@ -1,5 +1,6 @@
 const languageSelect = document.getElementById("languageSelect");
 const ingredientFilterInput = document.getElementById("ingredientFilter");
+const categoryFilter = document.getElementById("categoryFilter");
 const overviewStatus = document.getElementById("overviewStatus");
 const overviewTableBody = document.getElementById("overviewTableBody");
 const sortByNameButton = document.getElementById("sortByNameButton");
@@ -12,15 +13,17 @@ const UI_TEXT = {
     de: {
         documentTitle: "Kochrezept Übersicht",
         pageTitle: "Kochrezept Übersicht",
-        intro: "Diese Tabelle zeigt jede Kochrezept-Variante mit Zielzutat, den drei obersten Zutaten und dem gespeicherten Preis.",
-        hint: "Nach beliebigen Zutaten filtern und direkt nach Zielzutat oder Preis sortieren.",
+        intro: "Diese Tabelle zeigt jede Kochrezept-Variante mit Zielzutat, den drei obersten Zutaten und dem gespeicherten Preis pro 100 Stück. Klickbare Einträge öffnen direkt die passenden Koch- oder Raffineriedetails.",
+        hint: "Nach beliebigen Zutaten oder Kategorien filtern und direkt nach Zielzutat oder Preis pro 100 Stück sortieren.",
         ingredientFilterLabel: "Nach Zutat filtern",
         ingredientFilterPlaceholder: "Zutat eingeben",
+        categoryFilterLabel: "Kategorie",
+        allCategories: "Alle Kategorien",
         targetIngredient: "Zielzutat",
         ingredient1: "Zutat 1",
         ingredient2: "Zutat 2",
         ingredient3: "Zutat 3",
-        price: "Preis",
+        price: "Preis pro 100 Stück",
         loadingStatus: "Lade Kochrezept-Übersicht...",
         loadedStatus: "{visibleCount} von {totalCount} Rezeptvarianten sichtbar.",
         noRecipes: "Keine Kochrezepte gefunden.",
@@ -28,20 +31,24 @@ const UI_TEXT = {
         loadError: "Die Kochrezept-Übersicht konnte nicht geladen werden.",
         emptyValue: "-",
         sortByTargetTitle: "Nach Zielzutat sortieren",
-        sortByPriceTitle: "Nach Preis sortieren"
+        sortByPriceTitle: "Nach Preis pro 100 Stück sortieren",
+        openCookingDetails: "Kochrezeptdetails für {name} öffnen",
+        openRefineryDetails: "Raffineriedetails für {name} öffnen"
     },
     en: {
         documentTitle: "Cooking Recipe Overview",
         pageTitle: "Cooking Recipe Overview",
-        intro: "This table lists every cooking recipe variant with its target ingredient, the three top-level ingredients and the stored price.",
-        hint: "Filter by any ingredient name, then sort directly by target ingredient or price.",
+        intro: "This table lists every cooking recipe variant with its target ingredient, the three top-level ingredients and the stored price per 100 units. Clickable entries open the matching cooking or refinery details.",
+        hint: "Filter by any ingredient name or category, then sort directly by target ingredient or price per 100 units.",
         ingredientFilterLabel: "Filter by ingredient",
         ingredientFilterPlaceholder: "Enter an ingredient name",
+        categoryFilterLabel: "Category",
+        allCategories: "All categories",
         targetIngredient: "Target Ingredient",
         ingredient1: "Ingredient 1",
         ingredient2: "Ingredient 2",
         ingredient3: "Ingredient 3",
-        price: "Price",
+        price: "Price per 100 units",
         loadingStatus: "Loading recipe overview...",
         loadedStatus: "Showing {visibleCount} of {totalCount} recipe variants.",
         noRecipes: "No cooking recipes found.",
@@ -49,7 +56,9 @@ const UI_TEXT = {
         loadError: "The cooking recipe overview could not be loaded.",
         emptyValue: "-",
         sortByTargetTitle: "Sort by target ingredient",
-        sortByPriceTitle: "Sort by price"
+        sortByPriceTitle: "Sort by price per 100 units",
+        openCookingDetails: "Open cooking recipe details for {name}",
+        openRefineryDetails: "Open refinery details for {name}"
     }
 };
 
@@ -159,7 +168,12 @@ function compareRows(left, right) {
 
 function filteredRows() {
     const needle = normalizeSearchText(ingredientFilterInput.value);
+    const selectedCategory = categoryFilter.value;
     const visibleRows = allRows.filter(row => {
+        if (selectedCategory && row.categoryKey !== selectedCategory) {
+            return false;
+        }
+
         if (!needle) {
             return true;
         }
@@ -189,6 +203,31 @@ function setStatus(message, tone = "") {
     if (tone) {
         overviewStatus.classList.add(`is-${tone}`);
     }
+}
+
+function renderCategoryOptions() {
+    const previousValue = categoryFilter.value;
+    const categories = new Map();
+
+    allRows.forEach((row) => {
+        if (!row.categoryKey) {
+            return;
+        }
+
+        categories.set(row.categoryKey, row.category || row.categoryKey);
+    });
+
+    categoryFilter.innerHTML = "";
+    categoryFilter.appendChild(new Option(t("allCategories"), ""));
+
+    Array.from(categories.entries())
+        .sort((left, right) => left[1].localeCompare(right[1], locale()))
+        .forEach(([categoryKey, categoryName]) => {
+            categoryFilter.appendChild(new Option(categoryName, categoryKey));
+        });
+
+    const validValues = Array.from(categoryFilter.options).map((option) => option.value);
+    categoryFilter.value = validValues.includes(previousValue) ? previousValue : "";
 }
 
 function updateSortButtons() {
@@ -232,10 +271,10 @@ function renderRows() {
 
     visibleRows.forEach(rowData => {
         const row = document.createElement("tr");
-        appendTextCell(row, rowData.name);
-        appendTextCell(row, rowData.ingredient1 || t("emptyValue"));
-        appendTextCell(row, rowData.ingredient2 || t("emptyValue"));
-        appendTextCell(row, rowData.ingredient3 || t("emptyValue"));
+        appendOverviewCell(row, rowData.target ? [rowData.target] : [{ key: rowData.key, name: rowData.name, destination: "cooking" }], rowData.name);
+        appendOverviewCell(row, rowData.ingredient1Entries, rowData.ingredient1 || t("emptyValue"));
+        appendOverviewCell(row, rowData.ingredient2Entries, rowData.ingredient2 || t("emptyValue"));
+        appendOverviewCell(row, rowData.ingredient3Entries, rowData.ingredient3 || t("emptyValue"));
         appendTextCell(row, rowData.price || t("emptyValue"), "is-price");
         overviewTableBody.appendChild(row);
     });
@@ -255,6 +294,62 @@ function appendTextCell(row, text, className = "") {
     row.appendChild(cell);
 }
 
+function appendOverviewCell(row, entries, fallbackText) {
+    const cell = document.createElement("td");
+    const normalizedEntries = Array.isArray(entries)
+        ? entries.filter((entry) => entry && typeof entry.name === "string" && entry.name.trim() !== "")
+        : [];
+
+    if (normalizedEntries.length === 0) {
+        cell.textContent = fallbackText || t("emptyValue");
+        row.appendChild(cell);
+        return;
+    }
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "overview-cell-items";
+
+    normalizedEntries.forEach((entry, index) => {
+        if (index > 0) {
+            const separator = document.createElement("span");
+            separator.className = "overview-cell-separator";
+            separator.textContent = "/";
+            wrapper.appendChild(separator);
+        }
+
+        wrapper.appendChild(createOverviewEntryNode(entry));
+    });
+
+    cell.appendChild(wrapper);
+    row.appendChild(cell);
+}
+
+function createOverviewEntryNode(entry) {
+    if (entry.destination && entry.key) {
+        const link = document.createElement("a");
+        link.className = "overview-detail-link";
+        link.href = buildDetailUrl(entry.destination, entry.key);
+        link.textContent = entry.name;
+        link.title = entry.destination === "refinery"
+            ? t("openRefineryDetails", { name: entry.name })
+            : t("openCookingDetails", { name: entry.name });
+        return link;
+    }
+
+    const text = document.createElement("span");
+    text.className = "overview-detail-text";
+    text.textContent = entry.name;
+    return text;
+}
+
+function buildDetailUrl(destination, productKey) {
+    const targetPath = destination === "refinery" ? "/refinery.html" : "/";
+    const searchParams = new URLSearchParams();
+    searchParams.set("lang", currentLanguage);
+    searchParams.set("product", productKey);
+    return `${targetPath}?${searchParams.toString()}`;
+}
+
 function applyLanguage(language) {
     currentLanguage = normalizeLanguage(language) ?? DEFAULT_LANGUAGE;
     if (languageSelect) {
@@ -268,11 +363,13 @@ function applyLanguage(language) {
     document.getElementById("pageHint").textContent = t("hint");
     document.getElementById("ingredientFilterLabel").textContent = t("ingredientFilterLabel");
     ingredientFilterInput.placeholder = t("ingredientFilterPlaceholder");
+    document.getElementById("categoryFilterLabel").textContent = t("categoryFilterLabel");
     document.getElementById("ingredient1Header").textContent = t("ingredient1");
     document.getElementById("ingredient2Header").textContent = t("ingredient2");
     document.getElementById("ingredient3Header").textContent = t("ingredient3");
     window.NmsMainMenu?.update(currentLanguage);
     replaceLanguageInUrl(currentLanguage);
+    renderCategoryOptions();
     renderRows();
 }
 
@@ -292,6 +389,7 @@ async function loadOverview() {
         }
 
         allRows = Array.isArray(payload) ? payload : [];
+        renderCategoryOptions();
         renderRows();
     } catch (error) {
         if (requestToken !== loadToken) {
@@ -299,6 +397,7 @@ async function loadOverview() {
         }
 
         allRows = [];
+        renderCategoryOptions();
         overviewTableBody.innerHTML = "";
         setStatus(error.message || t("loadError"), "error");
     }
@@ -315,6 +414,10 @@ function toggleSort(field) {
 }
 
 ingredientFilterInput.addEventListener("input", () => {
+    renderRows();
+});
+
+categoryFilter.addEventListener("change", () => {
     renderRows();
 });
 

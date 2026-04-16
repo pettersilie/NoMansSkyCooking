@@ -869,6 +869,10 @@ button:hover {
     width: 100%;
 }
 
+.overview-filter-control select {
+    width: 100%;
+}
+
 .overview-table-wrapper {
     overflow: auto;
     border: 1px solid rgba(80, 111, 75, 0.18);
@@ -910,6 +914,36 @@ button:hover {
 .overview-table td.is-price {
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
+}
+
+.overview-cell-items {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.overview-cell-separator {
+    color: var(--muted);
+}
+
+.overview-detail-link,
+.overview-detail-text {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.4;
+}
+
+.overview-detail-link {
+    color: #2e6b46;
+    text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.14em;
+    font-weight: 600;
+}
+
+.overview-detail-link:hover {
+    color: #1f4f33;
 }
 
 .overview-empty {

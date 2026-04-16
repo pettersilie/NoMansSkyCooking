@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cooking Recipe Overview</title>
-    <link rel="stylesheet" href="/app.css?v=20260415e">
+    <link rel="stylesheet" href="/app.css?v=20260416a">
 </head>
 <body>
 <details id="mainMenu" class="main-menu">
@@ -30,16 +30,22 @@
         <div class="eyebrow">No Man's Sky</div>
         <h1 id="pageTitle">Cooking Recipe Overview</h1>
         <p id="pageIntro" class="intro">
-            This table lists every cooking recipe variant with its target ingredient, the three top-level ingredients and the stored price.
+            This table lists every cooking recipe variant with its target ingredient, the three top-level ingredients and the stored price per 100 units. Clickable entries open the matching cooking or refinery details.
         </p>
         <p id="pageHint" class="hint">
-            Filter by any ingredient name, then sort directly by target ingredient or price.
+            Filter by any ingredient name or category, then sort directly by target ingredient or price per 100 units.
         </p>
 
         <div class="overview-toolbar">
             <div class="inline-control overview-filter-control">
                 <label id="ingredientFilterLabel" for="ingredientFilter">Filter by ingredient</label>
                 <input id="ingredientFilter" type="text" autocomplete="off" placeholder="Enter an ingredient name">
+            </div>
+            <div class="inline-control overview-filter-control">
+                <label id="categoryFilterLabel" for="categoryFilter">Category</label>
+                <select id="categoryFilter">
+                    <option value="">All categories</option>
+                </select>
             </div>
         </div>
 
@@ -53,7 +59,7 @@
                     <th id="ingredient1Header" scope="col">Ingredient 1</th>
                     <th id="ingredient2Header" scope="col">Ingredient 2</th>
                     <th id="ingredient3Header" scope="col">Ingredient 3</th>
-                    <th scope="col"><button id="sortByPriceButton" class="table-sort-button" type="button">Price</button></th>
+                    <th scope="col"><button id="sortByPriceButton" class="table-sort-button" type="button">Price per 100 units</button></th>
                 </tr>
                 </thead>
                 <tbody id="overviewTableBody"></tbody>
@@ -63,6 +69,6 @@
 </main>
 
 <script src="/main-menu.js?v=20260415f"></script>
-<script src="/recipe-overview.js?v=20260415a"></script>
+<script src="/recipe-overview.js?v=20260416c"></script>
 </body>
 </html>

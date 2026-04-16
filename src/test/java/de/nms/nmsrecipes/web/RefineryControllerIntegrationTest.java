@@ -88,12 +88,25 @@ class RefineryControllerIntegrationTest {
         JsonNode residualGoopRow = findByKey(overviewResponse.getBody(), "Restsubstanz");
         assertThat(residualGoopRow).isNotNull();
         assertThat(residualGoopRow.path("name").asText()).isEqualTo("Residual Goop");
+        assertThat(residualGoopRow.path("categoryKey").asText()).isNotBlank();
+        assertThat(residualGoopRow.path("category").asText()).isNotBlank();
         assertThat(residualGoopRow.has("variantIndex")).isTrue();
         assertThat(residualGoopRow.has("ingredient1")).isTrue();
         assertThat(residualGoopRow.has("ingredient2")).isTrue();
         assertThat(residualGoopRow.has("ingredient3")).isTrue();
+        assertThat(residualGoopRow.has("target")).isTrue();
+        assertThat(residualGoopRow.has("ingredient1Entries")).isTrue();
+        assertThat(residualGoopRow.has("ingredient2Entries")).isTrue();
+        assertThat(residualGoopRow.has("ingredient3Entries")).isTrue();
         assertThat(residualGoopRow.has("price")).isFalse();
         assertThat(residualGoopRow.path("ingredient1").asText()).isNotBlank();
+        assertThat(residualGoopRow.path("target").path("destination").asText()).isEqualTo("refinery");
+
+        JsonNode activatedQuartziteRow = findByKey(overviewResponse.getBody(), "Aktiviertes Quarzit");
+        assertThat(activatedQuartziteRow).isNotNull();
+        assertThat(activatedQuartziteRow.path("ingredient1Entries").get(0).path("destination").asText()).isEqualTo("refinery");
+        assertThat(activatedQuartziteRow.path("ingredient1Entries").get(0).path("key").asText()).isEqualTo("Quarzit");
+        assertThat(activatedQuartziteRow.path("ingredient1Entries").get(0).path("name").asText()).isEqualTo("Quartzite");
     }
 
     private JsonNode findByKey(JsonNode entries, String key) {

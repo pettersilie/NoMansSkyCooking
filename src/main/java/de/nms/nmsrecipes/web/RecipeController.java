@@ -7,6 +7,7 @@ import de.nms.nmsrecipes.model.TreeNode;
 import de.nms.nmsrecipes.model.IngredientSlot;
 import de.nms.nmsrecipes.service.LocalizationService;
 import de.nms.nmsrecipes.service.ProductPriceService;
+import de.nms.nmsrecipes.service.RefineryCatalogService;
 import de.nms.nmsrecipes.service.RecipeCatalogService;
 import de.nms.nmsrecipes.service.RecipeGraphService;
 import jakarta.validation.Valid;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -34,15 +37,18 @@ public class RecipeController {
     private final RecipeGraphService graphService;
     private final ProductPriceService priceService;
     private final LocalizationService localizationService;
+    private final RefineryCatalogService refineryCatalogService;
 
     public RecipeController(RecipeCatalogService catalogService,
                             RecipeGraphService graphService,
                             ProductPriceService priceService,
-                            LocalizationService localizationService) {
+                            LocalizationService localizationService,
+                            RefineryCatalogService refineryCatalogService) {
         this.catalogService = catalogService;
         this.graphService = graphService;
         this.priceService = priceService;
         this.localizationService = localizationService;
+        this.refineryCatalogService = refineryCatalogService;
     }
 
     @GetMapping("/products")
@@ -207,27 +213,78 @@ public class RecipeController {
                 .forEach(slot -> {
                     int index = slot.position() - 1;
                     if (index >= 0 && index < topLevelIngredients.length) {
-                        topLevelIngredients[index] = localizeIngredientOptions(slot.options(), language);
+                        topLevelIngredients[index] = formatOverviewEntries(overviewEntries(slot.options(), language));
                     }
                 });
 
         return new RecipeOverviewRow(
                 definition.name(),
-                localizeTerm(definition.name(), language),
+                localizeAnyTerm(definition.name(), language),
+                definition.category(),
+                localizeCategory(definition.category(), language),
                 variant.index(),
                 topLevelIngredients[0],
                 topLevelIngredients[1],
                 topLevelIngredients[2],
-                priceService.findDisplayPrice(definition.name()).orElse(null));
+                priceService.findDisplayPrice(definition.name()).orElse(null),
+                new OverviewEntry(definition.name(), localizeAnyTerm(definition.name(), language), "cooking"),
+                overviewEntriesForPosition(variant, language, 1),
+                overviewEntriesForPosition(variant, language, 2),
+                overviewEntriesForPosition(variant, language, 3));
     }
 
-    private String localizeIngredientOptions(List<String> options, String language) {
-        return options.stream()
-                .map(option -> localizeTerm(option, language))
+    private List<OverviewEntry> overviewEntriesForPosition(RecipeVariant variant, String language, int position) {
+        return variant.slots().stream()
+                .filter(slot -> slot.position() == position)
+                .findFirst()
+                .map(slot -> overviewEntries(slot.options(), language))
+                .orElse(List.of());
+    }
+
+    private List<OverviewEntry> overviewEntries(List<String> options, String language) {
+        Map<String, OverviewEntry> entries = new LinkedHashMap<>();
+        for (String option : options) {
+            OverviewEntry entry = toOverviewEntry(option, language);
+            entries.putIfAbsent(entry.key(), entry);
+        }
+        return List.copyOf(entries.values());
+    }
+
+    private String formatOverviewEntries(List<OverviewEntry> entries) {
+        return entries.stream()
+                .map(OverviewEntry::name)
                 .map(String::trim)
-                .filter(option -> !option.isBlank())
-                .distinct()
+                .filter(name -> !name.isBlank())
                 .collect(Collectors.joining(" / "));
+    }
+
+    private OverviewEntry toOverviewEntry(String term, String language) {
+        String cookingKey = catalogService.canonicalNameOrSelf(term);
+        if (catalogService.findDefinition(cookingKey).isPresent()) {
+            return new OverviewEntry(cookingKey, localizeAnyTerm(cookingKey, language), "cooking");
+        }
+
+        String refineryKey = refineryCatalogService.canonicalNameOrSelf(term);
+        if (refineryCatalogService.findDefinition(refineryKey).isPresent()) {
+            return new OverviewEntry(refineryKey, localizeAnyTerm(refineryKey, language), "refinery");
+        }
+
+        String canonicalKey = cookingKey;
+        if (!catalogService.findEnglishTermName(cookingKey).isPresent()
+                && !cookingKey.equals(term)
+                && refineryCatalogService.findEnglishTermName(refineryKey).isPresent()) {
+            canonicalKey = refineryKey;
+        }
+        return new OverviewEntry(canonicalKey, localizeAnyTerm(canonicalKey, language), null);
+    }
+
+    private String localizeAnyTerm(String term, String language) {
+        return localizationService.localizeTerm(
+                term,
+                language,
+                catalogService.findEnglishTermName(term)
+                        .or(() -> refineryCatalogService.findEnglishTermName(term))
+                        .orElse(null));
     }
 
     public record CategorySummary(String key, String name) {
@@ -248,11 +305,20 @@ public class RecipeController {
 
     public record RecipeOverviewRow(String key,
                                     String name,
+                                    String categoryKey,
+                                    String category,
                                     int variantIndex,
                                     String ingredient1,
                                     String ingredient2,
                                     String ingredient3,
-                                    String price) {
+                                    String price,
+                                    OverviewEntry target,
+                                    List<OverviewEntry> ingredient1Entries,
+                                    List<OverviewEntry> ingredient2Entries,
+                                    List<OverviewEntry> ingredient3Entries) {
+    }
+
+    public record OverviewEntry(String key, String name, String destination) {
     }
 
     public record IngredientSearchResult(String key,

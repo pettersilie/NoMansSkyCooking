@@ -61,7 +61,7 @@ Each cooking product row shows:
 - localized product name
 - variant count
 - minimum and maximum ingredient slot count
-- optional stored price
+- optional stored price per 100 units
 
 Selecting a product loads it as the root of the graph.
 
@@ -126,6 +126,8 @@ Navigation behavior:
 
 Only cooking products support price editing.
 
+Prices are stored and displayed per 100 units.
+
 To save a price:
 
 1. enter a value in the product row
@@ -150,18 +152,26 @@ The `Cooking Recipe Overview` page shows every cooking recipe variant in a table
 Each row contains:
 
 - the target cooking product
+- the localized cooking category
 - top-level ingredient 1
 - top-level ingredient 2
 - top-level ingredient 3
-- stored price
+- stored price per 100 units
 
 You can:
 
 - filter by ingredient text
+- filter by category
 - sort by target product
 - sort by price
 
 Filtering checks the target product and the three top-level ingredient columns.
+
+Clickable overview entries:
+
+- the target product opens the cooking detail page
+- a craftable cooking ingredient opens the cooking detail page
+- a craftable refinery ingredient opens the refinery detail page
 
 ## Refinery Page
 
@@ -234,6 +244,7 @@ The `Refinery Overview` page shows every refinery variant in a table.
 Each row contains:
 
 - the target refinery product
+- the localized refinery category
 - top-level ingredient 1
 - top-level ingredient 2
 - top-level ingredient 3
@@ -243,9 +254,16 @@ Ingredient quantities are included inline when applicable, for example `2 x Curs
 You can:
 
 - filter by ingredient text
+- filter by category
 - sort by target product
 
 The refinery overview does not include a price column.
+
+Clickable overview entries:
+
+- the target product opens the refinery detail page
+- a craftable refinery ingredient opens the refinery detail page
+- a craftable cooking ingredient opens the cooking detail page
 
 ## Adding A Cooking Category
 

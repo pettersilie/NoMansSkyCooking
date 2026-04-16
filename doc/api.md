@@ -114,7 +114,7 @@ Returns the cooking dependency graph for a selected product.
   "key": "Sahne",
   "label": "Cream",
   "type": "product",
-  "detail": "Price 12,50",
+  "detail": "Price per 100 units: 12,50",
   "children": []
 }
 ```
@@ -171,11 +171,27 @@ Returns one row per cooking recipe variant for the `Cooking Recipe Overview` pag
   {
     "key": "Sahne",
     "name": "Cream",
+    "categoryKey": "Butter",
+    "category": "Dairy",
     "variantIndex": 1,
     "ingredient1": "Fresh Milk",
     "ingredient2": "",
     "ingredient3": "",
-    "price": "12,50"
+    "price": "12,50",
+    "target": {
+      "key": "Sahne",
+      "name": "Cream",
+      "destination": "cooking"
+    },
+    "ingredient1Entries": [
+      {
+        "key": "Frische Milch",
+        "name": "Fresh Milk",
+        "destination": null
+      }
+    ],
+    "ingredient2Entries": [],
+    "ingredient3Entries": []
   }
 ]
 ```
@@ -183,12 +199,16 @@ Returns one row per cooking recipe variant for the `Cooking Recipe Overview` pag
 #### Notes
 
 - each row represents one cooking variant
+- `categoryKey` contains the canonical cooking category key
+- `category` contains the localized category label
 - `ingredient1` through `ingredient3` contain only the top-level slots of that variant
+- `target` and `ingredient1Entries` through `ingredient3Entries` expose clickable detail targets for the overview UI
+- `destination` is `cooking`, `refinery`, or `null`
 - `price` is formatted for display and may be `null`
 
 ### PUT /api/prices
 
-Creates, updates, or removes a cooking product price in `data/product-prices.json`.
+Creates, updates, or removes a cooking product price per 100 units in `data/product-prices.json`.
 
 #### Query Parameters
 
@@ -206,7 +226,7 @@ Creates, updates, or removes a cooking product price in `data/product-prices.jso
 
 #### Behavior
 
-- if `price` contains a valid number, the price is stored
+- if `price` contains a valid number, the price per 100 units is stored
 - if `price` is blank, the existing price is removed
 - the `key` must identify a known cooking product
 
@@ -468,10 +488,26 @@ Returns one row per refinery variant for the `Refinery Overview` page.
   {
     "key": "Restsubstanz",
     "name": "Residual Goop",
+    "categoryKey": "Schrott",
+    "category": "Junk",
     "variantIndex": 1,
     "ingredient1": "2 x Cursed Dust",
     "ingredient2": "",
-    "ingredient3": ""
+    "ingredient3": "",
+    "target": {
+      "key": "Restsubstanz",
+      "name": "Residual Goop",
+      "destination": "refinery"
+    },
+    "ingredient1Entries": [
+      {
+        "key": "Verfluchter Staub",
+        "name": "2 x Cursed Dust",
+        "destination": null
+      }
+    ],
+    "ingredient2Entries": [],
+    "ingredient3Entries": []
   }
 ]
 ```
@@ -479,7 +515,11 @@ Returns one row per refinery variant for the `Refinery Overview` page.
 #### Notes
 
 - each row represents one refinery variant
+- `categoryKey` contains the canonical refinery category key
+- `category` contains the localized category label
 - only top-level refinery inputs are returned
+- `target` and `ingredient1Entries` through `ingredient3Entries` expose clickable detail targets for the overview UI
+- `destination` is `refinery`, `cooking`, or `null`
 - there is no price field in the refinery overview
 
 ## Error Handling

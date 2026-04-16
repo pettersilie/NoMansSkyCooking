@@ -192,9 +192,9 @@ class RecipeGraphServiceTest {
         TreeNode graph = graphService.buildGraph("Testprodukt", "en");
         TreeNode rawNode = graph.children().get(0).children().get(0);
 
-        assertThat(graph.detail()).isEqualTo("Price 10,00");
+        assertThat(graph.detail()).isEqualTo("Price per 100 units: 10,00");
         assertThat(rawNode.type()).isEqualTo("raw");
-        assertThat(rawNode.detail()).isEqualTo("Price 2,50");
+        assertThat(rawNode.detail()).isEqualTo("Price per 100 units: 2,50");
     }
 
     private RecipeCatalogService createCatalogService(RecipeBook recipeBook) {

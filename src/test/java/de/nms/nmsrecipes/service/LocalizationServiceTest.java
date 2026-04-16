@@ -33,4 +33,12 @@ class LocalizationServiceTest {
         assertThat(localizationService.localizeErrorMessage("Rezept existiert bereits: Test", "en"))
                 .isEqualTo("Recipe already exists: Test");
     }
+
+    @Test
+    void formatsPriceDetailsAsPer100Units() {
+        assertThat(localizationService.priceDetail("12,50", "de"))
+                .isEqualTo("Preis pro 100 Stück: 12,50");
+        assertThat(localizationService.priceDetail("12,50", "en"))
+                .isEqualTo("Price per 100 units: 12,50");
+    }
 }

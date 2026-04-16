@@ -112,11 +112,17 @@ class RecipeControllerIntegrationTest {
         assertThat(overviewResponse.getBody()).isNotEmpty();
         assertThat(overviewResponse.getBody().get(0).has("key")).isTrue();
         assertThat(overviewResponse.getBody().get(0).has("name")).isTrue();
+        assertThat(overviewResponse.getBody().get(0).has("categoryKey")).isTrue();
+        assertThat(overviewResponse.getBody().get(0).has("category")).isTrue();
         assertThat(overviewResponse.getBody().get(0).has("variantIndex")).isTrue();
         assertThat(overviewResponse.getBody().get(0).has("ingredient1")).isTrue();
         assertThat(overviewResponse.getBody().get(0).has("ingredient2")).isTrue();
         assertThat(overviewResponse.getBody().get(0).has("ingredient3")).isTrue();
         assertThat(overviewResponse.getBody().get(0).has("price")).isTrue();
+        assertThat(overviewResponse.getBody().get(0).has("target")).isTrue();
+        assertThat(overviewResponse.getBody().get(0).has("ingredient1Entries")).isTrue();
+        assertThat(overviewResponse.getBody().get(0).has("ingredient2Entries")).isTrue();
+        assertThat(overviewResponse.getBody().get(0).has("ingredient3Entries")).isTrue();
 
         ResponseEntity<JsonNode> englishOverviewResponse =
                 restTemplate.getForEntity("/api/recipes/overview?lang=en", JsonNode.class);
@@ -126,7 +132,17 @@ class RecipeControllerIntegrationTest {
         JsonNode creamRow = findOverviewRowByKey(englishOverviewResponse.getBody(), "Sahne");
         assertThat(creamRow).isNotNull();
         assertThat(creamRow.get("name").asText()).isEqualTo("Cream");
+        assertThat(creamRow.get("categoryKey").asText()).isNotBlank();
+        assertThat(creamRow.get("category").asText()).isNotBlank();
         assertThat(creamRow.get("ingredient1").asText()).isNotBlank();
+        assertThat(creamRow.path("target").path("destination").asText()).isEqualTo("cooking");
+
+        JsonNode flowerWaffleRow = findOverviewRowByKey(englishOverviewResponse.getBody(), "Blütenwaffel");
+        assertThat(flowerWaffleRow).isNotNull();
+        assertThat(flowerWaffleRow.path("ingredient1Entries").get(0).path("destination").asText()).isEqualTo("cooking");
+        assertThat(flowerWaffleRow.path("ingredient2Entries").get(0).path("destination").asText()).isEqualTo("refinery");
+        assertThat(flowerWaffleRow.path("ingredient2Entries").get(0).path("key").asText()).isEqualTo("Sternenknolle");
+        assertThat(flowerWaffleRow.path("ingredient2Entries").get(0).path("name").asText()).isEqualTo("Star Bulb");
     }
 
     @Test
@@ -158,7 +174,7 @@ class RecipeControllerIntegrationTest {
         ResponseEntity<JsonNode> graphResponse = restTemplate.getForEntity("/api/graph?product={product}", JsonNode.class, productKey);
         assertThat(graphResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(graphResponse.getBody()).isNotNull();
-        assertThat(graphResponse.getBody().get("detail").asText()).isEqualTo("Preis 12,50");
+        assertThat(graphResponse.getBody().get("detail").asText()).isEqualTo("Preis pro 100 Stück: 12,50");
         assertThat(graphResponse.getBody().get("label").asText()).isEqualTo(productName);
 
         ResponseEntity<JsonNode> overviewResponse = restTemplate.getForEntity("/api/recipes/overview", JsonNode.class);

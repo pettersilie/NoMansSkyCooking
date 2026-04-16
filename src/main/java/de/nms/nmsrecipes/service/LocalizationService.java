@@ -84,10 +84,10 @@ public class LocalizationService {
         }
 
         if (isEnglish(language)) {
-            return "Price " + displayPrice;
+            return "Price per 100 units: " + displayPrice;
         }
 
-        return "Preis " + displayPrice;
+        return "Preis pro 100 Stück: " + displayPrice;
     }
 
     public String quantityDetail(int quantity, String language) {

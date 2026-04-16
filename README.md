@@ -8,7 +8,7 @@ It provides:
 - a cooking graph view for recursive recipe dependencies
 - a refinery graph view for recursive refinery dependencies
 - sortable overview tables for cooking recipes and refinery processes
-- cooking product filtering, category filtering, ingredient search, and price editing
+- cooking product filtering, category filtering, ingredient search, and price editing per 100 units
 - authoring workflows for new cooking categories and new cooking recipes
 
 The runtime data is split across three JSON files:
@@ -74,7 +74,7 @@ Cooking features:
 - sort by category, name, or price
 - search by ingredient across recursive dependency chains
 - open the graph for any craftable cooking product
-- edit stored prices for cooking products
+- edit stored prices per 100 units for cooking products
 - create new cooking categories and cooking recipes directly from the UI
 
 Refinery features:
@@ -88,8 +88,10 @@ Refinery features:
 
 Overview pages:
 
-- `Cooking Recipe Overview` lists every cooking recipe variant with target product, top-level ingredients, and price
-- `Refinery Overview` lists every refinery variant with target product and top-level ingredients
+- `Cooking Recipe Overview` lists every cooking recipe variant with target product, category, top-level ingredients, and price
+- `Refinery Overview` lists every refinery variant with target product, category, and top-level ingredients
+- both overview pages support ingredient filtering and category filtering
+- overview entries can be clicked to open the matching cooking or refinery detail page when a linked target exists
 
 ## Build And Distribution
 

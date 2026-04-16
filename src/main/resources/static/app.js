@@ -35,7 +35,7 @@ const UI_TEXT = {
         productSortLabel: "Sortierung",
         sortCategory: "Kategorie",
         sortName: "Name",
-        sortPrice: "Preis",
+        sortPrice: "Preis pro 100 Stück",
         productCategoryFilterLabel: "Kategorie",
         allCategories: "Alle Kategorien",
         uncategorized: "Ohne Kategorie",
@@ -60,12 +60,12 @@ const UI_TEXT = {
         ingredientSearchLoadError: "Zutaten-Suche konnte nicht geladen werden.",
         enterAtLeastTwo: "Mindestens 2 Zeichen eingeben.",
         searching: "Suche...",
-        priceLabel: "Preis",
-        priceInputTitle: "Mit Enter speichern, mit leerem Feld entfernen",
-        statusSavingPrice: "Speichere Preis fuer {product}...",
+        priceLabel: "Preis pro 100 Stück",
+        priceInputTitle: "Mit Enter speichern, mit leerem Feld entfernen. Preis pro 100 Stück.",
+        statusSavingPrice: "Speichere Preis pro 100 Stück fuer {product}...",
         priceSaveError: "Preis konnte nicht gespeichert werden.",
-        statusPriceSaved: "Preis gespeichert: {product} = {price}",
-        statusPriceRemoved: "Preis entfernt: {product}",
+        statusPriceSaved: "Preis pro 100 Stück gespeichert: {product} = {price}",
+        statusPriceRemoved: "Preis pro 100 Stück entfernt: {product}",
         collapseIngredients: "Zutaten einklappen",
         expandIngredients: "Zutaten aufklappen",
         loadAsRoot: "Als neues Endprodukt laden",
@@ -89,7 +89,7 @@ const UI_TEXT = {
         productSortLabel: "Sort by",
         sortCategory: "Category",
         sortName: "Name",
-        sortPrice: "Price",
+        sortPrice: "Price per 100 units",
         productCategoryFilterLabel: "Category",
         allCategories: "All categories",
         uncategorized: "Uncategorized",
@@ -114,12 +114,12 @@ const UI_TEXT = {
         ingredientSearchLoadError: "The ingredient search could not be loaded.",
         enterAtLeastTwo: "Enter at least 2 characters.",
         searching: "Searching...",
-        priceLabel: "Price",
-        priceInputTitle: "Press Enter to save, clear the field to remove the price",
-        statusSavingPrice: "Saving price for {product}...",
+        priceLabel: "Price per 100 units",
+        priceInputTitle: "Press Enter to save, clear the field to remove the price per 100 units",
+        statusSavingPrice: "Saving price per 100 units for {product}...",
         priceSaveError: "The price could not be saved.",
-        statusPriceSaved: "Saved price: {product} = {price}",
-        statusPriceRemoved: "Removed price: {product}",
+        statusPriceSaved: "Saved price per 100 units: {product} = {price}",
+        statusPriceRemoved: "Removed price per 100 units: {product}",
         collapseIngredients: "Collapse ingredients",
         expandIngredients: "Expand ingredients",
         loadAsRoot: "Load as the new root product",
@@ -1076,7 +1076,7 @@ function buildProductMeta(product) {
     );
 
     if (product.price) {
-        parts.push(`${t("priceLabel")} ${product.price}`);
+        parts.push(`${t("priceLabel")}: ${product.price}`);
     }
 
     return parts.join(" | ");
@@ -1093,7 +1093,7 @@ function buildIngredientResultMeta(result) {
     ];
 
     if (result.price) {
-        parts.push(`${t("priceLabel")} ${result.price}`);
+        parts.push(`${t("priceLabel")}: ${result.price}`);
     }
 
     return parts.join(" | ");

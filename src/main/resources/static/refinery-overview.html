@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Refinery Overview</title>
-    <link rel="stylesheet" href="/app.css?v=20260415e">
+    <link rel="stylesheet" href="/app.css?v=20260416a">
 </head>
 <body>
 <details id="mainMenu" class="main-menu">
@@ -30,16 +30,22 @@
         <div class="eyebrow">No Man's Sky</div>
         <h1 id="pageTitle">Refinery Overview</h1>
         <p id="pageIntro" class="intro">
-            This table lists every refinery process variant with its target product, the three top-level inputs and the stored price.
+            This table lists every refinery process variant with its target product and the three top-level inputs. Clickable entries open the matching detail pages.
         </p>
         <p id="pageHint" class="hint">
-            Filter by any input name, then sort directly by target product or price.
+            Filter by any input name or category, then sort directly by target product.
         </p>
 
         <div class="overview-toolbar">
             <div class="inline-control overview-filter-control">
                 <label id="ingredientFilterLabel" for="ingredientFilter">Filter by ingredient</label>
                 <input id="ingredientFilter" type="text" autocomplete="off" placeholder="Enter an ingredient name">
+            </div>
+            <div class="inline-control overview-filter-control">
+                <label id="categoryFilterLabel" for="categoryFilter">Category</label>
+                <select id="categoryFilter">
+                    <option value="">All categories</option>
+                </select>
             </div>
         </div>
 
@@ -62,6 +68,6 @@
 </main>
 
 <script src="/main-menu.js?v=20260415f"></script>
-<script src="/refinery-overview.js?v=20260415a"></script>
+<script src="/refinery-overview.js?v=20260416b"></script>
 </body>
 </html>
