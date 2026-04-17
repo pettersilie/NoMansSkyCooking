@@ -967,7 +967,7 @@
       "englishName": "Nectar Islands"
     },
     {
-      "name": "Nektarschwammkuchen",
+      "name": "Nektar-Biskuitkuchen",
       "englishName": "Nectar Sponge Cake"
     },
     {
@@ -1083,7 +1083,7 @@
       "englishName": "Juicy Thorax"
     },
     {
-      "name": "Sahnefinger",
+      "name": "Sahnekekse",
       "englishName": "Cream Fingers"
     },
     {
@@ -7394,7 +7394,7 @@
       ]
     },
     {
-      "name": "Nektarschwammkuchen",
+      "name": "Nektar-Biskuitkuchen",
       "category": "Erweiterte Kuchen",
       "variants": [
         [
@@ -7924,7 +7924,7 @@
       ]
     },
     {
-      "name": "Sahnefinger",
+      "name": "Sahnekekse",
       "category": "Feingebäck",
       "variants": [
         [

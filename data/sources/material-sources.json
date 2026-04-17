@@ -1,0 +1,877 @@
+{
+  "excluded": [
+    "Beliebige andere gekochte Meeresfrucht"
+  ],
+  "groups": [
+    {
+      "key": "fishing",
+      "name": "Fischfang und Meeresbeute",
+      "englishName": "Fishing and Marine Catches",
+      "summary": "Diese Eintraege stammen aus dem Angelsystem und aus maritimen Fangtabellen.",
+      "englishSummary": "These entries come from the fishing system and its marine catch tables.",
+      "where": "Auf Planeten mit Wasser, an Kuesten, Seen und in Ozeanen. Seltene Faenge haengen haeufig von Biom, Wassertiefe, Tageszeit, Wetter und Koeder ab.",
+      "englishWhere": "On planets with water, along coasts, in lakes, and in oceans. Rare catches often depend on biome, water depth, time of day, weather, and bait.",
+      "how": "Fange sie mit der Angel, mit Koederkapseln oder mit automatischen Fallen. Fuer seltene Exemplare lohnt es sich, den Angelplatz zu wechseln und den Fischkatalog oder Community-Guides zu konsultieren.",
+      "englishHow": "Catch them with the fishing rod, bait capsules, or automatic traps. For rare catches, it often helps to change fishing spots and consult the fish catalogue or community guides.",
+      "notes": "Wenn ein Eintrag wie der Name eines besonderen Fangs klingt, gehoert er meist zum Aquarius-Fischkatalog und kann weder gekocht noch raffiniert werden. In der Galaxiekarte sind Systeme mit sehr wasserreichen Planeten oft als 'Water' markiert; purple-class Systeme aus Worlds Part II sind besonders gute Ziele fuer extrem tiefe Ozeane und echte Waterworlds.",
+      "englishNotes": "If an entry sounds like the name of a unique catch, it is usually part of the Aquarius fishing catalogue and cannot be produced through cooking or refining. In the Galactic Map, systems with very water-rich planets are often marked as 'Water'; purple-class systems from Worlds Part II are especially good targets for extremely deep oceans and true waterworlds.",
+      "links": [
+        {
+          "label": "Steam Community fishing guide",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3331441951"
+        },
+        {
+          "label": "No Man's Sky Resources - Food",
+          "url": "https://www.nomansskyresources.com/food"
+        },
+        {
+          "label": "No Man's Sky Resources - Underwater",
+          "url": "https://www.nomansskyresources.com/guide-pages/underwater"
+        },
+        {
+          "label": "No Man's Sky - Worlds Part II",
+          "url": "https://www.nomanssky.com/worlds-part-ii-update/"
+        }
+      ],
+      "materials": [
+        "Allsehender Wurm",
+        "Alpha-Tintenfisch",
+        "Anemonenartige Anomalie",
+        "Aschenschnecke",
+        "Atlantiskrabbe",
+        "Aufgetaute Diamantflosse",
+        "Aurora-Qualle",
+        "Ausgemergeltes Rasierklingenmaul",
+        "Basaltzahn-Bueckling",
+        "Besenfisch",
+        "Bezaubernder Kerzenfisch",
+        "Bitterschuppenrochen",
+        "Blasenaal",
+        "Blauer Schleifenschwanz",
+        "Bleicher Knochenfisch",
+        "Bluehender Schellfisch",
+        "Brinienwurm",
+        "Bruchkrabbler",
+        "Der Fischer",
+        "Der Lunker",
+        "Der Schlund des Titanen",
+        "Donnerflosse",
+        "Drachenfisch",
+        "Dschungel-Rotflosse",
+        "Dunstschnecke",
+        "Daemmerungshoehlenfisch",
+        "Eisblutschluerfer",
+        "Eispanzerschildkroete",
+        "Eispfeil",
+        "Eisschuppenforelle",
+        "Erodierte Muschel",
+        "Fahles Schneeschwaenzchen",
+        "Feldscher Pfeilfisch",
+        "Felsbarsch",
+        "Ferrit-Bogenflosse",
+        "Fisch",
+        "Fleckige Protoflosse",
+        "Fluesternder Knochenfisch",
+        "Frostbeulenrochen",
+        "Frostschalenmuschel",
+        "Fumarolenschluerfer",
+        "Gabelschwanzspleisser",
+        "Gallenwurm",
+        "Gamma-Tintenfisch",
+        "Gaswurm",
+        "Gebleichter Oktopus",
+        "Gefrorene Wellhornschnecke",
+        "Gefrorenes Messermaul",
+        "Geisterflosse",
+        "Gekochter Schnapper",
+        "Geleegarnele",
+        "Geno-Garnele",
+        "Gewoehnlicher Seidenschwanz",
+        "Gewoehnlicher Sonnenfisch",
+        "Giftige Triggerflosse",
+        "Giftiger Steinfisch",
+        "Giftqualle",
+        "Giftzahnwusler",
+        "Glasengel",
+        "Gletscherkarpfen",
+        "Gold-Seeigel",
+        "Goldqualle",
+        "Grosser Felsenzahn",
+        "Gruene Ringelkrake",
+        "Gruenschuppiger Hering",
+        "Haarige Riesenkrabbe",
+        "Helix-Saegefisch",
+        "Heulender Venttail",
+        "Hirnaal",
+        "Hohler Tintenfisch",
+        "Hornhecht",
+        "Hyperherzmuschel",
+        "Hypnotische Krake",
+        "Hoehlenwanderer",
+        "Ionisierte Auster",
+        "Ionisierte Muschel",
+        "Kadmium-Perlenmuschel",
+        "Kalkschuppennibbler",
+        "Kalkschuppenschnapper",
+        "Kandelaberkrake",
+        "Kernskipper",
+        "Kind von Helios",
+        "Kleinere Staubflosse",
+        "Kolossaler Kieferfisch",
+        "Kolossgarnele",
+        "Kolosskalmar",
+        "Kreischende Auster",
+        "Kreischende Krabbe",
+        "Kristallflossenhai",
+        "Kristallqualle",
+        "Kugelblitzaal",
+        "Kuerbishai",
+        "Lampenrochen",
+        "Langmaulschnapper",
+        "Lavaschuppige Forelle",
+        "Leviathan-Laich",
+        "Liebliche Qualle",
+        "Magmahai",
+        "Mandelbrotwurm",
+        "Mantarochen",
+        "Meeresgluehwuermchen",
+        "Megalodon",
+        "Metallgarnele",
+        "Mitternachtsaal",
+        "Mondschildkroete",
+        "Murmurfisch",
+        "Mus-Seeigel",
+        "Narrengoldfisch",
+        "Nautilusschnecke",
+        "Nebelschlange",
+        "Nicht-euklidischer Plattfisch",
+        "Ozeanstern",
+        "Plasmatintenfisch",
+        "Polyschuppen-Hering",
+        "Quecksilbermutter",
+        "Riesenbartfisch",
+        "Riesenrochen",
+        "Riesige Eisflosse",
+        "Riesige Hexenflosse",
+        "Riesige Schmelzflosse",
+        "Riesiger Moosruecken",
+        "Riesiger Sonnenrochen",
+        "Riffaal",
+        "Riffwaechter",
+        "Salzige Fischfilets",
+        "Salzschuppenblaeuling",
+        "Schattenflosse",
+        "Scheiterflosse",
+        "Schiefer-Seestern",
+        "Schimmernder Katzenfisch",
+        "Schimmernder Wimpernschwanz",
+        "Schlammkrabbe",
+        "Schleierqualle",
+        "Schwarzaeugiger Hai",
+        "Schwefelfisch",
+        "Sechseckige Elritze",
+        "Seegurke",
+        "Seltene Daemmerflosse",
+        "Siedhai",
+        "Silikatkrabbe",
+        "Singende Seeschnecke",
+        "Skorpionfisch",
+        "Smaragdgruener Sonnenstern",
+        "Solarschabe",
+        "Soleskipper",
+        "Sonnenfleckenaal",
+        "Sonnenstich-Basker",
+        "Spiegelschuppen-Skipper",
+        "Stachelseestern",
+        "Steinkalkhai",
+        "Stern-Muschelkrabbe",
+        "Sternengucker",
+        "Strahlender Sonnenfisch",
+        "Stromaal",
+        "Saeurekugelfisch",
+        "Suesswasser-Elritze",
+        "Suesswasser-Skipper",
+        "TIEFSEE-FISCHER",
+        "Teufelsbarsch",
+        "Titanwurmlarve",
+        "Transparenter Schluerfer",
+        "Traege Wellhornschnecke",
+        "Umgekehrter Hirnfisch",
+        "Umgekehrter Schnapper",
+        "Unsterblicher Plattfisch",
+        "Unter Druck stehende Muschel",
+        "Uralter Eisenschwanz",
+        "Vampirtintenfisch",
+        "Vektorflosse",
+        "Verdrehter Schluerfer",
+        "Verkrusteter Wurm",
+        "Vielmaeuliger Lunker",
+        "Vielaeugige Qualle",
+        "Viperaal",
+        "Wandermuschel",
+        "Wandernde Tangflosse",
+        "Warziger Froschfisch",
+        "Wasserlaeufer",
+        "Weltschuppenmuschel",
+        "Wespenfisch",
+        "Wespenpfeil",
+        "Windender Hirnwurm",
+        "Winziger Katzenhai",
+        "Wrackkiefer",
+        "Wulstiger Schnapper",
+        "Waechteraal",
+        "Zyklonaal",
+        "Zyklopenaal",
+        "Aetzender Seeigel",
+        "Oelflosse"
+      ]
+    },
+    {
+      "key": "flora_harvest",
+      "name": "Erntepflanzen und Feldfruechte",
+      "englishName": "Harvest Crops and Flora",
+      "summary": "Diese Materialien stammen aus planetarer Flora oder aus anbaubaren Nutzpflanzen.",
+      "englishSummary": "These materials come from planetary flora or from crops you can cultivate yourself.",
+      "where": "In passenden Biomen in freier Wildbahn oder in Hydroponik-, Biodom- und Frachter-Anbauraeumen.",
+      "englishWhere": "In the wild on suitable biomes, or in hydroponic trays, biodomes, and freighter grow rooms.",
+      "how": "Ernte sie in der Wildnis oder baue sie nach dem Freischalten der entsprechenden Blaupausen gezielt auf deiner Basis an.",
+      "englishHow": "Harvest them in the wild, or grow them deliberately at your base once the relevant crop blueprints are unlocked.",
+      "notes": "Pflanzen sind meist die zuverlaessigste Quelle fuer suesse, saftige oder staerkehaltige Kochzutaten.",
+      "englishNotes": "Crops are usually the most reliable source of sweet, juicy, or starch-based cooking ingredients.",
+      "links": [
+        {
+          "label": "No Man's Sky Resources - Food",
+          "url": "https://www.nomansskyresources.com/food"
+        },
+        {
+          "label": "No Man's Sky Resources - Raw Materials",
+          "url": "https://www.nomansskyresources.com/raw-materials"
+        },
+        {
+          "label": "No Man's Sky Wiki - Item Id List",
+          "url": "https://nomanssky.fandom.com/wiki/Item_Id_List"
+        }
+      ],
+      "materials": [
+        "Aloe-Fleisch",
+        "Feuerbeere",
+        "Gefrorene Knollen",
+        "Grahbeere",
+        "Heptaploid-Weizen",
+        "Hexabeere",
+        "Impulsbohnen",
+        "Jadeerbsen",
+        "Sirup-Nektar",
+        "Suesswurzel"
+      ]
+    },
+    {
+      "key": "fauna_feed",
+      "name": "Gefuetterte Kreaturenprodukte",
+      "englishName": "Fed Creature Products",
+      "summary": "Diese Zutaten erhaeltst du, indem du passende Kreaturen fuetterst oder sie ueber eine Vieheinheit aberntest.",
+      "englishSummary": "These ingredients are obtained by feeding suitable creatures or harvesting them with a Livestock Unit.",
+      "where": "Auf Planeten mit geeigneter Fauna. Ein Scan des Kreaturenprofils zeigt an, welche Produkte eine Spezies liefern kann.",
+      "englishWhere": "On planets with suitable fauna. A scan of the creature profile shows which products a species can yield.",
+      "how": "Fuettere die Kreaturen mit Kreaturenkugeln oder nutze auf deiner Basis automatische Fuetterer und Vieheinheiten.",
+      "englishHow": "Feed the creatures with Creature Pellets, or use Automatic Feeders and Livestock Units at your base.",
+      "notes": "Milch, Eier, Honig und aehnliche Produkte haengen stark von Koerperbau und Verhalten der jeweiligen Spezies ab.",
+      "englishNotes": "Milk, eggs, honey, and similar products depend heavily on the body type and behaviour of the species in question.",
+      "links": [
+        {
+          "label": "No Man's Sky Resources - Food",
+          "url": "https://www.nomansskyresources.com/food"
+        },
+        {
+          "label": "Reddit - Livestock and creature product tips",
+          "url": "https://www.reddit.com/r/NoMansSkyTheGame/comments/1qyckk4/how_to_rake_in_hundreds_of_millions_of_units_per/"
+        },
+        {
+          "label": "No Man's Sky Wiki - Animal Byproduct",
+          "url": "https://nomanssky.fandom.com/wiki/Animal_Byproduct"
+        }
+      ],
+      "materials": [
+        "Frische Milch",
+        "Grosse Eier",
+        "Kreaturenei",
+        "Kropfmilch",
+        "Leopardenfrucht",
+        "Riesenei",
+        "Regis-Fett",
+        "Warme Proto-Milch",
+        "Wilde Milch",
+        "Knochenklumpen",
+        "Gesammelte Pilze",
+        "Zaehe Draehte",
+        "Holz-„Apfel“",
+        "Klebriger „Honig“"
+      ]
+    },
+    {
+      "key": "fauna_hunt",
+      "name": "Faunadropps und Organstuecke",
+      "englishName": "Fauna Drops and Organ Parts",
+      "summary": "Diese Zutaten erhaeltst du direkt von Kreaturen oder aus deren organischen Resten.",
+      "englishSummary": "These ingredients come directly from fauna or from their organic remains.",
+      "where": "Auf fast allen Planeten mit Fauna, besonders bei passenden Kreaturentypen oder aggressiven Lebensformen.",
+      "englishWhere": "On most planets with fauna, especially from matching creature archetypes or aggressive lifeforms.",
+      "how": "Scanne Kreaturen, identifiziere den passenden Typ und gewinne den Drop durch Jagd oder durch organische Beutequellen.",
+      "englishHow": "Scan creatures, identify the relevant archetype, and obtain the drop through hunting or from organic loot sources.",
+      "notes": "Welche Fleisch- oder Organart du erhaeltst, ist artspezifisch. Ein kurzer Scan vor dem Farmen spart meist viel Zeit.",
+      "englishNotes": "The exact meat or organ type is species-specific. A quick scan before farming usually saves a lot of time.",
+      "links": [
+        {
+          "label": "No Man's Sky Resources - Food",
+          "url": "https://www.nomansskyresources.com/food"
+        }
+      ],
+      "materials": [
+        "Ausgeschoepfte Innereien",
+        "Beinfleisch",
+        "Diplo-Stuecke",
+        "Dreckiges Fleisch",
+        "Fleischige Fluegel",
+        "Fleischige Wurzeln",
+        "Innereienbeutel",
+        "Katzenleber",
+        "Klumpiger Hirnstamm",
+        "Knusprige Fluegel",
+        "Protowurst",
+        "Ranziges Fleisch",
+        "Rohes Steak",
+        "Schreiterwurst",
+        "Schuppiges Fleisch",
+        "Vergitterte Sehne",
+        "Kristallfleisch",
+        "Salzige Stuecke",
+        "Saftige Made",
+        "Saftiger Thorax",
+        "Unhold-Rogen",
+        "Naehrschleim"
+      ]
+    },
+    {
+      "key": "underwater_harvest",
+      "name": "Unterwasserfunde",
+      "englishName": "Underwater Finds",
+      "summary": "Diese Materialien findest du in Ozeanen, an Tiefsee-POIs und in anderen maritimen Nebenaktivitaeten.",
+      "englishSummary": "These materials are found in oceans, at deep-water points of interest, and in other underwater side activities.",
+      "where": "Am Meeresgrund, in Unterwasserflora, an gepanzerten Muscheln, an Heisswasserquellen und bei abyssalen Begegnungen.",
+      "englishWhere": "On the sea floor, in underwater flora, at armoured clams, at thermal vents, and during abyssal encounters.",
+      "how": "Tauche mit passendem Wasserschutz, suche markierte POIs ab und baue den Fund je nach Objekt ab oder interagiere mit ihm.",
+      "englishHow": "Dive with suitable underwater protection, search marked points of interest, and then mine or interact with the target depending on the object.",
+      "notes": "Wasserwelten und tiefe Ozeane sind die besten Ziele. In der Galaxiekarte sind Systeme mit mindestens etwa halber Wasserbedeckung oft als 'Water' markiert; purple-class Systeme koennen ausserdem echte Waterworlds und besonders tiefe Ozeane enthalten. Tote Welten sind schlechte Ziele, weil dort kein Wasser vorkommt.",
+      "englishNotes": "Waterworlds and deep oceans are the best targets. In the Galactic Map, systems with roughly half or more of their surface covered by water are often marked as 'Water'; purple-class systems can also contain true waterworlds and especially deep oceans. Dead worlds are poor targets because they never contain water.",
+      "links": [
+        {
+          "label": "No Man's Sky Resources - Waterworld",
+          "url": "https://www.nomansskyresources.com/waterworld"
+        },
+        {
+          "label": "No Man's Sky Resources - Underwater",
+          "url": "https://www.nomansskyresources.com/guide-pages/underwater"
+        },
+        {
+          "label": "No Man's Sky Resources - Smaller Points of Interest",
+          "url": "https://www.nomansskyresources.com/smaller-points-of-interest"
+        },
+        {
+          "label": "No Man's Sky Resources - Living Pearl",
+          "url": "https://www.nomansskyresources.com/raw-materials/living-pearl"
+        },
+        {
+          "label": "No Man's Sky - Worlds Part II",
+          "url": "https://www.nomanssky.com/worlds-part-ii-update/"
+        },
+        {
+          "label": "No Man's Sky Resources - Dead",
+          "url": "https://www.nomansskyresources.com/planets-and-moons/dead"
+        }
+      ],
+      "materials": [
+        "Blasenbeutel",
+        "Hadal-Kern",
+        "Hypnotisches Auge",
+        "Kristallsulfid",
+        "Lebende Perle",
+        "Zytophosphat"
+      ]
+    },
+    {
+      "key": "infested_cursed",
+      "name": "Verseuchte und verfluchte Fundorte",
+      "englishName": "Infested and Cursed Sites",
+      "summary": "Diese Materialien stammen aus verlassenen, verseuchten oder verfluchten Orten.",
+      "englishSummary": "These materials come from abandoned, infested, or cursed locations.",
+      "where": "An verlassenen Gebaeuden, bei Whispering Eggs, auf verseuchten Planeten, an Hungering Tendrils oder in verfluchten Sonderinhalten.",
+      "englishWhere": "At abandoned buildings, around Whispering Eggs, on infested planets, near Hungering Tendrils, or in cursed special content.",
+      "how": "Baue Eier, organische Wucherungen oder groteske Fundobjekte ab und rechne dabei immer mit Gegenangriffen.",
+      "englishHow": "Harvest eggs, organic growths, or grotesque site objects, and be prepared for counterattacks.",
+      "notes": "Diese Materialien sind oft gefaehrlich zu farmen. Verseuchte Welten koennen in jedem Sternsystem auftauchen und wirken aus dem All haeufig unauffaellig; verlaesslich erkennst du sie meist erst nach dem Landen an der Planetenbezeichnung oder an verlassenen Gebaeuden mit Whispering Eggs.",
+      "englishNotes": "These materials are often dangerous to farm. Infested worlds can appear in any star system and often look ordinary from space; in most cases, you can identify them reliably only after landing, either from the planetary label or from abandoned buildings covered in Whispering Eggs.",
+      "links": [
+        {
+          "label": "Reddit - Larval Core farming",
+          "url": "https://www.reddit.com/r/NoMansSkyTheGame/comments/btbhd7/easily_survive_the_horrors_and_collect_the_larval/"
+        },
+        {
+          "label": "Reddit - Nanite farming from Whispering Eggs",
+          "url": "https://www.reddit.com/r/NoMansSkyTheGame/comments/fwyfqe/using_the_minotaur_exo_mech_to_farm_nanites_from/"
+        },
+        {
+          "label": "No Man's Sky Resources - Smaller Points of Interest",
+          "url": "https://www.nomansskyresources.com/smaller-points-of-interest"
+        },
+        {
+          "label": "No Man's Sky Wiki - Biome Subtype - Infested",
+          "url": "https://nomanssky.fandom.com/wiki/Biome_Subtype_-_Infested"
+        }
+      ],
+      "materials": [
+        "Abscheuliche Brut",
+        "Fleischiges Seil",
+        "Fleischseil",
+        "Verfluchter Staub",
+        "Larvenkern",
+        "Unreines Metall"
+      ]
+    },
+    {
+      "key": "dissonant_worlds",
+      "name": "Dissonante Welten",
+      "englishName": "Dissonant Worlds",
+      "summary": "Diese Eintraege stammen aus dissonanten Welten und aus dem Sentinel-Interceptor-Gameplay-Loop.",
+      "englishSummary": "These entries come from dissonant worlds and from the Sentinel Interceptor gameplay loop.",
+      "where": "Auf dissonanten Planeten, an Resonatoren, bei Strahlenden Splittern, an harmonischen Lagern und an Interceptor-Absturzstellen.",
+      "englishWhere": "On dissonant planets, at resonators, around Radiant Shards, at harmonic camps, and at interceptor crash sites.",
+      "how": "Bekaempfe korrumpierte Sentinels, zerstoere Dissonance Resonators, baue Splitter ab und folge den Schritten zur Interceptor-Bergung.",
+      "englishHow": "Fight corrupted Sentinels, destroy Dissonance Resonators, mine Radiant Shards, and follow the interceptor recovery steps.",
+      "notes": "Das ist die Standardquelle fuer Atlantideum, Umgekehrte Spiegel, Strahlende Splitter und Hyaline Gehirne. In der Galaxiekarte steht bei passenden Systemen oft direkt 'Dissonant' neben der Sternklasse; im System selbst zeigt der Planetenscan dann 'Dissonance Detected'. Solche Welten koennen in Systemen jeder Sternfarbe vorkommen.",
+      "englishNotes": "This is the standard source for Atlantideum, Inverted Mirrors, Radiant Shards, and Hyaline Brains. In the Galactic Map, suitable systems often show 'Dissonant' right next to the star class; once inside the system, a planet scan will show 'Dissonance Detected'. These worlds can appear in systems of any star colour.",
+      "links": [
+        {
+          "label": "No Man's Sky Resources - Corrupted",
+          "url": "https://www.nomansskyresources.com/corrupted"
+        },
+        {
+          "label": "No Man's Sky Resources - Atlantideum",
+          "url": "https://www.nomansskyresources.com/raw-materials/atlantideum"
+        },
+        {
+          "label": "No Man's Sky Wiki - Dissonant Planet",
+          "url": "https://nomanssky.fandom.com/wiki/Dissonant_Planet"
+        },
+        {
+          "label": "Reddit - Early dissonant world progress",
+          "url": "https://www.reddit.com/r/NoMansSkyTheGame/comments/16ysin0/bought_the_game_2_weeks_ago_over_100_hours_in_now/"
+        }
+      ],
+      "materials": [
+        "Atlantideum",
+        "Hyaline-Gehirn",
+        "Strahlender Splitter",
+        "Umgekehrter Spiegel"
+      ]
+    },
+    {
+      "key": "buried_ruins",
+      "name": "Vergrabene Technologie und Ruinen",
+      "englishName": "Buried Tech and Ruins",
+      "summary": "Diese Materialien stammen aus vergrabenen Modulen, Ruinenwelten oder Relikt-Fundorten.",
+      "englishSummary": "These materials come from buried modules, ruined worlds, or relic-style points of interest.",
+      "where": "An vergrabenen Technikmodulen, auf Ruinenwelten, an Fossil- und Reliktfundorten oder an markierten Oberflaechen-POIs.",
+      "englishWhere": "At Buried Technology Modules, on ruined worlds, at fossil and relic sites, or at marked surface points of interest.",
+      "how": "Suche sie mit dem Analysevisier und lege sie dann mit dem Terrain-Manipulator oder dem Mining Beam frei.",
+      "englishHow": "Locate them with the Analysis Visor and then uncover them with the Terrain Manipulator or the Mining Beam.",
+      "notes": "Diese Gruppe ist besonders nuetzlich fuer Geborgene Daten, Ruinenfragmente und fossilartige Kochzutaten.",
+      "englishNotes": "This category is especially useful for Salvaged Data, ruin fragments, and fossil-like cooking ingredients.",
+      "links": [
+        {
+          "label": "Steam Community - Salvaged Data discussion",
+          "url": "https://steamcommunity.com/app/275850/discussions/0/595139814470202713/"
+        },
+        {
+          "label": "No Man's Sky Resources - Smaller Points of Interest",
+          "url": "https://www.nomansskyresources.com/smaller-points-of-interest"
+        }
+      ],
+      "materials": [
+        "Geborgene Daten",
+        "Polierter Stein",
+        "Blinder Titankern",
+        "Flinke Beinknochen",
+        "Fossilisierte Zweibeinerbeine",
+        "Fragile Eidechsenschuppe",
+        "Gefrorene Assel",
+        "Verknoecherter Deinosuchus"
+      ]
+    },
+    {
+      "key": "activated_deposits",
+      "name": "Aktivierte Lagerstaetten",
+      "englishName": "Activated Deposits",
+      "summary": "Diese Materialien stammen aus aktivierten Erzlagerstaetten auf extremen Planeten.",
+      "englishSummary": "These materials come from activated mineral deposits on extreme planets.",
+      "where": "Auf extremen Planeten mit aktivierten Metalllagerstaetten; welche Metallart du findest, haengt von der Sternfarbe des Systems ab.",
+      "englishWhere": "On extreme planets with activated metal deposits; the exact metal you find depends on the system's star colour.",
+      "how": "Sobald du ein passendes aktiviertes Vorkommen gefunden hast, kannst du es mit dem Mining Beam oder mit Extraktoren farmen.",
+      "englishHow": "Once you have found a matching activated deposit, you can farm it with the Mining Beam or with mineral extractors.",
+      "notes": "Die Gruppentexte bleiben hier bewusst allgemein. Welche Sternfarbe und welche Hyperdrive-Stufe du genau brauchst, steht jeweils im Materialhinweis.",
+      "englishNotes": "The group-level text is intentionally kept general here. The exact star colour and Hyperdrive tier you need are listed in the individual material note.",
+      "links": [
+        {
+          "label": "No Man's Sky Resources - Raw Materials",
+          "url": "https://www.nomansskyresources.com/raw-materials"
+        },
+        {
+          "label": "No Man's Sky Wiki - Hyperdrive",
+          "url": "https://nomanssky.fandom.com/wiki/Hyperdrive"
+        }
+      ],
+      "materials": [
+        "Aktiviertes Cadmium",
+        "Aktiviertes Emeril",
+        "Aktiviertes Indium",
+        "Aktiviertes Kupfer"
+      ]
+    },
+    {
+      "key": "terrain_asteroids",
+      "name": "Terrainabbau und Asteroiden",
+      "englishName": "Terrain and Asteroids",
+      "summary": "Diese Materialien gewinnst du entweder durch Terrainabbau auf Planeten oder durch den Abbau von Asteroiden im All.",
+      "englishSummary": "These materials are obtained either by digging planetary terrain or by mining asteroids in space.",
+      "where": "Direkt im Planetenterrain oder in Asteroidenfeldern im Weltraum.",
+      "englishWhere": "Directly from planetary terrain or from asteroid fields in space.",
+      "how": "Nutze den Terrain-Manipulator fuer Bodenmaterialien und den Mining Beam fuer Asteroiden.",
+      "englishHow": "Use the Terrain Manipulator for ground materials and the Mining Beam for asteroids.",
+      "notes": "Die konkrete Bezugsquelle unterscheidet sich je nach Material. Im Materialhinweis darunter steht, ob du graben oder ins All fliegen solltest.",
+      "englishNotes": "The exact source depends on the material. The material note below tells you whether you should dig or head into space.",
+      "links": [
+        {
+          "label": "No Man's Sky Resources - Raw Materials",
+          "url": "https://www.nomansskyresources.com/raw-materials"
+        }
+      ],
+      "materials": [
+        "Silikatpulver",
+        "Tritium"
+      ]
+    },
+    {
+      "key": "manual_crafting",
+      "name": "Manuelle Herstellung",
+      "englishName": "Manual Crafting",
+      "summary": "Diese Eintraege sind Basismaterialien fuer deine Kataloge, werden aber normalerweise direkt im Inventar hergestellt.",
+      "englishSummary": "These entries are base inputs for your catalogues, but they are normally crafted directly in the inventory.",
+      "where": "Im Exosuit-, Schiff- oder Frachterinventar, sobald die passenden Blaupausen freigeschaltet sind.",
+      "englishWhere": "In your exosuit, ship, or freighter inventory once the relevant blueprints have been unlocked.",
+      "how": "Stelle sie direkt aus Grundmaterialien oder ueber fortgeschrittene Blaupausen her.",
+      "englishHow": "Craft them directly from base materials or through advanced blueprints.",
+      "notes": "Sie werden hier aufgefuehrt, weil sie in dieser App weder im Koch- noch im Raffineriekatalog als erzeugte Produkte gepflegt werden.",
+      "englishNotes": "They are listed here because this app does not maintain them as generated outputs in either the cooking or refinery catalogue.",
+      "links": [
+        {
+          "label": "No Man's Sky Resources - Crafted Products",
+          "url": "https://www.nomansskyresources.com/crafted-products"
+        },
+        {
+          "label": "No Man's Sky Resources - Geodesite",
+          "url": "https://www.nomansskyresources.com/crafted-products/geodesite"
+        }
+      ],
+      "materials": [
+        "Kohlenstoff-Nanorohr",
+        "Geodesit",
+        "Iridesit"
+      ]
+    },
+    {
+      "key": "trade_contraband",
+      "name": "Handel und Schmuggelware",
+      "englishName": "Trade and Contraband",
+      "summary": "Diese Materialien sind eher Handels- oder Schmuggelgueter als klassische Farmrohstoffe.",
+      "englishSummary": "These materials are trade or contraband goods rather than classic farm resources.",
+      "where": "In Gek-Wirtschaften, Piratensystemen, Schmuggelkisten, Frachterbeute oder in eigenen illegalen Anbaukammern.",
+      "englishWhere": "In Gek economies, pirate systems, contraband crates, freighter loot, or in your own illegal grow rooms.",
+      "how": "Kaufe oder plündere sie, oder baue sie als Pflanze an, sobald du an die erste Knospe oder Ware gekommen bist.",
+      "englishHow": "Buy or loot them, or grow them as a plant once you have obtained the first bud or contraband item.",
+      "notes": "NipNip-Knospen sind die Pflanze; GekNip ist die verarbeitete Handelsware.",
+      "englishNotes": "NipNip Buds are the plant; GekNip is the processed trade good.",
+      "links": [
+        {
+          "label": "Reddit - NipNip plantation showcase",
+          "url": "https://www.reddit.com/r/NoMansSkyTheGame/comments/1jdo6y8/absolutely_not_a_nip_nip_plantation/"
+        },
+        {
+          "label": "Reddit - Illegal NipNip farms discussion",
+          "url": "https://www.reddit.com/r/NoMansSkyTheGame/comments/u578yp/remember_those_jokes_about_illegal_nipnip_farms/"
+        }
+      ],
+      "materials": [
+        "GekNip",
+        "NipNip-Knospen"
+      ]
+    },
+    {
+      "key": "quest_special",
+      "name": "Missions- und Spezialbeute",
+      "englishName": "Mission and Special Items",
+      "summary": "Diese Materialien sind an spezielle Missionen, Expeditionen oder seltene Einmalinhalte gebunden.",
+      "englishSummary": "These materials are tied to special missions, expeditions, or rare one-off content.",
+      "where": "Innerhalb der jeweiligen Questlinie oder in stark spezialisierten Sonderinhalten.",
+      "englishWhere": "Within the relevant quest line or in highly specialised one-off content.",
+      "how": "Folge der jeweiligen Questlinie; falls sie in deinem aktuellen Spielstand nicht verfuegbar ist, bleibt oft nur der Handel mit anderen Spielern.",
+      "englishHow": "Follow the relevant quest line; if it is not available in your current save, trading with other players is often the only shortcut.",
+      "notes": "Die Seite fuehrt diese Materialien trotzdem auf, weil sie in Koch- oder Raffinerierezepten als Basiseingaenge auftauchen koennen.",
+      "englishNotes": "This page still lists these materials because they can appear as base inputs in cooking or refinery recipes.",
+      "links": [
+        {
+          "label": "No Man's Sky Resources - Hexit",
+          "url": "https://www.nomansskyresources.com/miscellaneous/hexite"
+        }
+      ],
+      "materials": [
+        "Hexit"
+      ]
+    }
+  ],
+  "itemNotes": [
+    {
+      "name": "Aktiviertes Kupfer",
+      "note": "Kommt typischerweise auf extremen Welten in gelben Sternsystemen vor; gelbe Sterne erreichst du bereits mit dem Standard-Hyperdrive.",
+      "englishNote": "Typically found on extreme worlds in yellow star systems; yellow stars are reachable with the standard Hyperdrive."
+    },
+    {
+      "name": "Aktiviertes Cadmium",
+      "note": "Kommt typischerweise auf extremen Welten in roten Sternsystemen vor; fuer rote Sterne brauchst du mindestens den Cadmium Drive.",
+      "englishNote": "Typically found on extreme worlds in red star systems; you need at least the Cadmium Drive to reach red stars."
+    },
+    {
+      "name": "Aktiviertes Emeril",
+      "note": "Kommt typischerweise auf extremen Welten in gruenen Sternsystemen vor; fuer gruene Sterne brauchst du mindestens den Emeril Drive.",
+      "englishNote": "Typically found on extreme worlds in green star systems; you need at least the Emeril Drive to reach green stars."
+    },
+    {
+      "name": "Aktiviertes Indium",
+      "note": "Kommt typischerweise auf extremen Welten in blauen Sternsystemen vor; fuer blaue Sterne brauchst du mindestens den Indium Drive oder ein hoeheres Upgrade wie den Atlantid Drive.",
+      "englishNote": "Typically found on extreme worlds in blue star systems; you need at least the Indium Drive or a higher upgrade such as the Atlantid Drive to reach blue stars."
+    },
+    {
+      "name": "Aloe-Fleisch",
+      "note": "Kommt als Wildpflanze auf kargen oder barren Planeten vor.",
+      "englishNote": "Appears as a wild plant on barren planets."
+    },
+    {
+      "name": "Feuerbeere",
+      "note": "Kommt als Wildpflanze auf heissen Planeten vor.",
+      "englishNote": "Appears as a wild plant on scorched planets."
+    },
+    {
+      "name": "Gefrorene Knollen",
+      "note": "Kommt als Wildpflanze auf gefrorenen Planeten vor.",
+      "englishNote": "Appears as a wild plant on frozen planets."
+    },
+    {
+      "name": "Grahbeere",
+      "note": "Kommt als Wildpflanze auf radioaktiven Planeten vor und taucht haeufig in Vy'keen-inspirierten Rezepten auf.",
+      "englishNote": "Appears as a wild plant on irradiated planets and often shows up in Vy'keen-themed recipes."
+    },
+    {
+      "name": "Heptaploid-Weizen",
+      "note": "Kommt als Wildpflanze auf fast allen Planeten vor; tote Welten sind die wichtigste Ausnahme.",
+      "englishNote": "Appears as a wild plant on almost all planets; dead worlds are the main exception."
+    },
+    {
+      "name": "Hexabeere",
+      "note": "Kommt vor allem als Wildpflanze auf exotischen Planeten vor; auf manchen exotischen Welten kann sie auch von anomaler Fauna stammen.",
+      "englishNote": "Primarily appears as a wild plant on exotic planets; on some exotic worlds it can also come from anomalous fauna."
+    },
+    {
+      "name": "Impulsbohnen",
+      "note": "Kommt als Wildpflanze auf uebigen Planeten vor.",
+      "englishNote": "Appears as a wild plant on lush planets."
+    },
+    {
+      "name": "Jadeerbsen",
+      "note": "Kommt als Wildpflanze auf toxischen Planeten vor.",
+      "englishNote": "Appears as a wild plant on toxic planets."
+    },
+    {
+      "name": "Sirup-Nektar",
+      "note": "Stammt von Floradae-Kreaturen, wenn du sie mit Creature Pellets fuetterst. Trotz des Namens ist das also ein Fauna- und kein Flora-Produkt.",
+      "englishNote": "Comes from Floradae creatures after feeding them Creature Pellets. Despite the name, this is a fauna product rather than a flora product."
+    },
+    {
+      "name": "Suesswurzel",
+      "note": "Kommt als Wildpflanze auf fast allen Planeten vor; tote Welten sind die wichtigste Ausnahme.",
+      "englishNote": "Appears as a wild plant on almost all planets; dead worlds are the main exception."
+    },
+    {
+      "name": "Geborgene Daten",
+      "note": "Stecken in vergrabenen Technikmodulen und liegen haeufig in der Naehe von Gebaeuden oder Wracks.",
+      "englishNote": "Found inside Buried Technology Modules, often near buildings or wrecks."
+    },
+    {
+      "name": "Tritium",
+      "note": "Am schnellsten gewinnst du es durch das Abbauen von Asteroidenfeldern im All.",
+      "englishNote": "The fastest way to gather it is by mining asteroid fields in space."
+    },
+    {
+      "name": "Silikatpulver",
+      "note": "Faellt bei nahezu jedem Einsatz des Terrain-Manipulators automatisch an.",
+      "englishNote": "Collected automatically from almost any use of the Terrain Manipulator."
+    },
+    {
+      "name": "Kristallsulfid",
+      "note": "Ernte es an den Seiten von Unterwasser-Hot-Vents; die heisse Eruption kann dir dabei Schaden zufuegen.",
+      "englishNote": "Harvest it from the sides of underwater hot vents; the eruption can damage you while you collect it."
+    },
+    {
+      "name": "Lebende Perle",
+      "note": "Findest du in gepanzerten Muscheln auf dem Meeresgrund; meist musst du die Schale erst oeffnen, bevor du die Perle sicher greifen kannst.",
+      "englishNote": "Found inside armoured clams on the sea floor; you usually need to open the shell before you can safely grab the pearl."
+    },
+    {
+      "name": "Hadal-Kern",
+      "note": "Gewinnst du vor allem an Alluring Specimens in tieferem Wasser. Mehrere Kerne sind moeglich, aber ein Abyssal Horror kann die restliche Beute schnell unzugaenglich machen.",
+      "englishNote": "Mainly gathered from Alluring Specimens in deeper water. You can get several cores, but an Abyssal Horror may quickly cut the harvest short."
+    },
+    {
+      "name": "Hypnotisches Auge",
+      "note": "Erhaeltst du von stationaeren Abyssal Horrors am Meeresgrund oder in der Naehe versunkener Gebaeude; sammle es sofort ein, weil es schnell verschwindet.",
+      "englishNote": "Dropped by stationary Abyssal Horrors on the sea floor or near Sunken Buildings; pick it up immediately because it disappears quickly."
+    },
+    {
+      "name": "Zytophosphat",
+      "note": "Gewinnst du mit dem Mining Beam aus Unterwasserflora, besonders aus wurzelartigen Pflanzen in Unterwasserhoehlen. Dabei koennen Abyssal Horrors auftauchen.",
+      "englishNote": "Mine it from underwater flora, especially from root-like plants in underwater caves. Doing so can spawn Abyssal Horrors."
+    },
+    {
+      "name": "Larvenkern",
+      "note": "Stammt aus Whispering Eggs rund um verlassene Gebaeude; sammle ihn schnell ein, bevor der Schwarm ausgeloest wird.",
+      "englishNote": "Comes from Whispering Eggs around abandoned buildings; pick it up quickly before the swarm is triggered."
+    },
+    {
+      "name": "Atlantideum",
+      "note": "Gewinnst du aus korrupten Kristallen, Resonatoren und anderer Beute auf dissonanten Welten.",
+      "englishNote": "Gathered from corrupted crystals, resonators, and other loot found on dissonant worlds."
+    },
+    {
+      "name": "Hyaline-Gehirn",
+      "note": "Haengt mit der Bergung von Interceptors und anderen Inhalten auf dissonanten Welten zusammen.",
+      "englishNote": "Tied to interceptor recovery and other activities on dissonant worlds."
+    },
+    {
+      "name": "Strahlender Splitter",
+      "note": "Baust du direkt aus den leuchtenden Splitterkristallen auf dissonanten Welten ab.",
+      "englishNote": "Mine it directly from the glowing shard crystals on dissonant worlds."
+    },
+    {
+      "name": "Umgekehrter Spiegel",
+      "note": "Erhaeltst du vor allem aus Dissonance Resonators und verwandten Beutequellen auf dissonanten Welten.",
+      "englishNote": "Mostly obtained from Dissonance Resonators and related loot sources on dissonant worlds."
+    },
+    {
+      "name": "Polierter Stein",
+      "note": "Stammt von Ruinenwelten und von aehnlichen Oberflaechenfunden.",
+      "englishNote": "Comes from ruined worlds and similar surface finds."
+    },
+    {
+      "name": "Geodesit",
+      "note": "Ein fortgeschrittenes Crafting-Produkt, das sich meist leichter herstellen als gezielt erbeuten laesst.",
+      "englishNote": "An advanced crafted product that is usually easier to make than to target-farm as loot."
+    },
+    {
+      "name": "Iridesit",
+      "note": "Ein fortgeschrittenes Crafting-Produkt, das ueber spaetere Blaupausen freigeschaltet wird.",
+      "englishNote": "An advanced crafted product unlocked through later blueprints."
+    },
+    {
+      "name": "Hexit",
+      "note": "Ein Spezialmaterial aus der Starbirth-Questlinie; regulaeres Farmen ist nicht moeglich.",
+      "englishNote": "A special material from the Starbirth quest line; it cannot be farmed normally."
+    },
+    {
+      "name": "GekNip",
+      "note": "Eher Handelsware als klassischer Farmdrop. Typische Quellen sind Damaged Containers, Monolith-Belohnungen, Trading Posts und Frigattenexpeditionen.",
+      "englishNote": "More of a trade good than a standard farm drop. Typical sources include Damaged Containers, monolith rewards, Trading Posts, and frigate expeditions."
+    },
+    {
+      "name": "NipNip-Knospen",
+      "note": "Die zuverlaessigste Quelle ist die eigene NipNip-Pflanze. Erste Knospen findest du oft in Outlaw-Systemen, auf Derelict Freighters, in Missionen oder bei Haendlern. Zum Ernten brauchst du den Haz-Mat Gauntlet.",
+      "englishNote": "Your own NipNip plant is the most reliable source. Initial buds often come from outlaw systems, derelict freighters, missions, or traders. Harvesting requires the Haz-Mat Gauntlet."
+    },
+    {
+      "name": "Frische Milch",
+      "note": "Erhaeltst du von kuhartigen Ungulatis- und Hexungulatis-Kreaturen, nachdem du sie mit Creature Pellets gefuettert hast. Vieheinheiten erleichtern die wiederholte Ernte deutlich.",
+      "englishNote": "Obtained from cow-like Ungulatis and Hexungulatis creatures after feeding them Creature Pellets. Livestock Units make repeated harvesting much easier."
+    },
+    {
+      "name": "Grosse Eier",
+      "note": "Erhaeltst du von schreiterartigen Anastomus-Kreaturen, nachdem du sie mit Creature Pellets gefuettert hast.",
+      "englishNote": "Obtained from strider-like Anastomus creatures after feeding them Creature Pellets."
+    },
+    {
+      "name": "Kreaturenei",
+      "note": "Erhaeltst du von triceratopsaehnlichen Theroma-Kreaturen, nachdem du sie mit Creature Pellets gefuettert hast.",
+      "englishNote": "Obtained from triceratops-like Theroma creatures after feeding them Creature Pellets."
+    },
+    {
+      "name": "Kropfmilch",
+      "note": "Erhaeltst du von Bosoptera-, Protocaeli- und Rhopalocera-Kreaturen, nachdem du sie mit Creature Pellets gefuettert hast.",
+      "englishNote": "Obtained from Bosoptera, Protocaeli, and Rhopalocera creatures after feeding them Creature Pellets."
+    },
+    {
+      "name": "Leopardenfrucht",
+      "note": "Erhaeltst du von raubtierartigen Felidae- und Felihex-Kreaturen, nachdem du sie mit Creature Pellets gefuettert hast.",
+      "englishNote": "Obtained from predatory Felidae and Felihex creatures after feeding them Creature Pellets."
+    },
+    {
+      "name": "Riesenei",
+      "note": "Erhaeltst du von Diplos beziehungsweise Rangifae-Kreaturen, nachdem du sie mit Creature Pellets gefuettert hast.",
+      "englishNote": "Obtained from Diplo or Rangifae creatures after feeding them Creature Pellets."
+    },
+    {
+      "name": "Regis-Fett",
+      "note": "Erhaeltst du von tyrannosaurusartigen Tyranocae-Kreaturen, nachdem du sie mit Creature Pellets gefuettert hast.",
+      "englishNote": "Obtained from tyrannosaur-like Tyranocae creatures after feeding them Creature Pellets."
+    },
+    {
+      "name": "Warme Proto-Milch",
+      "note": "Erhaeltst du von zweibeinigen, humanoiden Mogara-Kreaturen, nachdem du sie mit Creature Pellets gefuettert hast. Oft erkennst du sie an sichtbaren Milk Sacs.",
+      "englishNote": "Obtained from bipedal, humanoid Mogara creatures after feeding them Creature Pellets. They are often identifiable by visible milk sacs."
+    },
+    {
+      "name": "Wilde Milch",
+      "note": "Erhaeltst du von Procavya-, Reococcyx- und Tetraceris-Kreaturen, nachdem du sie mit Creature Pellets gefuettert hast.",
+      "englishNote": "Obtained from Procavya, Reococcyx, and Tetraceris creatures after feeding them Creature Pellets."
+    },
+    {
+      "name": "Knochenklumpen",
+      "note": "Erhaeltst du von grossen, gepanzerten Osteofelidae und von rollenden Protosphaeridae, nachdem du sie mit Creature Pellets gefuettert hast.",
+      "englishNote": "Obtained from large, shelled Osteofelidae and rolling Protosphaeridae after feeding them Creature Pellets."
+    },
+    {
+      "name": "Gesammelte Pilze",
+      "note": "Stammt von schildkroeten- oder maulwurfsartigen Talpidae-Kreaturen. Manuelles Abernten ist umstaendlich, deshalb ist ein Automated Feeder zusammen mit einer Vieheinheit meist die bessere Wahl.",
+      "englishNote": "Comes from turtle- or mole-like Talpidae creatures. Manual harvesting is awkward, so an Automated Feeder plus a Livestock Unit is usually the better option."
+    },
+    {
+      "name": "Zaehe Draehte",
+      "note": "Erhaeltst du nur von robotischen Mechanoceris- und Structurae-Kreaturen. Anders als normale Fauna brauchen sie Ion Batteries statt Creature Pellets.",
+      "englishNote": "Only obtained from robotic Mechanoceris and Structurae creatures. Unlike normal fauna, they require Ion Batteries instead of Creature Pellets."
+    },
+    {
+      "name": "Holz-„Apfel“",
+      "note": "Erhaeltst du von spinnen- oder krabbenartigen Bos-, Conokinis- und Bosaquatica-Kreaturen, nachdem du sie mit Creature Pellets gefuettert hast.",
+      "englishNote": "Obtained from spider- or crab-like Bos, Conokinis, and Bosaquatica creatures after feeding them Creature Pellets."
+    },
+    {
+      "name": "Klebriger „Honig“",
+      "note": "Erhaeltst du von blobartigen Lok-Kreaturen, nachdem du sie mit Creature Pellets gefuettert hast.",
+      "englishNote": "Obtained from blob-like Lok creatures after feeding them Creature Pellets."
+    }
+  ]
+}

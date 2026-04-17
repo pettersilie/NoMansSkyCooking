@@ -25,6 +25,11 @@
             <destName>refinery-recipes.json</destName>
         </file>
         <file>
+            <source>${project.basedir}/data/sources/material-sources.json</source>
+            <outputDirectory>/data/sources</outputDirectory>
+            <destName>material-sources.json</destName>
+        </file>
+        <file>
             <source>${project.basedir}/src/dist/product-prices.json</source>
             <outputDirectory>/data</outputDirectory>
         </file>

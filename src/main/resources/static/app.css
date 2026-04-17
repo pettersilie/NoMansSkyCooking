@@ -854,6 +854,111 @@ button:hover {
     width: min(100%, 88rem);
 }
 
+.sources-card {
+    width: min(100%, 92rem);
+}
+
+.sources-layout {
+    display: grid;
+    grid-template-columns: minmax(18rem, 24rem) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    margin-top: 1.2rem;
+}
+
+.sources-list-panel,
+.sources-detail-panel {
+    border: 1px solid rgba(80, 111, 75, 0.18);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.62);
+    box-shadow: 0 12px 24px rgba(23, 34, 28, 0.08);
+    padding: 1rem;
+}
+
+.sources-list {
+    max-height: 34rem;
+    min-height: 12rem;
+}
+
+.sources-empty-state {
+    min-height: 10rem;
+    display: grid;
+    place-items: center;
+    text-align: center;
+}
+
+.source-detail-card {
+    display: grid;
+    gap: 1rem;
+}
+
+.source-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.source-group-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(53, 107, 115, 0.12);
+    color: var(--slot);
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.source-section-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.source-info-block {
+    display: grid;
+    gap: 0.45rem;
+    padding: 0.95rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.76);
+    border: 1px solid rgba(80, 111, 75, 0.14);
+}
+
+.source-section-title {
+    margin: 0;
+    font-size: 0.96rem;
+}
+
+.source-section-copy {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.55;
+}
+
+.source-item-hint {
+    color: var(--ink);
+}
+
+.source-links {
+    display: grid;
+    gap: 0.45rem;
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.source-link-anchor {
+    color: #2e6b46;
+    text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.14em;
+}
+
+.source-link-anchor:hover {
+    color: #1f4f33;
+}
+
 .overview-toolbar {
     display: grid;
     gap: 1rem;
@@ -1021,6 +1126,11 @@ button:hover {
 
     .form-card {
         padding: 1.4rem;
+    }
+
+    .sources-layout,
+    .source-section-grid {
+        grid-template-columns: 1fr;
     }
 
     .main-menu {

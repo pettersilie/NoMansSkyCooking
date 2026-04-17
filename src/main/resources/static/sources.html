@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sources</title>
+    <link rel="stylesheet" href="/app.css?v=20260416b">
+</head>
+<body>
+<details id="mainMenu" class="main-menu">
+    <summary id="mainMenuToggle">Main menu</summary>
+    <nav id="mainMenuPanel" class="main-menu-panel" aria-label="Main menu">
+        <div class="inline-control language-control main-menu-language">
+            <label id="languageLabel" for="languageSelect">Language</label>
+            <select id="languageSelect">
+                <option value="en" selected>English</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+        <a id="menuHomeLink" class="main-menu-link" href="/?lang=en">Cooking Recipes</a>
+        <a id="menuRecipeOverviewLink" class="main-menu-link" href="/recipe-overview.html?lang=en">Cooking Recipe Overview</a>
+        <a id="menuRefineryLink" class="main-menu-link" href="/refinery.html?lang=en">Refinery</a>
+        <a id="menuRefineryOverviewLink" class="main-menu-link" href="/refinery-overview.html?lang=en">Refinery Overview</a>
+        <a id="menuSourcesLink" class="main-menu-link" href="/sources.html?lang=en">Sources</a>
+        <a id="menuAddCategoryLink" class="main-menu-link" href="/add-category.html?lang=en">Add cooking category</a>
+        <a id="menuAddRecipeLink" class="main-menu-link" href="/add-recipe.html?lang=en">Add cooking recipe</a>
+    </nav>
+</details>
+<main class="form-page">
+    <section class="form-card builder-card sources-card">
+        <div class="eyebrow">No Man's Sky</div>
+        <h1 id="pageTitle">Sources</h1>
+        <p id="pageIntro" class="intro">
+            Select a base ingredient that is not produced by the current cooking or refinery catalogues to see where players usually obtain it.
+        </p>
+        <p id="pageHint" class="hint">
+            Use the search field to narrow the list, then open an entry to see where to find it, how to get it and which community references were used.
+        </p>
+
+        <div class="sources-layout">
+            <section class="sources-list-panel">
+                <div class="inline-control overview-filter-control">
+                    <label id="materialFilterLabel" for="materialFilter">Filter materials</label>
+                    <input id="materialFilter" type="text" autocomplete="off" placeholder="Enter a material name">
+                </div>
+
+                <p id="sourcesStatus" class="status" aria-live="polite">Loading source materials...</p>
+
+                <div id="sourceMaterialList" class="product-list sources-list" aria-live="polite"></div>
+            </section>
+
+            <section class="sources-detail-panel">
+                <div id="sourceEmptyState" class="empty-state sources-empty-state">
+                    Select a material from the list to view its source details.
+                </div>
+
+                <article id="sourceDetailCard" class="source-detail-card" hidden>
+                    <div class="source-detail-header">
+                        <div id="sourceIdentity" class="list-entry-main"></div>
+                        <div id="sourceGroupBadge" class="source-group-badge"></div>
+                    </div>
+
+                    <p id="sourceSummary" class="intro"></p>
+
+                    <div class="source-section-grid">
+                        <section class="source-info-block">
+                            <h2 id="whereTitle" class="source-section-title">Where</h2>
+                            <p id="sourceWhere" class="source-section-copy"></p>
+                        </section>
+                        <section class="source-info-block">
+                            <h2 id="howTitle" class="source-section-title">How</h2>
+                            <p id="sourceHow" class="source-section-copy"></p>
+                        </section>
+                    </div>
+
+                    <section class="source-info-block">
+                        <h2 id="notesTitle" class="source-section-title">Notes</h2>
+                        <p id="sourceNotes" class="source-section-copy"></p>
+                    </section>
+
+                    <section id="itemHintBlock" class="source-info-block" hidden>
+                        <h2 id="itemHintTitle" class="source-section-title">Selected Material</h2>
+                        <p id="sourceItemHint" class="source-section-copy source-item-hint"></p>
+                    </section>
+
+                    <section class="source-info-block">
+                        <h2 id="linksTitle" class="source-section-title">Community Sources</h2>
+                        <ul id="sourceLinks" class="source-links"></ul>
+                    </section>
+                </article>
+            </section>
+        </div>
+    </section>
+</main>
+
+<script src="/main-menu.js?v=20260416g"></script>
+<script src="/sources.js?v=20260416a"></script>
+</body>
+</html>

@@ -9,6 +9,7 @@
             recipeOverview: "Kochrezept Übersicht",
             refinery: "Raffinerie",
             refineryOverview: "Raffinerie Übersicht",
+            sources: "Quellen",
             addCategory: "Koch-Kategorie hinzufügen",
             addRecipe: "Kochrezept hinzufügen"
         },
@@ -19,6 +20,7 @@
             recipeOverview: "Cooking Recipe Overview",
             refinery: "Refinery",
             refineryOverview: "Refinery Overview",
+            sources: "Sources",
             addCategory: "Add cooking category",
             addRecipe: "Add cooking recipe"
         }
@@ -33,6 +35,7 @@
     const recipeOverviewLink = document.getElementById("menuRecipeOverviewLink");
     const refineryLink = document.getElementById("menuRefineryLink");
     const refineryOverviewLink = document.getElementById("menuRefineryOverviewLink");
+    const sourcesLink = document.getElementById("menuSourcesLink");
     const addCategoryLink = document.getElementById("menuAddCategoryLink");
     const addRecipeLink = document.getElementById("menuAddRecipeLink");
 
@@ -163,6 +166,12 @@
             text.refineryOverview,
             buildSubpageUrl("/refinery-overview.html", resolvedLanguage),
             window.location.pathname === "/refinery-overview.html"
+        );
+        updateLink(
+            sourcesLink,
+            text.sources,
+            buildSubpageUrl("/sources.html", resolvedLanguage),
+            window.location.pathname === "/sources.html"
         );
         updateLink(
             addCategoryLink,

@@ -149,6 +149,14 @@ public class LocalizationService {
         return "Produkt nicht gefunden.";
     }
 
+    public String sourceMaterialNotFoundMessage(String language) {
+        if (isEnglish(language)) {
+            return "Source material not found.";
+        }
+
+        return "Quellenmaterial nicht gefunden.";
+    }
+
     public String localizeErrorMessage(String message, String language) {
         if (!isEnglish(language) || message == null || message.isBlank()) {
             return message;
